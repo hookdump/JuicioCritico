@@ -1,0 +1,598 @@
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="estilos.css" rel="stylesheet">
+  <link href="lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+  <link href="lib/jquery-ui/jquery-ui.structure.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="lib/smoothscrollto.jquery.js"></script>
+  <script src="lib/jquery-ui/jquery-ui.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+
+  $.fn.animateRotate = function(angle, duration, easing, complete) {
+    var args = $.speed(duration, easing, complete);
+    var step = args.step;
+    return this.each(function(i, e) {
+      args.complete = $.proxy(args.complete, e);
+      args.step = function(now) {
+        $.style(e, 'transform', 'rotate(' + now + 'deg)');
+        if (step) return step.apply(e, arguments);
+      };
+
+      $({deg: 0}).animate({deg: angle}, args);
+    });
+  };
+
+  var defaultDelay = 300;
+  var mapa = [];
+
+  // Fase 1
+  mapa = mapa.concat([
+    {y: 0},
+    {y: 300},
+    {y: 400},
+    {y: 550},
+    {y: 600},
+    {y: 830, delay: 1000},
+    {y: 1760},
+  ]);
+
+  // Fase 2: Telar de la Abundancia
+  mapa = mapa.concat([
+    {y: 3150},
+    {y: 4140}, // 8 - flor
+    {animacion: 'ref_agua'},
+    {animacion: 'flor1'},
+    {animacion: 'ref_tierra'},
+    {animacion: 'flor2'},
+    {animacion: 'flor3'},
+    {animacion: 'ref_aire'},
+    {animacion: 'flor4'},
+    {animacion: 'flor5'},
+    {animacion: 'flor6'},
+    {animacion: 'flor7'},
+    {animacion: 'ref_fuego'},
+    {animacion: 'highlight_fuego'},
+    {animacion: 'all_fuego'},
+    {animacion: 'mostrar_agua'},
+    {animacion: 'mostrar_resto'},
+    {animacion: 'agua_leave'},
+    {animacion: 'split'},
+    {animacion: 'split2'},
+    {animacion: 'split3'},
+    {y: 5050}
+  ]);
+
+  // ESTAFA Definiciones
+  // mapa = mapa.concat([3050+offset, 4540+offset, 5440+offset, 6240+offset]);
+
+  // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  var pos = 8; // <<<<< POSICION INICIAL!!! (default=0)
+
+  // Inicializacion
+  console.log("Start!");
+  $("HTML, BODY").animate({ scrollTop: mapa[pos].y }, 300);
+  AOS.init();
+
+  var nextPos = function() {
+    pos++;
+    var easing = "linear";
+    if (pos == 8) easing = "easeOutQuad";
+    $('.scrollDisplay').text(document.body.scrollTop + " / " + pos);
+    // scroll
+    if (mapa[pos].y) {
+      $("HTML, BODY").animate({ scrollTop: mapa[pos].y },
+        mapa[pos].delay || defaultDelay);
+    }
+    // animacion
+    if (mapa[pos].animacion) {
+      ejecutarAnimacion(mapa[pos].animacion);
+    }
+  };
+
+  var posicionarPetalo = function(id, delay) {
+    var fuegoUpDown_pushX = 72;
+    var fuegoUpDown_pushY = 140;
+    var fuegoLeftRight_pushX = 120;
+    var fuegoLeftRight_pushY = 70;
+
+    console.log('posicionando petalo:', id, delay);
+    switch (id) {
+      case 'tierra1':
+      $('.tierra.p1')
+      .position({
+        my: "center top", at: "center center+50", of: $('.agua'),
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(0,    delay)
+      ;
+      break;
+      case 'tierra2':
+      $('.tierra.p2')
+      .position({
+        my: "center top", at: "center center-50", of: $('.agua'),
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(180,  delay)
+      ;
+      break;
+      case 'aire1':
+      $('.aire.p1')
+      .position({
+        my: "center top", at: "center-60 center+70", of: $('.agua'),
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(60,     delay)
+      ;
+      break;
+      case 'aire2':
+      $('.aire.p2')
+      .position({
+        my: "center top", at: "center+60 center+70", of: $('.agua'),
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(-60,    delay)
+      ;
+      break;
+      case 'aire3':
+      $('.aire.p3')
+      .position({
+        my: "center top", at: "center+60 center-70", of: $('.agua'),
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(180+60, delay)
+      ;
+      break;
+      case 'aire4':
+      $('.aire.p4')
+      .position({
+        my: "center top", at: "center-60 center-70", of: $('.agua'),
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(180-60, delay)
+      ;
+      break;
+      case 'fuego1':
+      $('.fuego.p1')
+      .position({
+        my: "center top", of: $('.agua'),
+        at: `center-${fuegoUpDown_pushX} center+${fuegoUpDown_pushY}`,
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(20,    delay)
+      ;
+      break;
+      case 'fuego2':
+      $('.fuego.p2')
+      .position({
+        my: "center top", of: $('.agua'),
+        at: `center-${fuegoLeftRight_pushX} center+${fuegoLeftRight_pushY}`,
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(75,    delay)
+      ;
+      break;
+      case 'fuego3':
+      $('.fuego.p3')
+      .position({
+        my: "center top", of: $('.agua'),
+        at: `center+${fuegoUpDown_pushX} center+${fuegoUpDown_pushY}`,
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(-20,   delay)
+      ;
+      break;
+      case 'fuego4':
+      $('.fuego.p4')
+      .position({
+        my: "center top", of: $('.agua'),
+        at: `center+${fuegoLeftRight_pushX} center+${fuegoLeftRight_pushY}`,
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(-75,   delay)
+      ;
+      break;
+      case 'fuego5':
+      $('.fuego.p5')
+      .position({
+        my: "center top", of: $('.agua'),
+        at: `center+${fuegoUpDown_pushX} center-${fuegoUpDown_pushY}`,
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(180+20,   delay)
+      ;
+      break;
+      case 'fuego6':
+      $('.fuego.p6')
+      .position({
+        my: "center top", of: $('.agua'),
+        at: `center+${fuegoLeftRight_pushX} center-${fuegoLeftRight_pushY}`,
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(180+75,   delay)
+      ;
+      break;
+      case 'fuego7':
+      $('.fuego.p7')
+      .position({
+        my: "center top", of: $('.agua'),
+        at: `center-${fuegoUpDown_pushX} center-${fuegoUpDown_pushY}`,
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(180-20,   delay)
+      ;
+      break;
+      case 'fuego8':
+      $('.fuego.p8')
+      .position({
+        my: "center top", of: $('.agua'),
+        at: `center-${fuegoLeftRight_pushX} center-${fuegoLeftRight_pushY}`,
+        using: function(css, calc) { $(this).animate(css, delay, "linear"); }
+      })
+      .animateRotate(180-75,   delay)
+      ;
+      break;
+    }
+  };
+
+  var ejecutarAnimacion = function(id) {
+    console.log('ejecutando animacion:', id);
+    var genericDelay = 600;
+
+    switch(id) {
+      case 'flor1':
+      posicionarPetalo('tierra1', genericDelay);
+      posicionarPetalo('tierra2', genericDelay);
+      break;
+
+      case 'flor2':
+      posicionarPetalo('aire1', genericDelay);
+      posicionarPetalo('aire2', genericDelay);
+      break;
+
+      case 'flor3':
+      posicionarPetalo('aire3', genericDelay);
+      posicionarPetalo('aire4', genericDelay);
+      break;
+
+      case 'flor4':
+      posicionarPetalo('fuego1', genericDelay);
+      posicionarPetalo('fuego2', genericDelay);
+      break;
+
+      case 'flor5':
+      posicionarPetalo('fuego3', genericDelay);
+      posicionarPetalo('fuego4', genericDelay);
+      break;
+
+      case 'flor6':
+      posicionarPetalo('fuego5', genericDelay);
+      posicionarPetalo('fuego6', genericDelay);
+      break;
+
+      case 'flor7':
+      posicionarPetalo('fuego7', genericDelay);
+      posicionarPetalo('fuego8', genericDelay);
+      break;
+
+      case 'ref_agua':
+      $('.ref_agua').animate({opacity: '1'}, genericDelay);
+      break;
+      case 'ref_tierra':
+      $('.ref_tierra').animate({opacity: '1'}, genericDelay);
+      break;
+      case 'ref_aire':
+      $('.ref_aire').animate({opacity: '1'}, genericDelay);
+      break;
+      case 'ref_fuego':
+      $('.ref_fuego').animate({opacity: '1'}, genericDelay);
+      break;
+
+      case 'ocultar_refs':
+      $('.ref').animate({opacity: '0'}, genericDelay);
+      break;
+      case 'mostrar_refs':
+      $('.ref').animate({opacity: '1'}, genericDelay);
+      break;
+
+      case 'highlight_fuego':
+      $('.ref_aire').delay(0).animate({opacity: '0'}, 200);
+      $('.ref_tierra').delay(0).animate({opacity: '0'}, 200);
+      $('.ref_agua').delay(0).animate({opacity: '0'}, 200);
+
+      $('.fuego.p6').delay(100).animate({opacity: '0'}, 200);
+      $('.fuego.p4').delay(200).animate({opacity: '0'}, 200);
+      $('.fuego.p3').delay(300).animate({opacity: '0'}, 200);
+      $('.fuego.p1').delay(400).animate({opacity: '0'}, 200);
+      $('.fuego.p2').delay(500).animate({opacity: '0'}, 200);
+      $('.fuego.p8').delay(600).animate({opacity: '0'}, 200);
+      $('.fuego.p7').delay(700).animate({opacity: '0'}, 200);
+
+      $('.aire.p3').delay(800).animate({opacity: '0'}, 200);
+      $('.aire.p2').delay(900).animate({opacity: '0'}, 200);
+      $('.aire.p1').delay(1000).animate({opacity: '0'}, 200);
+      $('.aire.p4').delay(1100).animate({opacity: '0'}, 200);
+
+      $('.tierra.p2').delay(1200).animate({opacity: '0'}, 200);
+      $('.tierra.p1').delay(1400).animate({opacity: '0'}, 200);
+
+      $('.agua').delay(1600).animate({opacity: '0'}, 200);
+      break;
+
+      case 'all_fuego':
+      $('.fuego.p6').delay(100).animate({opacity: '1'}, 200);
+      $('.fuego.p4').delay(200).animate({opacity: '1'}, 200);
+      $('.fuego.p3').delay(300).animate({opacity: '1'}, 200);
+      $('.fuego.p1').delay(400).animate({opacity: '1'}, 200);
+      $('.fuego.p2').delay(500).animate({opacity: '1'}, 200);
+      $('.fuego.p8').delay(600).animate({opacity: '1'}, 200);
+      $('.fuego.p7').delay(700).animate({opacity: '1'}, 200);
+      break;
+
+      case 'mostrar_agua':
+      $('.agua').delay(0).animate({opacity: '1'}, 200);
+      $('.ref_agua').delay(200).animate({opacity: '1'}, 200);
+      break;
+
+      case 'mostrar_resto':
+      ejecutarAnimacion('ocultar_refs');
+      $('.aire.p3').delay(200).animate({opacity: '1'}, 200);
+      $('.aire.p2').delay(300).animate({opacity: '1'}, 200);
+      $('.aire.p1').delay(400).animate({opacity: '1'}, 200);
+      $('.aire.p4').delay(500).animate({opacity: '1'}, 200);
+      $('.tierra.p2').delay(600).animate({opacity: '1'}, 200);
+      $('.tierra.p1').delay(700).animate({opacity: '1'}, 200);
+      break;
+
+      case 'agua_leave':
+      $('.agua').animate({
+        left: "-=700",
+        top: "-=300",
+      }, 1000);
+      break;
+
+      case 'split':
+      $('.tierra.p1').animate({ 'margin-top': "+=100" }, 1000);
+      $('.aire.p1').animate({ 'margin-top': "+=100" }, 1000);
+      $('.aire.p2').animate({ 'margin-top': "+=100" }, 1000);
+      $('.fuego.p1').animate({ 'margin-top': "+=100" }, 1000);
+      $('.fuego.p2').animate({ 'margin-top': "+=100" }, 1000);
+      $('.fuego.p3').animate({ 'margin-top': "+=100" }, 1000);
+      $('.fuego.p4').animate({ 'margin-top': "+=100" }, 1000);
+
+      $('.tierra.p2').animate({ 'margin-top': "-=150" }, 1000);
+      $('.aire.p3').animate({ 'margin-top': "-=150" }, 1000);
+      $('.aire.p4').animate({ 'margin-top': "-=150" }, 1000);
+      $('.fuego.p5').animate({ 'margin-top': "-=150" }, 1000);
+      $('.fuego.p6').animate({ 'margin-top': "-=150" }, 1000);
+      $('.fuego.p7').animate({ 'margin-top': "-=150" }, 1000);
+      $('.fuego.p8').animate({ 'margin-top': "-=150" }, 1000);
+      break;
+
+      case 'split2':
+      $('.tierra.p1').each(function() {
+        $(this).clone().addClass('agua').removeClass('tierra petalo')
+          .css('opacity', 0).css('top', '50px').appendTo('.flor').animate({opacity: '1'}, 1000);
+        $(this).delay(1000).animate({opacity: '0'}, 100, function() {
+          $(this).remove();
+        });
+      });
+      $('.tierra.p2').each(function() {
+        $(this).clone().addClass('agua').removeClass('tierra petalo')
+          .css('opacity', 0).css('top', '-130px').appendTo('.flor').animate({opacity: '1'}, 1000);
+        $(this).delay(1000).animate({opacity: '0'}, 100, function() {
+          $(this).remove();
+        });
+      });
+      $('.aire').each(function() {
+        $(this).clone().addClass('tierra').removeClass('aire')
+          .css('opacity', 0).appendTo('.flor').animate({opacity: '1'}, 1000);
+        $(this).delay(1000).animate({opacity: '0'}, 100, function() {
+          $(this).remove();
+        });
+      });
+      $('.fuego').each(function() {
+        $(this).clone().addClass('aire').removeClass('fuego')
+          .css('opacity', 0).appendTo('.flor').animate({opacity: '1'}, 1000);
+        $(this).delay(1000).animate({opacity: '0'}, 100, function() {
+          $(this).remove();
+        });
+      });
+      break;
+
+      case 'split3':
+      $('.tierra.p1')
+      .animateRotate(0, 500)
+      .animate({ 'top': "+=60", 'left': "+=60" }, 500)
+      ;
+
+      $('.tierra.p2')
+      .animateRotate(180, 500)
+      .animate({ 'left': "-=60", 'top': "-=20" }, 500)
+      ;
+
+      $('.tierra.p4')
+      .animateRotate(180, 500)
+      .animate({ 'left': "+=60", 'top': "-=60" }, 500)
+      ;
+
+      $('.tierra.p3')
+      .animateRotate(0, 500)
+      .animate({ 'left': "-=60", 'top': "+=20" }, 500)
+      ;
+      break;
+
+      case 'florFull':
+      var tierraDelay = 900;
+      var aireDelay = 1600;
+      var fuegoDelay = 2000;
+      posicionarPetalo('tierra1', tierraDelay);
+      posicionarPetalo('tierra2', tierraDelay);
+      posicionarPetalo('aire1', aireDelay);
+      posicionarPetalo('aire2', aireDelay);
+      posicionarPetalo('aire3', aireDelay);
+      posicionarPetalo('aire4', aireDelay);
+      posicionarPetalo('fuego1', fuegoDelay);
+      posicionarPetalo('fuego2', fuegoDelay);
+      posicionarPetalo('fuego3', fuegoDelay);
+      posicionarPetalo('fuego4', fuegoDelay);
+      posicionarPetalo('fuego5', fuegoDelay);
+      posicionarPetalo('fuego6', fuegoDelay);
+      posicionarPetalo('fuego7', fuegoDelay);
+      posicionarPetalo('fuego8', fuegoDelay);
+      break;
+    }
+  };
+
+  window.onscroll = function() {
+    $('.scrollDisplay').text(document.body.scrollTop + " / " + pos);
+  };
+  $('body').mousedown(function(ev) {
+    if (ev.which === 3) {
+      nextPos();
+    }
+  });
+});
+</script>
+</head>
+<body class="noselect" oncontextmenu="return false">
+  <div class="scrollDisplay">0</div>
+
+  <!-- ............. COMIENZO ............. -->
+  <div class="spacer-600"> </div>
+  <h1 data-aos-anchor-placement="center-center"  data-aos="flip-down">Holis.</h1>
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">Vengo a mostrarte que</h2>
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">el <span>Telar de la Abundancia</span></h2>
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    <span>NO</span> es una estafa.
+  </h2>
+  <div class="spacer-25"></div>
+
+  <!-- ............. BLACK ............. -->
+  <div class="black-bg">
+
+    <!-- ............. Thinking ............. -->
+    <div class="spacer-50"></div>
+    <div data-aos-anchor-placement="bottom-bottom" data-aos="fade-up">
+      <img src="thinking.gif" />
+    </div>
+
+    <div class="spacer-500"> </div>
+    <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">¿Qué es el <span>Telar de la Abundancia</span>?</h2>
+    <div class="spacer-500"> </div>
+  </div>
+
+  <div class="spacer-500"> </div>
+  <div data-aos-anchor-placement="center-bottom" data-aos="fade-up">
+    <table class="big">
+      <tr>
+        <td width="50%" class="align-right">Telar de&nbsp;</td>
+        <td width="50%" class="red">mujeres</td>
+      </tr>
+      <tr>
+        <td class="align-right">Telar de la&nbsp;</td>
+        <td class="red">abundancia</td>
+      </tr>
+      <tr>
+        <td class="align-right">Mandala de la&nbsp;</td>
+        <td class="red">abundancia</td>
+      </tr>
+      <tr>
+        <td class="align-right">Burbujas de la&nbsp;</td>
+        <td class="red">abundancia</td>
+      </tr>
+      <tr>
+        <td class="align-right">Flor de la&nbsp;</td>
+        <td class="red">abundancia</td>
+      </tr>
+      <tr>
+        <td class="align-right">Flor de la&nbsp;</td>
+        <td class="red">confianza</td>
+      </tr>
+    </table>
+  </div>
+
+
+  <div class="spacer-50"> </div>
+  <div class="spacer-500"> </div>
+
+
+<div class="flor">
+
+  <div class="ref ref_agua">
+    <div class="titulo">Agua</div>
+    <div class="subtexto">Recibe todo el dinero recaudado</div>
+  </div>
+  <div class="ref ref_tierra">
+    <div class="subtexto">Apoya y motiva al resto</div>
+    <div class="titulo">Tierra</div>
+  </div>
+  <div class="ref ref_aire">
+    <div class="titulo">Aire</div>
+    <div class="subtexto">Recluta nuevos miembros</div>
+  </div>
+  <div class="ref ref_fuego">
+    <div class="titulo">Fuego</div>
+    <div class="subtexto">Pone dinero</div>
+  </div>
+
+
+  <div class="agua"></div>
+  <div class="petalo tierra p1"></div>
+  <div class="petalo tierra p2"></div>
+  <div class="petalo aire p1"></div>
+  <div class="petalo aire p2"></div>
+  <div class="petalo aire p3"></div>
+  <div class="petalo aire p4"></div>
+  <div class="petalo fuego p1"></div>
+  <div class="petalo fuego p2"></div>
+  <div class="petalo fuego p3"></div>
+  <div class="petalo fuego p4"></div>
+  <div class="petalo fuego p5"></div>
+  <div class="petalo fuego p6"></div>
+  <div class="petalo fuego p7"></div>
+  <div class="petalo fuego p8"></div>
+</div>
+
+
+
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+
+  <!-- ............. WHITE AGAIN ............. -->
+  <!-- ............. Fase ESTAFA ............. -->
+  <div class="spacer-400"> </div>
+  <div class="diccionario">
+    <h1 data-aos-anchor-placement="center-center"  data-aos="flip-down"><span>estufa</span></h1>
+    <h4 class="definicion"><em>f.</em>  Aparato que sirve para calentar espacios cerrados
+      mediante la combustión de carbón, de leña, de gas o gracias a la energía eléctrica.</h4>
+  </div>
+  <div class="spacer-600"> </div>
+
+  <div class="spacer-400"> </div>
+  <div class="diccionario">
+    <h1><span>estafa</span></h1>
+    <h4 class="definicion"><em>(Der.)</em> Delito consistente en provocar un <span>perjuicio patrimonial</span> a
+      alguien mediante engaño y con ánimo de lucro.</h4>
+  </div>
+  <div class="spacer-600"> </div>
+
+  <h1>O SEA</h1>
+  <div class="spacer-400"> </div>
+  <div class="diccionario">
+    <h1><span>estafa</span></h1>
+    <h4 class="definicion">Chamuyar a alguien para que te regale guita.</h4>
+  </div>
+
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+
+</body>
+</html>

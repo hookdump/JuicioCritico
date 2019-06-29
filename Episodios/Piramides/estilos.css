@@ -1,0 +1,233 @@
+body {
+  color: black;
+  text-align: center;
+  font-family: 'Lora', serif;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.scrollDisplay {
+  font-family: Arial;
+  position: fixed;
+  text-align: right;
+  right: 5px;
+  top: 5px;
+  color: black;
+  background-color: rgba(255,255,255,0.7);
+  width: 200px;
+  padding: 5px;
+  z-index: 9999;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Roboto Slab', serif;
+  margin: 10px 0;
+}
+h1 span, h2 span, h3 span, h4 span, h5 span {
+  color: red;
+}
+h1 { font-size: 100px; margin: 67px 0; }
+h2 { font-size: 80px; }
+h3 { font-size: 60px; }
+h4 { font-size: 40px; }
+h5 { font-size: 30px; }
+
+.big {
+  font-size: 80px;
+}
+
+.black-bg {
+  background-color: black;
+  width: 100%;
+  color: white;
+}
+
+.spacer-25  { height: 25px;   clear: both; }
+.spacer-50  { height: 50px;   clear: both; }
+.spacer-100 { height: 100px;   clear: both; }
+.spacer-200 { height: 200px;   clear: both; }
+.spacer-300 { height: 300px;   clear: both; }
+.spacer-400 { height: 400px;   clear: both; }
+.spacer-500 { height: 500px;   clear: both; }
+.spacer-600 { height: 600px;   clear: both; }
+.spacer-700 { height: 700px;   clear: both; }
+
+table.big {
+  width: 100%;
+}
+.align-right {
+  text-align: right;
+}
+table td.red {
+  color: red;
+}
+
+.diccionario {
+  width: 750px;
+  margin: 0 auto;
+  text-align: left;
+}
+.diccionario em {
+  color: #B0B0B0;
+}
+
+.petalo {
+  position: absolute;
+  width: 200px;
+  height: 180px;
+  margin: 0 auto;
+  left: 50%;
+  margin-left: -100px;
+  margin-top: 30px;
+}
+.petalo:before,
+.petalo:after {
+  position: absolute;
+  content: "";
+  left: 100px;
+  top: 0;
+  width: 100px;
+  height: 160px;
+  background: #A0A0A0;
+  border-radius: 100px 100px 0 0;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+.petalo:after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+.flor {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+}
+
+.agua {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  background-color: #C8C9F6;
+  left: 50%;
+  margin-left: -100px;
+  margin-top: -10px;
+  z-index: 4;
+}
+
+.tierra, .aire, .fuego {
+  transform-origin: top center;
+  line-height: 100px;
+  opacity: 1;
+}
+.tierra span, .aire span, .fuego span {
+  position: absolute;
+  display: none;
+  z-index: 5;
+}
+
+.petalo.tierra { z-index: 3; }
+.petalo.tierra:before, .petalo.tierra:after {
+  background-color: #E7CF33;
+}
+.petalo.aire { z-index: 2; }
+.petalo.aire:before, .petalo.aire:after {
+  background-color: #C6A46E;
+}
+.petalo.fuego { z-index: 1; }
+.petalo.fuego:before, .petalo.fuego:after {
+  background-color: #BB98B4;
+}
+
+.ref {
+  opacity: 0;
+  text-align: left;
+  position: absolute;
+  margin-left: 50%;
+  border-top: 4px solid black;
+  font-family: 'Roboto Slab', serif;
+  font-size: 80px;
+}
+
+.ref .subtexto {
+  font-size: 30px;
+}
+
+.ref .titulo {
+  display: inline-block;
+  padding: 6px 20px 10px 20px;
+}
+
+.ref_agua {
+  text-align: right;
+  margin-top: 88px;
+  border-color: #C8C9F6;
+  color: #C8C9F6;
+  width: 850px;
+  z-index: 4;
+}
+.ref_agua .titulo {
+  background-color: #C8C9F6;
+  color: white;
+}
+.ref_tierra {
+  margin-top: 255px;
+  border-top: none;
+  border-bottom: 4px solid;
+  border-right: 4px solid;
+  border-color: #E7CF33;
+  color: #E7CF33;
+  width: 820px;
+  margin-left: 6%;
+  z-index: 3;
+}
+.ref_tierra .titulo {
+  background-color: #E7CF33;
+  color: white;
+}
+.ref_aire {
+  border-right: 4px solid;
+  border-color: #C6A46E;
+  color: #C6A46E;
+  width: 730px;
+  height: 260px;
+  margin-top: -300px;
+  margin-left: 5%;
+  z-index: 2;
+}
+.ref_aire .titulo {
+  background-color: #C6A46E;
+  color: white;
+}
+.ref_fuego {
+  margin-top: -160px;
+  margin-left: 55%;
+  border-color: #BB98B4;
+  color: #BB98B4;
+  z-index: 1;
+  width: 600px;
+  text-align: right;
+}
+.ref_fuego .titulo {
+  background-color: #BB98B4;
+  color: white;
+}
