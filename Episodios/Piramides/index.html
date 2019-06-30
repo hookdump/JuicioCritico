@@ -44,7 +44,15 @@ $( document ).ready(function() {
   // Fase 2: Telar de la Abundancia
   mapa = mapa.concat([
     {y: 3150},
-    {y: 4140}, // 8 - flor
+    {animacion: 'nombre2'},
+    {animacion: 'nombre3'},
+    {animacion: 'nombre4'},
+    {animacion: 'nombre5'},
+    {animacion: 'nombre6'},
+    {y: 4140, delay: 2800}, // 13 - flor
+    //{animacion: 'florParcial1'},
+    //{animacion: 'florParcial2'},
+
     {animacion: 'ref_agua'},
     {animacion: 'flor1'},
     {animacion: 'ref_tierra'},
@@ -59,19 +67,22 @@ $( document ).ready(function() {
     {animacion: 'highlight_fuego'},
     {animacion: 'all_fuego'},
     {animacion: 'mostrar_agua'},
+    {animacion: 'transfer'},
     {animacion: 'mostrar_resto'},
     {animacion: 'agua_leave'},
     {animacion: 'split'},
     {animacion: 'split2'},
     {animacion: 'split3'},
-    {y: 5050}
+    {animacion: 'split4play'},
+    {y: 5250}
   ]);
 
   // ESTAFA Definiciones
   // mapa = mapa.concat([3050+offset, 4540+offset, 5440+offset, 6240+offset]);
 
   // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  var pos = 8; // <<<<< POSICION INICIAL!!! (default=0)
+  // var pos = 13; // flor
+  var pos = 0; // <<<<< POSICION INICIAL!!! (default=0)
 
   // Inicializacion
   console.log("Start!");
@@ -81,12 +92,12 @@ $( document ).ready(function() {
   var nextPos = function() {
     pos++;
     var easing = "linear";
-    if (pos == 8) easing = "easeOutQuad";
+    if (pos == 13) easing = "easeOutQuart";
     $('.scrollDisplay').text(document.body.scrollTop + " / " + pos);
     // scroll
     if (mapa[pos].y) {
       $("HTML, BODY").animate({ scrollTop: mapa[pos].y },
-        mapa[pos].delay || defaultDelay);
+        mapa[pos].delay || defaultDelay, easing);
     }
     // animacion
     if (mapa[pos].animacion) {
@@ -97,7 +108,7 @@ $( document ).ready(function() {
   var posicionarPetalo = function(id, delay) {
     var fuegoUpDown_pushX = 72;
     var fuegoUpDown_pushY = 140;
-    var fuegoLeftRight_pushX = 120;
+    var fuegoLeftRight_pushX = 117;
     var fuegoLeftRight_pushY = 70;
 
     console.log('posicionando petalo:', id, delay);
@@ -123,7 +134,7 @@ $( document ).ready(function() {
       case 'aire1':
       $('.aire.p1')
       .position({
-        my: "center top", at: "center-60 center+70", of: $('.agua'),
+        my: "center top", at: "center-60 center+58", of: $('.agua'),
         using: function(css, calc) { $(this).animate(css, delay, "linear"); }
       })
       .animateRotate(60,     delay)
@@ -132,7 +143,7 @@ $( document ).ready(function() {
       case 'aire2':
       $('.aire.p2')
       .position({
-        my: "center top", at: "center+60 center+70", of: $('.agua'),
+        my: "center top", at: "center+60 center+58", of: $('.agua'),
         using: function(css, calc) { $(this).animate(css, delay, "linear"); }
       })
       .animateRotate(-60,    delay)
@@ -141,7 +152,7 @@ $( document ).ready(function() {
       case 'aire3':
       $('.aire.p3')
       .position({
-        my: "center top", at: "center+60 center-70", of: $('.agua'),
+        my: "center top", at: "center+60 center-58", of: $('.agua'),
         using: function(css, calc) { $(this).animate(css, delay, "linear"); }
       })
       .animateRotate(180+60, delay)
@@ -150,7 +161,7 @@ $( document ).ready(function() {
       case 'aire4':
       $('.aire.p4')
       .position({
-        my: "center top", at: "center-60 center-70", of: $('.agua'),
+        my: "center top", at: "center-60 center-58", of: $('.agua'),
         using: function(css, calc) { $(this).animate(css, delay, "linear"); }
       })
       .animateRotate(180-60, delay)
@@ -244,6 +255,26 @@ $( document ).ready(function() {
     var genericDelay = 600;
 
     switch(id) {
+      case 'florParcial1':
+      posicionarPetalo('tierra1', genericDelay);
+      posicionarPetalo('tierra2', genericDelay);
+      posicionarPetalo('aire1', genericDelay);
+      posicionarPetalo('aire2', genericDelay);
+      posicionarPetalo('aire3', genericDelay);
+      posicionarPetalo('aire4', genericDelay);
+      break;
+
+      case 'florParcial2':
+      posicionarPetalo('fuego5', 500);
+      posicionarPetalo('fuego6', 600);
+      posicionarPetalo('fuego4', 700);
+      posicionarPetalo('fuego3', 800);
+      posicionarPetalo('fuego1', 900);
+      posicionarPetalo('fuego2', 1000);
+      posicionarPetalo('fuego8', 1100);
+      posicionarPetalo('fuego7', 1200);
+      break;
+
       case 'flor1':
       posicionarPetalo('tierra1', genericDelay);
       posicionarPetalo('tierra2', genericDelay);
@@ -321,16 +352,54 @@ $( document ).ready(function() {
       $('.tierra.p1').delay(1400).animate({opacity: '0'}, 200);
 
       $('.agua').delay(1600).animate({opacity: '0'}, 200);
+
+      // fuego 5 cash 1
+      $('.cash.c8').css({'margin-top': -241, 'margin-left': 87})
+      .delay(2000)
+      .animate({opacity: 1}, 400);
+
+      $('.cash.c7').css({'margin-top': -118, 'margin-left': 185});
+      $('.cash.c6').css({'margin-top': 68, 'margin-left': 194});
+      $('.cash.c5').css({'margin-top': 207, 'margin-left': 81});
+      $('.cash.c4').css({'margin-top': 211, 'margin-left': -94});
+      $('.cash.c3').css({'margin-top': 113, 'margin-left': -188});
+      $('.cash.c2').css({'margin-top': -54, 'margin-left': -191});
+      $('.cash.c1').css({'margin-top': -163, 'margin-left': -87});
+
+      break;
+
+      case 'transfer':
+      $('.cash.c1').animate({'margin-top': 0, 'margin-left': 0}, 1000);
+      $('.cash.c2').animate({'margin-top': 0, 'margin-left': 0}, 1000);
+      $('.cash.c3').animate({'margin-top': 0, 'margin-left': 0}, 1000);
+      $('.cash.c4').animate({'margin-top': 0, 'margin-left': 0}, 1000);
+      $('.cash.c5').animate({'margin-top': 0, 'margin-left': 0}, 1000);
+      $('.cash.c6').animate({'margin-top': 0, 'margin-left': 0}, 1000);
+      $('.cash.c7').animate({'margin-top': 0, 'margin-left': 0}, 1000);
+      $('.cash.c8').animate({'margin-top': 0, 'margin-left': 0}, 1000);
       break;
 
       case 'all_fuego':
       $('.fuego.p6').delay(100).animate({opacity: '1'}, 200);
+      $('.cash.c7').delay(100).animate({opacity: '1'}, 200);
+
       $('.fuego.p4').delay(200).animate({opacity: '1'}, 200);
+      $('.cash.c6').delay(200).animate({opacity: '1'}, 200);
+
       $('.fuego.p3').delay(300).animate({opacity: '1'}, 200);
+      $('.cash.c5').delay(300).animate({opacity: '1'}, 200);
+
       $('.fuego.p1').delay(400).animate({opacity: '1'}, 200);
+      $('.cash.c4').delay(400).animate({opacity: '1'}, 200);
+
       $('.fuego.p2').delay(500).animate({opacity: '1'}, 200);
+      $('.cash.c3').delay(500).animate({opacity: '1'}, 200);
+
       $('.fuego.p8').delay(600).animate({opacity: '1'}, 200);
+      $('.cash.c2').delay(600).animate({opacity: '1'}, 200);
+
       $('.fuego.p7').delay(700).animate({opacity: '1'}, 200);
+      $('.cash.c1').delay(700).animate({opacity: '1'}, 200);
       break;
 
       case 'mostrar_agua':
@@ -350,41 +419,43 @@ $( document ).ready(function() {
 
       case 'agua_leave':
       $('.agua').animate({
-        left: "-=700",
-        top: "-=300",
-      }, 1000);
+        left: "-=1500",
+      }, 2000);
+      $('.cash').animate({
+        'margin-left': -1502
+      }, 2000);
       break;
 
       case 'split':
-      $('.tierra.p1').animate({ 'margin-top': "+=100" }, 1000);
-      $('.aire.p1').animate({ 'margin-top': "+=100" }, 1000);
-      $('.aire.p2').animate({ 'margin-top': "+=100" }, 1000);
-      $('.fuego.p1').animate({ 'margin-top': "+=100" }, 1000);
-      $('.fuego.p2').animate({ 'margin-top': "+=100" }, 1000);
-      $('.fuego.p3').animate({ 'margin-top': "+=100" }, 1000);
-      $('.fuego.p4').animate({ 'margin-top': "+=100" }, 1000);
+      $('.tierra.p1').animate({ 'margin-top': "+=0", 'margin-left': "+=500" }, 1000);
+      $('.aire.p1').animate({ 'margin-top': "+=0", 'margin-left': "+=500" }, 1000);
+      $('.aire.p2').animate({ 'margin-top': "+=0" , 'margin-left': "+=500"}, 1000);
+      $('.fuego.p1').animate({ 'margin-top': "+=0", 'margin-left': "+=500" }, 1000);
+      $('.fuego.p2').animate({ 'margin-top': "+=0", 'margin-left': "+=500" }, 1000);
+      $('.fuego.p3').animate({ 'margin-top': "+=0", 'margin-left': "+=500" }, 1000);
+      $('.fuego.p4').animate({ 'margin-top': "+=0", 'margin-left': "+=500" }, 1000);
 
-      $('.tierra.p2').animate({ 'margin-top': "-=150" }, 1000);
-      $('.aire.p3').animate({ 'margin-top': "-=150" }, 1000);
-      $('.aire.p4').animate({ 'margin-top': "-=150" }, 1000);
-      $('.fuego.p5').animate({ 'margin-top': "-=150" }, 1000);
-      $('.fuego.p6').animate({ 'margin-top': "-=150" }, 1000);
-      $('.fuego.p7').animate({ 'margin-top': "-=150" }, 1000);
-      $('.fuego.p8').animate({ 'margin-top': "-=150" }, 1000);
+      $('.tierra.p2').animate({ 'margin-top': "-=50", 'margin-left': "-=500" }, 1000);
+      $('.aire.p3').animate({ 'margin-top': "-=50", 'margin-left': "-=500" }, 1000);
+      $('.aire.p4').animate({ 'margin-top': "-=50", 'margin-left': "-=500" }, 1000);
+      $('.fuego.p5').animate({ 'margin-top': "-=50", 'margin-left': "-=500" }, 1000);
+      $('.fuego.p6').animate({ 'margin-top': "-=50", 'margin-left': "-=500" }, 1000);
+      $('.fuego.p7').animate({ 'margin-top': "-=50", 'margin-left': "-=500" }, 1000);
+      $('.fuego.p8').animate({ 'margin-top': "-=50", 'margin-left': "-=500" }, 1000);
       break;
 
       case 'split2':
       $('.tierra.p1').each(function() {
         $(this).clone().addClass('agua').removeClass('tierra petalo')
           .css('opacity', 0).css('top', '50px').appendTo('.flor').animate({opacity: '1'}, 1000);
-        $(this).delay(1000).animate({opacity: '0'}, 100, function() {
+        $(this).delay(0).animate({top: '-=30'}, 1000, function() {
           $(this).remove();
         });
       });
       $('.tierra.p2').each(function() {
         $(this).clone().addClass('agua').removeClass('tierra petalo')
           .css('opacity', 0).css('top', '-130px').appendTo('.flor').animate({opacity: '1'}, 1000);
-        $(this).delay(1000).animate({opacity: '0'}, 100, function() {
+        $(this).delay(0).animate({top: '+=30'}, 1000, function() {
           $(this).remove();
         });
       });
@@ -405,25 +476,13 @@ $( document ).ready(function() {
       break;
 
       case 'split3':
-      $('.tierra.p1')
-      .animateRotate(0, 500)
-      .animate({ 'top': "+=60", 'left': "+=60" }, 500)
-      ;
+      $('.video1').fadeIn();
+      $('.video2').fadeIn();
+      break;
 
-      $('.tierra.p2')
-      .animateRotate(180, 500)
-      .animate({ 'left': "-=60", 'top': "-=20" }, 500)
-      ;
-
-      $('.tierra.p4')
-      .animateRotate(180, 500)
-      .animate({ 'left': "+=60", 'top': "-=60" }, 500)
-      ;
-
-      $('.tierra.p3')
-      .animateRotate(0, 500)
-      .animate({ 'left': "-=60", 'top': "+=20" }, 500)
-      ;
+      case 'split4play':
+        $('.video1')[0].play();
+        $('.video2')[0].play();
       break;
 
       case 'florFull':
@@ -445,6 +504,28 @@ $( document ).ready(function() {
       posicionarPetalo('fuego7', fuegoDelay);
       posicionarPetalo('fuego8', fuegoDelay);
       break;
+
+      case 'nombre2':
+      $('.nombre.n1').animate({'top': -700});
+      $('.nombre.n2').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
+      break;
+
+      case 'nombre3':
+      $('.nombre.n2 .align-right').animate({'top': -700});
+      $('.nombre.n3').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
+      break;
+      case 'nombre4':
+      $('.nombre.n3 .align-right').animate({'top': -700});
+      $('.nombre.n4').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
+      break;
+      case 'nombre5':
+      $('.nombre.n4 .align-right').animate({'top': -700});
+      $('.nombre.n5').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
+      break;
+      case 'nombre6':
+      $('.nombre.n2 .red').animate({'top': -700});
+      $('.nombre.n6').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
+      break;
     }
   };
 
@@ -464,11 +545,17 @@ $( document ).ready(function() {
 
   <!-- ............. COMIENZO ............. -->
   <div class="spacer-600"> </div>
-  <h1 data-aos-anchor-placement="center-center"  data-aos="flip-down">Holis.</h1>
-  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">Vengo a mostrarte que</h2>
-  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">el <span>Telar de la Abundancia</span></h2>
+  <h1 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    Hola
+  </h1>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    <span>NO</span> es una estafa.
+    Vengo a contarte
+  </h2>
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    los <span>pros</span> y <span>contras</span>
+  </h2>
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    del <span>Telar de la Abundancia</span>
   </h2>
   <div class="spacer-25"></div>
 
@@ -486,43 +573,42 @@ $( document ).ready(function() {
     <div class="spacer-500"> </div>
   </div>
 
-  <div class="spacer-500"> </div>
-  <div data-aos-anchor-placement="center-bottom" data-aos="fade-up">
-    <table class="big">
-      <tr>
-        <td width="50%" class="align-right">Telar de&nbsp;</td>
-        <td width="50%" class="red">mujeres</td>
-      </tr>
-      <tr>
-        <td class="align-right">Telar de la&nbsp;</td>
-        <td class="red">abundancia</td>
-      </tr>
-      <tr>
-        <td class="align-right">Mandala de la&nbsp;</td>
-        <td class="red">abundancia</td>
-      </tr>
-      <tr>
-        <td class="align-right">Burbujas de la&nbsp;</td>
-        <td class="red">abundancia</td>
-      </tr>
-      <tr>
-        <td class="align-right">Flor de la&nbsp;</td>
-        <td class="red">abundancia</td>
-      </tr>
-      <tr>
-        <td class="align-right">Flor de la&nbsp;</td>
-        <td class="red">confianza</td>
-      </tr>
-    </table>
+  <div class="spacer-700"> </div>
+  <div class="spacer-50"> </div>
+  <div class="nombres">
+    <div class="nombre n1">
+      <div class="align-right">Telar de&nbsp;</div>
+      <div class="red">mujeres</div>
+    </div>
+    <div class="nombre n2">
+      <div class="align-right">Telar de la&nbsp;</div>
+      <div class="red">abundancia</div>
+    </div>
+    <div class="nombre n3">
+      <div class="align-right">Mandala de la&nbsp;</div>
+      <div class="red"></div>
+    </div>
+    <div class="nombre n4">
+      <div class="align-right">Burbujas de la&nbsp;</div>
+      <div class="red"></div>
+    </div>
+    <div class="nombre n5">
+      <div class="align-right">Flor de la&nbsp;</div>
+      <div class="red"></div>
+    </div>
+    <div class="nombre n6">
+      <div class="align-right"></div>
+      <div class="red">confianza</div>
+    </div>
   </div>
 
 
   <div class="spacer-50"> </div>
-  <div class="spacer-500"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-300"> </div>
 
 
 <div class="flor">
-
   <div class="ref ref_agua">
     <div class="titulo">Agua</div>
     <div class="subtexto">Recibe todo el dinero recaudado</div>
@@ -556,9 +642,24 @@ $( document ).ready(function() {
   <div class="petalo fuego p6"></div>
   <div class="petalo fuego p7"></div>
   <div class="petalo fuego p8"></div>
+
+
+  <div class="cash c1"> </div>
+  <div class="cash c2"> </div>
+  <div class="cash c3"> </div>
+  <div class="cash c4"> </div>
+  <div class="cash c5"> </div>
+  <div class="cash c6"> </div>
+  <div class="cash c7"> </div>
+  <div class="cash c8"> </div>
 </div>
 
-
+<video class="video1">
+  <source src="FLOR2.mp4" type="video/mp4">
+</video>
+<video class="video2">
+  <source src="FLOR2.mp4" type="video/mp4">
+</video>
 
   <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>

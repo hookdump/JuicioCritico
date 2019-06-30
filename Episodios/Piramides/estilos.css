@@ -69,15 +69,44 @@ h5 { font-size: 30px; }
 .spacer-600 { height: 600px;   clear: both; }
 .spacer-700 { height: 700px;   clear: both; }
 
-table.big {
-  width: 100%;
-}
+/* LISTA DE NOMBRES ALTERNATIVOS */
 .align-right {
   text-align: right;
 }
-table td.red {
+.red {
   color: red;
 }
+.nombres {
+  font-family: 'Roboto Slab', serif;
+  position: absolute;
+  width: 100%;
+  height: 500px;
+  font-size: 70px;
+}
+.nombres .nombre {
+  position: relative;
+  clear: both;
+}
+.nombres .align-right {
+  width: 700px;
+  left: 50%;
+  margin-left: -700px;
+}
+.nombres .red {
+  width: 700px;
+  left: 50%;
+  text-align: left;
+}
+.nombres .nombre > div {
+  position: absolute;
+}
+.nombres .nombre {
+  display: none;
+}
+.nombres .nombre.n1 {
+  display: block;
+}
+
 
 .diccionario {
   width: 750px;
@@ -230,4 +259,38 @@ table td.red {
 .ref_fuego .titulo {
   background-color: #BB98B4;
   color: white;
+}
+
+.cash {
+  z-index: 100;
+  position: absolute;
+  left: 904px;
+  top: 10px;
+  width: 116px;
+  height: 72px;
+  background-image: url('dinero.png');
+  opacity: 0;
+}
+.cash.c1 { z-index: 110; }
+.cash.c2 { z-index: 109; top: 22px;}
+.cash.c3 { z-index: 108; top: 34px;}
+.cash.c4 { z-index: 107; top: 46px;}
+.cash.c5 { z-index: 106; top: 58px;}
+.cash.c6 { z-index: 105; top: 70px;}
+.cash.c7 { z-index: 104; top: 82px;}
+.cash.c8 { z-index: 103; top: 94px;}
+
+.video1, .video2 {
+  display: none;
+  position: absolute;
+  z-index: 300;
+}
+.video1 {
+  margin-top: -364px;
+  margin-left: -809px;
+}
+.video2 {
+  margin-top: -135;
+  margin-left: 191px;
+
 }
