@@ -13,6 +13,98 @@
 <script type="text/javascript">
 $( document ).ready(function() {
 
+  var contadorGanadores = 0;
+  var contadorPerdedores = 0;
+
+  function agregarNivel(nivel, cantidad) {
+    var targetMarginHoriz = {
+      5: 3,
+      6: 2,
+      7: 1,
+      8: 1,
+      9: 1,
+      10: 1
+    }
+    console.log('agregando nivel ' + nivel + ' (' + cantidad + ')');
+    var $bloque = $("<div class='bloque nuevoBloque'" +
+    "style='margin-top: 450px; margin-left: 20; margin-right: 20; opacity: 0'>" +
+    "<div class='relleno' style='height: 100%; opacity: 1;'></div></div>");
+    var $nuevoNivel = $(`<div class='nivel moving _fuego n${nivel}'></div>`);
+
+    for (var i=1; i<=cantidad; i++) {
+      $bloque.clone().appendTo($nuevoNivel);
+    }
+    $nuevoNivel.appendTo('.piramide');
+    $('.nuevoBloque').delay(20).animate({
+      'margin-bottom': 6, 'margin-top': 0,
+      'margin-left': targetMarginHoriz[nivel],
+      'margin-right': targetMarginHoriz[nivel],
+      'opacity': 1
+    }, 500, function() {
+      $('.nuevoBloque').removeClass('nuevoBloque');
+    });
+  }
+
+  function animarContador(actual, valor, $elemento) {
+    return new Promise(function(resolve, reject) {
+      console.log('Animando contador:', valor, $elemento);
+      $({num: actual}).stop(true).animate({num: valor}, {
+        duration : 2000,
+        easing: "easeOutQuad",
+        step: function () {
+          var valor = parseInt(this.num);
+          $elemento.text(valor);
+        }
+      }).promise().done(function () {
+          $elemento.text(valor);
+          return resolve();
+      });
+    });
+  }
+
+  function animarContadores(nivel, ganador) {
+    console.log('anim contadores', nivel);
+    var g, p;
+    switch (nivel) {
+      case 1:
+      g=1;
+      p=14-6;
+      break;
+      case 2:
+      g=3;
+      p=28-4;
+      break;
+      case 3:
+      g=7;
+      p=56;
+      break;
+      case 4:
+      g=15;
+      p=112;
+      break;
+      case 5:
+      g=31;
+      p=224;
+      break;
+      case 6:
+      g=63;
+      p=448;
+      break;
+    }
+    if (ganador) {
+      console.log('anim ganadores >', contadorGanadores, g);
+      animarContador(contadorGanadores, g, $('.ganadoresNum')).then(function() {
+        contadorGanadores = g;
+      });
+    } else {
+      console.log('anim perdedores >', contadorPerdedores, p);
+      animarContador(contadorPerdedores, p, $('.perdedoresNum')).then(function() {
+        contadorPerdedores = p;
+      });
+    }
+  }
+
+
   $.fn.animateRotate = function(angle, duration, easing, complete) {
     var args = $.speed(duration, easing, complete);
     var step = args.step;
@@ -30,14 +122,17 @@ $( document ).ready(function() {
   var defaultDelay = 300;
   var mapa = [];
 
-  // Fase 1
+  // Fase 1: Introduccion
   mapa = mapa.concat([
-    {y: 0},
-    {y: 300},
-    {y: 400},
-    {y: 550},
-    {y: 600},
+    {y: 0},   // 0
+    {y: 300}, // 1
+    {y: 400}, // 2
+    {y: 550}, // 3
+    {y: 600}, // 4
     {y: 830, delay: 1000},
+    {animacion: 'emoji_amor'},
+    {animacion: 'emoji_odio'},
+    {animacion: 'emoji_pensando'},
     {y: 1760},
   ]);
 
@@ -49,7 +144,7 @@ $( document ).ready(function() {
     {animacion: 'nombre4'},
     {animacion: 'nombre5'},
     {animacion: 'nombre6'},
-    {y: 4140, delay: 2800}, // 13 - flor
+    {y: 4140, delay: 1800, easing: 'easeOutQuart'},
     //{animacion: 'florParcial1'},
     //{animacion: 'florParcial2'},
 
@@ -77,12 +172,38 @@ $( document ).ready(function() {
     {y: 5250}
   ]);
 
+  // Fase 3: Piramide
+  mapa = mapa.concat([
+    {animacion: 'piramide_inicial'},
+    {animacion: 'piramide_dinero'},
+    {animacion: 'piramide_transfer1'},
+    {animacion: 'piramide_gana1'},
+    {animacion: 'piramide_insert5'},
+    {animacion: 'piramide_transfer2'},
+    {animacion: 'piramide_gana2'},
+    {animacion: 'piramide_insert6'},
+    {animacion: 'piramide_transfer3'},
+    {animacion: 'piramide_gana3'},
+    {animacion: 'piramide_insert7'},
+    {animacion: 'piramide_transfer4'},
+    {animacion: 'piramide_gana4'},
+    {animacion: 'piramide_insert8'},
+    {animacion: 'piramide_transfer5'},
+    {animacion: 'piramide_gana5'},
+    {animacion: 'piramide_insert9'},
+    {animacion: 'piramide_transfer6'},
+    {animacion: 'piramide_gana6'},
+  ]);
+
+
   // ESTAFA Definiciones
   // mapa = mapa.concat([3050+offset, 4540+offset, 5440+offset, 6240+offset]);
 
   // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  // var pos = 13; // flor
-  var pos = 0; // <<<<< POSICION INICIAL!!! (default=0)
+  var pos;
+  // pos = 0; // <<<<< POSICION INICIAL!!! (default=0)
+  // pos = 13; // flor
+  pos = 38; // post-flor
 
   // Inicializacion
   console.log("Start!");
@@ -91,8 +212,11 @@ $( document ).ready(function() {
 
   var nextPos = function() {
     pos++;
-    var easing = "linear";
-    if (pos == 13) easing = "easeOutQuart";
+    if (pos > mapa.length) {
+      $('.scrollDisplay').text(document.body.scrollTop + " / " + "FIN");
+      return;
+    }
+    var easing = mapa[pos].easing || "linear";
     $('.scrollDisplay').text(document.body.scrollTop + " / " + pos);
     // scroll
     if (mapa[pos].y) {
@@ -255,6 +379,18 @@ $( document ).ready(function() {
     var genericDelay = 600;
 
     switch(id) {
+      case 'emoji_amor':
+      $('.emoji_amor').animate({opacity: 1});
+      break;
+
+      case 'emoji_odio':
+      $('.emoji_odio').animate({opacity: 1});
+      break;
+
+      case 'emoji_pensando':
+      $('.emoji_pensando').animate({opacity: 1});
+      break;
+
       case 'florParcial1':
       posicionarPetalo('tierra1', genericDelay);
       posicionarPetalo('tierra2', genericDelay);
@@ -526,6 +662,117 @@ $( document ).ready(function() {
       $('.nombre.n2 .red').animate({'top': -700});
       $('.nombre.n6').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
       break;
+
+      case 'piramide_inicial':
+      $('.piramide').animate({opacity: 1}, 500);
+      break;
+
+      case 'piramide_dinero':
+      $('.piramide').addClass('vizMoney', 1000);
+      $('.relleno').animate({opacity: 1}), 1000;
+      break;
+
+      case 'piramide_transfer1':
+      $('.n1 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
+      $('.n4 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
+      $('.contadores .perdedores').animate({'opacity': 1}, 800); // inicializamos contador de perdedores
+      animarContadores(1, false);
+      break;
+
+      case 'piramide_gana1':
+      $('.piramide').animate({'margin-top': '-=100'}, 1000, 'easeOutQuart');
+      $('.n1').addClass('ganadores', 500, function() {
+        $('.n1 .bloque').animate({'top': -200, 'left': -900});
+      });
+      $('.contadores .ganadores').animate({'opacity': 1}, 800); // inicializamos contador de ganadores
+      animarContadores(1, true);
+      break;
+
+      case 'piramide_insert5':
+      agregarNivel(5, 16);
+      break;
+
+      case 'piramide_transfer2':
+      $('.n2 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
+      $('.n5 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
+      animarContadores(2, false);
+      break;
+
+      case 'piramide_gana2':
+      $('.n2').addClass('ganadores', 500, function() {
+        $('.n2 .bloque').animate({'top': -246, 'left': -861});
+      });
+      animarContadores(2, true);
+      break;
+
+      case 'piramide_insert6':
+      agregarNivel(6, 32);
+      break;
+
+      case 'piramide_transfer3':
+      $('.n3 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
+      $('.n6 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
+      animarContadores(3, false);
+      break;
+
+      case 'piramide_gana3':
+      $('.n3').addClass('ganadores', 500, function() {
+        $('.n3 .bloque').animate({'top': -292, 'left': -783});
+      });
+      animarContadores(3, true);
+      break;
+
+      case 'piramide_insert7':
+      agregarNivel(7, 64);
+      break;
+
+      case 'piramide_transfer4':
+      $('.n4 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
+      $('.n7 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
+      animarContadores(4, false);
+      break;
+
+      case 'piramide_gana4':
+      $('.n4').addClass('ganadores', 500, function() {
+        $('.n4 .bloque').animate({'top': -338, 'left': -627});
+      });
+      animarContadores(4, true);
+      break;
+
+      case 'piramide_insert8':
+      agregarNivel(8, 128);
+      break;
+
+      case 'piramide_transfer5':
+      $('.n5 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
+      $('.n8 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
+      animarContadores(5, false);
+      break;
+
+      case 'piramide_gana5':
+      $('.n5').addClass('ganadores', 500, function() {
+        $('.n5 .bloque').animate({'top': -384, 'left': -315});
+      });
+      animarContadores(5, true);
+      break;
+
+      case 'piramide_insert9':
+      agregarNivel(9, 256);
+      break;
+
+      case 'piramide_transfer6':
+      $('.n6 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
+      $('.n9 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
+      animarContadores(6, false);
+      break;
+
+      case 'piramide_gana6':
+      $('.n6').addClass('ganadores', 500, function() {
+        $('.n6 .bloque').animate({'top': -430, 'left': 278});
+      });
+      animarContadores(6, true);
+      break;
+
     }
   };
 
@@ -546,16 +793,16 @@ $( document ).ready(function() {
   <!-- ............. COMIENZO ............. -->
   <div class="spacer-600"> </div>
   <h1 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    Hola
+    ¡Hola!
   </h1>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    Vengo a contarte
+    Vengo a ofrecerte información
   </h2>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    los <span>pros</span> y <span>contras</span>
+    <span>clara</span> e <span>imparcial</span>
   </h2>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    del <span>Telar de la Abundancia</span>
+    sobre el <span>Telar de la Abundancia</span>
   </h2>
   <div class="spacer-25"></div>
 
@@ -565,7 +812,11 @@ $( document ).ready(function() {
     <!-- ............. Thinking ............. -->
     <div class="spacer-50"></div>
     <div data-aos-anchor-placement="bottom-bottom" data-aos="fade-up">
-      <img src="thinking.gif" />
+      <div class="emoji_amor emoji_flotante">
+      </div>
+      <div class="emoji_odio emoji_flotante">
+      </div>
+      <img src="thinking.gif" class="emoji_pensando" />
     </div>
 
     <div class="spacer-500"> </div>
@@ -662,8 +913,43 @@ $( document ).ready(function() {
 </video>
 
   <div class="spacer-600"> </div>
-  <div class="spacer-600"> </div>
-  <div class="spacer-600"> </div>
+  <div class="spacer-400"> </div>
+
+  <div class="contadores">
+    <div class="ganadores">recibieron $8000<span class="ganadoresNum">0</span></div>
+    <div class="perdedores"><span class="perdedoresNum">0</span>regalaron $1000</div>
+  </div>
+  <div class="piramide">
+    <div class="nivel _agua n1">
+      <div class="bloque"><div class="relleno"></div></div>
+    </div>
+    <div class="nivel _tierra n2">
+      <div class="bloque"><div class="relleno"></div></div><div class="bloque"><div class="relleno"></div></div>
+    </div>
+    <div class="nivel _aire n3">
+      <div class="bloque"><div class="relleno"></div></div><div class="bloque"><div class="relleno"></div></div><div class="bloque"><div class="relleno"></div></div><div class="bloque"><div class="relleno"></div></div>
+    </div>
+    <div class="nivel _fuego n4">
+      <div class="bloque">
+        <div class="relleno"></div>
+      </div><div class="bloque">
+        <div class="relleno"></div>
+      </div><div class="bloque">
+        <div class="relleno"></div>
+      </div><div class="bloque">
+        <div class="relleno"></div>
+      </div><div class="bloque">
+        <div class="relleno"></div>
+      </div><div class="bloque">
+        <div class="relleno"></div>
+      </div><div class="bloque">
+        <div class="relleno"></div>
+      </div><div class="bloque">
+        <div class="relleno"></div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- ............. WHITE AGAIN ............. -->
   <!-- ............. Fase ESTAFA ............. -->

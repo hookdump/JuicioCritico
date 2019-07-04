@@ -69,6 +69,30 @@ h5 { font-size: 30px; }
 .spacer-600 { height: 600px;   clear: both; }
 .spacer-700 { height: 700px;   clear: both; }
 
+/* emojis */
+
+.emoji_flotante {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background-size: cover;
+  opacity: 0;
+}
+
+.emoji_amor {
+  background-image: url('emoji_amor.png');
+  top: 20px;
+  left: 150px;
+}
+.emoji_odio {
+  background-image: url('emoji_odio.png');
+  top: 20px;
+  right: 150px;
+}
+.emoji_pensando {
+  opacity: 0;
+}
+
 /* LISTA DE NOMBRES ALTERNATIVOS */
 .align-right {
   text-align: right;
@@ -292,5 +316,98 @@ h5 { font-size: 30px; }
 .video2 {
   margin-top: -135;
   margin-left: 191px;
+}
 
+/* PIRAMIDE */
+.piramide {
+  text-align: center;
+  opacity: 0;
+}
+.nivel {
+}
+.nivel.moving {
+  height: 80px;
+  overflow: hidden;
+}
+.bloque {
+  display: inline-block;
+  background-color: red;
+  height: 80px;
+  position: relative;
+  margin-left: 3px;
+  margin-right: 3px;
+  margin-bottom: 6px;
+  -webkit-transition: all 1s ease;
+  -moz-transition: all 1s ease;
+  -o-transition: all 1s ease;
+  transition: all 1s ease;
+}
+.n1 .bloque { width: 320px; }
+.n2 .bloque { width: 320px; }
+.n3 .bloque { width: 240px; }
+.n4 .bloque {  width: 118px; }
+.n5 .bloque {  width: 61px; }
+.n6 .bloque {  width: 36px; margin-left: 2px; margin-right: 2px; }
+.n7 .bloque {  width: 22px; margin-left: 1px; margin-right: 1px; }
+.n8 .bloque {  width: 12px; margin-left: 1px; margin-right: 1px; }
+.n9 .bloque {  width: 5px; margin-left: 1px; margin-right: 1px; }
+._agua    .bloque { background-color: #C8C9F6; }
+._tierra  .bloque { background-color: #E7CF33; }
+._aire    .bloque { background-color: #C6A46E; }
+._fuego   .bloque { background-color: #BB98B4; }
+.relleno {
+  background: #10AB0C;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  height: 0%;
+  opacity: 0;
+}
+.piramide.vizMoney   ._fuego .relleno {
+  height: 100%;
+}
+/* green #A3FFA3 */
+/* red   #FFA4A4 */
+.piramide.vizMoney   ._agua    .bloque { background-color: #C0C0C0; }
+.piramide.vizMoney   ._tierra  .bloque { background-color: #C0C0C0; }
+.piramide.vizMoney   ._aire    .bloque { background-color: #C0C0C0; }
+.piramide.vizMoney   ._fuego   .bloque { background-color: #FFA4A4; }
+
+.ganadores .bloque {
+  width: 20px;
+  height: 40px;
+  position: relative;
+}
+
+.contadores {
+  font-family: 'Roboto Slab', serif;
+  text-transform: uppercase;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  font-size: 40px;
+  z-index: 99;
+  text-align: left;
+}
+.contadores > div {
+  position: absolute;
+  left: 30px;
+}
+.ganadoresNum, .perdedoresNum {
+  font-weight: bold;
+  display: block;
+  font-size: 100px;
+  line-height: 80px;
+}
+
+.contadores .ganadores {
+  opacity: 0;
+  color: #00AA00;
+  top: 100px;
+}
+.contadores .perdedores {
+  opacity: 0;
+  color: #FF0000;
+  bottom: 30px;
 }
