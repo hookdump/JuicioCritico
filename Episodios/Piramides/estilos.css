@@ -34,6 +34,7 @@ body::-webkit-scrollbar {
   width: 200px;
   padding: 5px;
   z-index: 9999;
+  display: none;
 }
 
 h1, h2, h3, h4, h5 {
