@@ -25,23 +25,42 @@ $( document ).ready(function() {
       9: 1,
       10: 1
     }
+    var targetW = {
+      5: 61,
+      6: 36,
+      7: 22,
+      8: 12,
+      9: 5
+    }
     console.log('agregando nivel ' + nivel + ' (' + cantidad + ')');
     var $bloque = $("<div class='bloque nuevoBloque'" +
-    "style='margin-top: 450px; margin-left: 20; margin-right: 20; opacity: 0'>" +
+    "style='margin-top: 450; margin-left: 3; margin-right: 3; opacity: 0; " +
+    "height: 40px; width: 2px;'>" +
     "<div class='relleno' style='height: 100%; opacity: 1;'></div></div>");
-    var $nuevoNivel = $(`<div class='nivel moving _fuego n${nivel}'></div>`);
+    var $nuevoNivel = $(`<div class='nivel _fuego n${nivel}'></div>`);
 
     for (var i=1; i<=cantidad; i++) {
       $bloque.clone().appendTo($nuevoNivel);
+      if (nivel == 5 && i == 8) {
+        // agregar split para level 5 (showcase split!)
+        $nuevoNivel.append("<div class='tmpSplit split4' style='width: 160px'></div>");
+      }
+      if (nivel == 5 && [4,12].includes(i)) {
+        // agregar split para level 5 (showcase split!)
+        $nuevoNivel.append("<div class='tmpSplitB splitB4' style='width: 0'></div>");
+      }
     }
     $nuevoNivel.appendTo('.piramide');
     $('.nuevoBloque').delay(20).animate({
       'margin-bottom': 6, 'margin-top': 0,
       'margin-left': targetMarginHoriz[nivel],
       'margin-right': targetMarginHoriz[nivel],
+      'width': targetW[nivel], 'height': 80,
       'opacity': 1
     }, 500, function() {
-      $('.nuevoBloque').removeClass('nuevoBloque');
+      $('.nuevoBloque').each(function() {
+        $(this).removeClass('nuevoBloque');
+      });
     });
   }
 
@@ -178,9 +197,12 @@ $( document ).ready(function() {
     {animacion: 'piramide_dinero'},
     {animacion: 'piramide_transfer1'},
     {animacion: 'piramide_gana1'},
+    {animacion: 'showcaseSplit'},
     {animacion: 'piramide_insert5'},
     {animacion: 'piramide_transfer2'},
     {animacion: 'piramide_gana2'},
+    {animacion: 'showcaseSplitB'},
+    {animacion: 'showcaseSplit2'},
     {animacion: 'piramide_insert6'},
     {animacion: 'piramide_transfer3'},
     {animacion: 'piramide_gana3'},
@@ -680,12 +702,34 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana1':
-      $('.piramide').animate({'margin-top': '-=100'}, 1000, 'easeOutQuart');
-      $('.n1').addClass('ganadores', 500, function() {
-        $('.n1 .bloque').animate({'top': -200, 'left': -900});
+      $('.piramide').animate({'margin-top': '-=200'}, 1000, 'easeOutQuart');
+      $('.n1').addClass('ganadores', 20, function() {
+        $('.n1 .bloque').animate({'top': -100, 'left': -900, 'width': 20, 'height': 40});
       });
       $('.contadores .ganadores').animate({'opacity': 1}, 800); // inicializamos contador de ganadores
       animarContadores(1, true);
+      break;
+
+      case 'showcaseSplit':
+      $('.tmpSplit.split1').animate({width: 360}, 1000, 'easeOutQuart');
+      $('.tmpSplit.split2').animate({width: 200}, 1000, 'easeOutQuart');
+      $('.tmpSplit.split3').animate({width: 200}, 1000, 'easeOutQuart');
+      $('.tmpSplit.split4').animate({width: 200}, 1000, 'easeOutQuart');
+      break;
+
+      case 'showcaseSplitB':
+      $('.tmpSplitB.splitB1').animate({width: 100}, 1000, 'easeOutQuart');
+      $('.tmpSplit.split2').animate({width: 100},   1000, 'easeOutQuart');
+      $('.tmpSplitB.splitB2').animate({width: 100}, 1000, 'easeOutQuart');
+      $('.tmpSplit.split3').animate({width: 100},   1000, 'easeOutQuart');
+      $('.tmpSplitB.splitB3').animate({width: 100}, 1000, 'easeOutQuart');
+      $('.tmpSplit.split4').animate({width: 80},    1000, 'easeOutQuart');
+      $('.tmpSplitB.splitB4').animate({width: 80},  1000, 'easeOutQuart');
+      break;
+
+      case 'showcaseSplit2':
+      $('.tmpSplit').animate({width: 0}, 1000, 'easeOutQuart');
+      $('.tmpSplitB').animate({width: 0}, 1000, 'easeOutQuart');
       break;
 
       case 'piramide_insert5':
@@ -699,8 +743,9 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana2':
-      $('.n2').addClass('ganadores', 500, function() {
-        $('.n2 .bloque').animate({'top': -246, 'left': -861});
+      $('.split1').animate({width: 0}, 500, 'easeOutQuart');
+      $('.n2').addClass('ganadores', 20, function() {
+        $('.n2 .bloque').animate({'top': -146, 'left': -861, 'width': 20, 'height': 40});
       });
       animarContadores(2, true);
       break;
@@ -716,8 +761,8 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana3':
-      $('.n3').addClass('ganadores', 500, function() {
-        $('.n3 .bloque').animate({'top': -292, 'left': -783});
+      $('.n3').addClass('ganadores', 20, function() {
+        $('.n3 .bloque').animate({'top': -192, 'left': -783, 'width': 20, 'height': 40});
       });
       animarContadores(3, true);
       break;
@@ -733,8 +778,8 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana4':
-      $('.n4').addClass('ganadores', 500, function() {
-        $('.n4 .bloque').animate({'top': -338, 'left': -627});
+      $('.n4').addClass('ganadores', 20, function() {
+        $('.n4 .bloque').animate({'top': -238, 'left': -627, 'width': 20, 'height': 40});
       });
       animarContadores(4, true);
       break;
@@ -750,8 +795,8 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana5':
-      $('.n5').addClass('ganadores', 500, function() {
-        $('.n5 .bloque').animate({'top': -384, 'left': -315});
+      $('.n5').addClass('ganadores', 20, function() {
+        $('.n5 .bloque').animate({'top': -284, 'left': -315, 'width': 20, 'height': 40});
       });
       animarContadores(5, true);
       break;
@@ -767,8 +812,8 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana6':
-      $('.n6').addClass('ganadores', 500, function() {
-        $('.n6 .bloque').animate({'top': -430, 'left': 278});
+      $('.n6').addClass('ganadores', 20, function() {
+        $('.n6 .bloque').animate({'top': -330, 'left': 278, 'width': 20, 'height': 40});
       });
       animarContadores(6, true);
       break;
@@ -924,24 +969,34 @@ $( document ).ready(function() {
       <div class="bloque"><div class="relleno"></div></div>
     </div>
     <div class="nivel _tierra n2">
-      <div class="bloque"><div class="relleno"></div></div><div class="bloque"><div class="relleno"></div></div>
+      <div class="bloque"><div class="relleno"></div></div><div class="tmpSplit split1"></div><div class="bloque"><div class="relleno"></div></div>
     </div>
     <div class="nivel _aire n3">
-      <div class="bloque"><div class="relleno"></div></div><div class="bloque"><div class="relleno"></div></div><div class="bloque"><div class="relleno"></div></div><div class="bloque"><div class="relleno"></div></div>
+      <div class="bloque"><div class="relleno"></div>
+      </div><div class="tmpSplitB splitB1">
+      </div><div class="bloque"><div class="relleno"></div>
+      </div><div class="tmpSplit split2">
+      </div><div class="bloque"><div class="relleno"></div>
+      </div><div class="tmpSplitB splitB2">
+      </div><div class="bloque"><div class="relleno"></div>
+      </div>
     </div>
     <div class="nivel _fuego n4">
       <div class="bloque">
         <div class="relleno"></div>
       </div><div class="bloque">
         <div class="relleno"></div>
+      </div><div class="tmpSplitB splitB3">
       </div><div class="bloque">
         <div class="relleno"></div>
       </div><div class="bloque">
         <div class="relleno"></div>
+      </div><div class="tmpSplit split3">
       </div><div class="bloque">
         <div class="relleno"></div>
       </div><div class="bloque">
         <div class="relleno"></div>
+      </div><div class="tmpSplitB splitB3">
       </div><div class="bloque">
         <div class="relleno"></div>
       </div><div class="bloque">

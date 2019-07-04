@@ -325,10 +325,6 @@ h5 { font-size: 30px; }
 }
 .nivel {
 }
-.nivel.moving {
-  height: 80px;
-  overflow: hidden;
-}
 .bloque {
   display: inline-block;
   background-color: red;
@@ -374,9 +370,18 @@ h5 { font-size: 30px; }
 .piramide.vizMoney   ._fuego   .bloque { background-color: #FFA4A4; }
 
 .ganadores .bloque {
+  /* careful!!!! SIZE OVERRIDEN IN CODE! */
   width: 20px;
   height: 40px;
   position: relative;
+}
+.ganadores .tmpSplit, .ganadores .tmpSplitB {
+  width: 0;
+}
+
+.tmpSplit, .tmpSplitB {
+  display: inline-block;
+  width: 0;
 }
 
 .contadores {
