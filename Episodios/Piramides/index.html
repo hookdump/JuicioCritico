@@ -224,8 +224,8 @@ $( document ).ready(function() {
   // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   var pos;
   // pos = 0; // <<<<< POSICION INICIAL!!! (default=0)
-  // pos = 13; // flor
-  pos = 0; // post-flor
+  pos = 16; // flor
+  // pos = 38; // post-flor
 
   // Inicializacion
   console.log("Start!");
@@ -699,6 +699,7 @@ $( document ).ready(function() {
       $('.n4 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
       $('.contadores .perdedores').animate({'opacity': 1}, 800); // inicializamos contador de perdedores
       animarContadores(1, false);
+      animarContadores(1, true);
       break;
 
       case 'piramide_gana1':
@@ -707,7 +708,6 @@ $( document ).ready(function() {
         $('.n1 .bloque').animate({'top': -100, 'left': -900, 'width': 20, 'height': 40});
       });
       $('.contadores .ganadores').animate({'opacity': 1}, 800); // inicializamos contador de ganadores
-      animarContadores(1, true);
       break;
 
       case 'showcaseSplit':
@@ -740,6 +740,7 @@ $( document ).ready(function() {
       $('.n2 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
       $('.n5 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
       animarContadores(2, false);
+      animarContadores(2, true);
       break;
 
       case 'piramide_gana2':
@@ -747,7 +748,6 @@ $( document ).ready(function() {
       $('.n2').addClass('ganadores', 20, function() {
         $('.n2 .bloque').animate({'top': -146, 'left': -861, 'width': 20, 'height': 40});
       });
-      animarContadores(2, true);
       break;
 
       case 'piramide_insert6':
@@ -758,13 +758,13 @@ $( document ).ready(function() {
       $('.n3 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
       $('.n6 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
       animarContadores(3, false);
+      animarContadores(3, true);
       break;
 
       case 'piramide_gana3':
       $('.n3').addClass('ganadores', 20, function() {
         $('.n3 .bloque').animate({'top': -192, 'left': -783, 'width': 20, 'height': 40});
       });
-      animarContadores(3, true);
       break;
 
       case 'piramide_insert7':
@@ -775,13 +775,13 @@ $( document ).ready(function() {
       $('.n4 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
       $('.n7 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
       animarContadores(4, false);
+      animarContadores(4, true);
       break;
 
       case 'piramide_gana4':
       $('.n4').addClass('ganadores', 20, function() {
         $('.n4 .bloque').animate({'top': -238, 'left': -627, 'width': 20, 'height': 40});
       });
-      animarContadores(4, true);
       break;
 
       case 'piramide_insert8':
@@ -792,13 +792,13 @@ $( document ).ready(function() {
       $('.n5 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
       $('.n8 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
       animarContadores(5, false);
+      animarContadores(5, true);
       break;
 
       case 'piramide_gana5':
       $('.n5').addClass('ganadores', 20, function() {
         $('.n5 .bloque').animate({'top': -284, 'left': -315, 'width': 20, 'height': 40});
       });
-      animarContadores(5, true);
       break;
 
       case 'piramide_insert9':
@@ -809,13 +809,13 @@ $( document ).ready(function() {
       $('.n6 .relleno').animate({'height': '100%'}, 2000, 'easeOutQuart');
       $('.n9 .relleno').animate({'height': '0%'}, 2000, 'easeOutQuart');
       animarContadores(6, false);
+      animarContadores(6, true);
       break;
 
       case 'piramide_gana6':
       $('.n6').addClass('ganadores', 20, function() {
         $('.n6 .bloque').animate({'top': -330, 'left': 278, 'width': 20, 'height': 40});
       });
-      animarContadores(6, true);
       break;
 
     }
