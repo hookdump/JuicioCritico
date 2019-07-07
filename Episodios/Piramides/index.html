@@ -13,9 +13,11 @@
 <script type="text/javascript">
 $( document ).ready(function() {
 
+  var EJECUTANDO_SIM = 0;
   var contadorGanadores = 0;
   var contadorPerdedores = 0;
 
+  // Funcion agregarNivel()
   function agregarNivel(nivel, cantidad) {
     var targetMarginHoriz = {
       5: 3,
@@ -24,14 +26,14 @@ $( document ).ready(function() {
       8: 1,
       9: 1,
       10: 1
-    }
+    };
     var targetW = {
       5: 61,
       6: 36,
       7: 22,
       8: 12,
       9: 5
-    }
+    };
     console.log('agregando nivel ' + nivel + ' (' + cantidad + ')');
     var $bloque = $("<div class='bloque nuevoBloque'" +
     "style='margin-top: 450; margin-left: 3; margin-right: 3; opacity: 0; " +
@@ -139,8 +141,10 @@ $( document ).ready(function() {
   };
 
   var defaultDelay = 300;
+  var defaultEasing = "linear";
   var mapa = [];
 
+  // --- MAPA ---
   // Fase 1: Introduccion
   mapa = mapa.concat([
     {y: 0},   // 0
@@ -166,18 +170,10 @@ $( document ).ready(function() {
     {y: 4140, delay: 1800, easing: 'easeOutQuart'},
     //{animacion: 'florParcial1'},
     //{animacion: 'florParcial2'},
-
     {animacion: 'ref_agua'},
     {animacion: 'flor1'},
-    {animacion: 'ref_tierra'},
     {animacion: 'flor2'},
     {animacion: 'flor3'},
-    {animacion: 'ref_aire'},
-    {animacion: 'flor4'},
-    {animacion: 'flor5'},
-    {animacion: 'flor6'},
-    {animacion: 'flor7'},
-    {animacion: 'ref_fuego'},
     {animacion: 'highlight_fuego'},
     {animacion: 'all_fuego'},
     {animacion: 'mostrar_agua'},
@@ -193,7 +189,7 @@ $( document ).ready(function() {
 
   // Fase 3: Piramide
   mapa = mapa.concat([
-    {animacion: 'piramide_inicial'},
+    {animacion: 'piramide_inicial'}, // 31
     {animacion: 'piramide_dinero'},
     {animacion: 'piramide_transfer1'},
     {animacion: 'piramide_gana1'},
@@ -215,6 +211,18 @@ $( document ).ready(function() {
     {animacion: 'piramide_insert9'},
     {animacion: 'piramide_transfer6'},
     {animacion: 'piramide_gana6'},
+    {animacion: 'hide_ganadores'}
+  ]);
+
+  // 55: Fase 4, simulaciones
+  mapa = mapa.concat([
+    {y: '5930'},
+    {animacion: 'sim_panorama1'},
+    {animacion: 'sim_run2'},
+    {animacion: 'sim_run1'},
+    {animacion: 'sim_run3'},
+    {animacion: 'sim_run4'},
+
   ]);
 
 
@@ -222,28 +230,44 @@ $( document ).ready(function() {
   // mapa = mapa.concat([3050+offset, 4540+offset, 5440+offset, 6240+offset]);
 
   // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  var pos;
-  // pos = 0; // <<<<< POSICION INICIAL!!! (default=0)
-  pos = 16; // flor
-  // pos = 38; // post-flor
+  // 0  - Inicio
+  // 16 - Flor
+  // 31 - Post Flor
+  // 53 - Simulaciones
+  var pos = 55;
 
   // Inicializacion
   console.log("Start!");
-  $("HTML, BODY").animate({ scrollTop: mapa[pos].y }, 300);
+  pos--;
+  nextPos();
+  // $("HTML, BODY").animate({ scrollTop: mapa[pos].y }, 300);
   AOS.init();
 
-  var nextPos = function() {
+  function scrollToPos(y, delay, easing, cb) {
+    console.log('scroll:',y,delay,easing);
+    delay = delay || defaultDelay;
+    easing = easing || defaultEasing;
+    $("HTML, BODY").animate({ scrollTop: y }, delay, easing, () => {
+      console.log('anim done!');
+      if (cb) {
+        return cb();
+      }
+    });
+  };
+
+  function nextPos() {
     pos++;
-    if (pos > mapa.length) {
+    if (pos >= mapa.length) {
       $('.scrollDisplay').text(document.body.scrollTop + " / " + "FIN");
       return;
+    } else {
+      console.log('Going to pos ' + pos + '/' + mapa.length);
     }
-    var easing = mapa[pos].easing || "linear";
+    var easing = mapa[pos].easing || defaultEasing;
+    var delay = mapa[pos].delay || defaultDelay;
     $('.scrollDisplay').text(document.body.scrollTop + " / " + pos);
-    // scroll
     if (mapa[pos].y) {
-      $("HTML, BODY").animate({ scrollTop: mapa[pos].y },
-        mapa[pos].delay || defaultDelay, easing);
+      scrollToPos(mapa[pos].y, mapa[pos], easing);
     }
     // animacion
     if (mapa[pos].animacion) {
@@ -396,7 +420,15 @@ $( document ).ready(function() {
     }
   };
 
-  var ejecutarAnimacion = function(id) {
+  function esperar(delay) {
+    if (!delay) delay = 700;
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, delay);
+    });
+  };
+
+  // ANIMACIONES
+  function ejecutarAnimacion(id) {
     console.log('ejecutando animacion:', id);
     var genericDelay = 600;
 
@@ -436,36 +468,41 @@ $( document ).ready(function() {
       case 'flor1':
       posicionarPetalo('tierra1', genericDelay);
       posicionarPetalo('tierra2', genericDelay);
+      esperar().then(() => {
+        ejecutarAnimacion('ref_tierra');
+      });
       break;
 
       case 'flor2':
       posicionarPetalo('aire1', genericDelay);
       posicionarPetalo('aire2', genericDelay);
+      esperar().then(() => {
+        posicionarPetalo('aire3', genericDelay);
+        posicionarPetalo('aire4', genericDelay);
+        esperar().then(() => {
+          ejecutarAnimacion('ref_aire');
+        });
+      });
       break;
 
       case 'flor3':
-      posicionarPetalo('aire3', genericDelay);
-      posicionarPetalo('aire4', genericDelay);
-      break;
-
-      case 'flor4':
       posicionarPetalo('fuego1', genericDelay);
       posicionarPetalo('fuego2', genericDelay);
-      break;
-
-      case 'flor5':
-      posicionarPetalo('fuego3', genericDelay);
-      posicionarPetalo('fuego4', genericDelay);
-      break;
-
-      case 'flor6':
-      posicionarPetalo('fuego5', genericDelay);
-      posicionarPetalo('fuego6', genericDelay);
-      break;
-
-      case 'flor7':
-      posicionarPetalo('fuego7', genericDelay);
-      posicionarPetalo('fuego8', genericDelay);
+      esperar().then(() => {
+        posicionarPetalo('fuego3', genericDelay);
+        posicionarPetalo('fuego4', genericDelay);
+        esperar().then(() => {
+          posicionarPetalo('fuego5', genericDelay);
+          posicionarPetalo('fuego6', genericDelay);
+          esperar().then(() => {
+            posicionarPetalo('fuego7', genericDelay);
+            posicionarPetalo('fuego8', genericDelay);
+            esperar().then(() => {
+              ejecutarAnimacion('ref_fuego');
+            });
+          });
+        });
+      });
       break;
 
       case 'ref_agua':
@@ -732,6 +769,7 @@ $( document ).ready(function() {
       $('.tmpSplitB').animate({width: 0}, 1000, 'easeOutQuart');
       break;
 
+      // ANIMACIONES PIRAMIDE
       case 'piramide_insert5':
       agregarNivel(5, 16);
       break;
@@ -818,8 +856,265 @@ $( document ).ready(function() {
       });
       break;
 
+      case 'hide_ganadores':
+      $(".contadores").fadeOut();
+      break;
+
+      // SIMULACIONES
+      case 'sim_panorama1':
+      console.log('SIMULACIONES >>>');
+      // scrollToPos(7064, 1000, 'easeOutQuart');
+      scrollToPos(7064, 100);
+      break;
+
+      case 'sim_run1':
+      runSim(1);
+      break;
+
+      case 'sim_run2':
+      runSim(2);
+      break;
+
+      case 'sim_run3':
+      runSim(3);
+      break;
+
+      case 'sim_run4':
+      runSim(4);
+      break;
+
     }
   };
+
+/*
+
+*/
+
+  function runSim(simulacion) {
+    EJECUTANDO_SIM = simulacion;
+    var maxRondas = 16;
+    if (simulacion == 2) maxRondas = 1;
+    var CAPITAL_ENTRADA = 1000;
+    var grupos = 1;
+    var ronda = 0;
+    var nuevos = 0;
+    var reciclados = 0;
+    var ganadores = 0;
+    var participantes = [];
+    var listosParaReingresar = [];
+
+    if (simulacion == 1 || simulacion > 2) {
+      participantes = [
+        {nivel: 1, capital: 0},
+        {nivel: 2, capital: 0},
+        {nivel: 2, capital: 0},
+        {nivel: 3, capital: 0},
+        {nivel: 3, capital: 0},
+        {nivel: 3, capital: 0},
+        {nivel: 3, capital: 0},
+      ];
+    } else if (simulacion == 2) {
+      participantes = [
+        {nivel: 1, capital: 0},
+        {nivel: 2, capital: 0},
+        {nivel: 3, capital: 0},
+        {nivel: 4, capital: 0},
+        {nivel: 5, capital: 0},
+        {nivel: 6, capital: 0},
+        {nivel: 7, capital: 0},
+        {nivel: 8, capital: 0},
+      ];
+    };
+
+
+    var total = 0;
+    var $sim = $(".sim" + simulacion);
+    var $grupos = $sim.find(".grupos");
+    var $ronda = $sim.find(".ronda");
+    var $reciclados = $sim.find(".reciclados");
+    var $nuevos = $sim.find(".nuevos");
+    var $total = $sim.find(".total");
+    var breakdown = [
+      {count: 0, perc: 0},
+      {count: 0, perc: 0},
+      {count: 0, perc: 0},
+      {count: 0, perc: 0},
+      {count: 0, perc: 0},
+      {count: 0, perc: 0},
+    ];
+    [0,1,2,3,4,5].forEach((item) => {
+      breakdown[item].elCapital = $sim.find(".capital_" + item);
+      breakdown[item].elCount = breakdown[item].elCapital.find(".count");
+      breakdown[item].elBar = breakdown[item].elCapital.find(".bar");
+    });
+
+    var locale = (nro) => {
+      return nro.toLocaleString().replace(/,/g, ".");
+    };
+
+    var refreshUI = () => {
+      $grupos.text(locale(grupos));
+      $ronda.text(ronda);
+      $reciclados.text(locale(reciclados));
+      $nuevos.text(locale(nuevos));
+      $total.text(locale(total));
+      [0,1,2,3,4,5].forEach((item) => {
+        breakdown[item].perc = ((breakdown[item].count / total)*100).toFixed(1);
+        breakdown[item].elCount.text(locale(breakdown[item].count));
+        breakdown[item].elBar.css({width: breakdown[item].perc + "%"});
+        breakdown[item].elBar.text(breakdown[item].perc + "%");
+      });
+    };
+
+    var categorize = () => {
+      // Reset
+      breakdown.forEach((i) => {
+        i.count = 0;
+      });
+      participantes.forEach((p) => {
+        if (simulacion == 1 || simulacion > 2) {
+          if (p.capital < 0) breakdown[0].count++;
+          if (p.capital == 0) breakdown[1].count++;
+          if (p.capital > 0 && p.capital < 8000) breakdown[2].count++;
+          if (p.capital >= 8000 && p.capital < 20000) breakdown[3].count++;
+          if (p.capital >= 20000 && p.capital < 50000) breakdown[4].count++;
+          if (p.capital >= 50000) breakdown[5].count++;
+        } else if (simulacion == 2) {
+          if (p.capital <= -7000) breakdown[0].count++;
+          if (p.capital > -7000 && p.capital < 0) breakdown[1].count++;
+          if (p.capital == 0) breakdown[2].count++;
+          if (p.capital > 0 && p.capital < 7000) breakdown[3].count++;
+          if (p.capital >= 7000) breakdown[4].count++;
+        }
+      });
+    };
+
+    var agregarPersona = (nivel, capital) => {
+      var reingreseAUno = false;
+      if (simulacion > 2) {
+        if (listosParaReingresar.length > 0) {
+          var reingresa = listosParaReingresar.pop();
+          if (participantes[reingresa].nivel > 0) {
+            console.log('ERROR: REINGRESANDO A ALGUIEN QUE NO ES NIVEL 0');
+          }
+          participantes[reingresa].nivel = nivel;
+          participantes[reingresa].capital -= capital;
+          reciclados++;
+          reingreseAUno = true;
+        }
+      }
+      if (!reingreseAUno) {
+        nuevos++;
+        participantes.push({nivel: nivel, capital: capital});
+      }
+    };
+
+    var simStep = () => {
+      if (simulacion == 1 || simulacion > 2) {
+        ronda++;
+        nuevos = 0;
+        acumuladorGanadores = 0;
+
+        // 3. Contar aguas, formaran grupos nuevos:
+        grupos = 0;
+        participantes.forEach((p) => {
+          if (p.nivel == 1) {
+            grupos++;
+          }
+        });
+
+        // 4. Cada Aire recluta a 2 personas
+        participantes.forEach((p) => {
+          if (p.nivel == 3) {
+            agregarPersona(4, -CAPITAL_ENTRADA);
+            agregarPersona(4, -CAPITAL_ENTRADA);
+          }
+        });
+        total = participantes.length;
+
+        // 1. Ver cuantos aguas pueden ganar:
+        participantes.forEach((p) => {
+          if (p.nivel == 4) {
+            acumuladorGanadores += 0.125;
+          }
+        });
+
+        var aimGanar = Math.floor(acumuladorGanadores);
+        var ascenderTipos = {
+          1: aimGanar,
+          2: aimGanar*2,
+          3: aimGanar*4,
+          4: aimGanar*8
+        };
+
+        // 2. Cobrar y ascender a todos
+        var reTope, reContador = 1;
+        if (simulacion == 3) reTope = 4;
+        if (simulacion == 4) reTope = 1; // no se usa
+
+        [1,2,3,4].forEach((tipo) => {
+          for (i=0; i<=ascenderTipos[tipo]; i++) {
+            participantes.forEach((p, indiceP) => {
+              if (p.nivel == tipo && ascenderTipos[tipo] > 0) {
+                if (tipo == 1) {
+                  p.capital += CAPITAL_ENTRADA*8;
+
+                  // REINGRESOS ----
+                  if (simulacion == 3) {
+                    if (reContador == reTope) {
+                      reContador = 1;
+                      p.reingresar = true;
+                      listosParaReingresar.push(indiceP);
+                    } else {
+                      p.reingresar = false;
+                      reContador++;
+                    }
+                  } else if (simulacion == 4) {
+                    p.reingresar = true;
+                    listosParaReingresar.push(indiceP);
+                  }
+                  // REINGRESOS ----
+                }
+                p.nivel--;
+                ascenderTipos[tipo]--;
+              }
+            });
+          }
+        });
+      } // Fin Sim1
+
+      if (simulacion == 2) {
+        ronda++;
+        total = participantes.length;
+        var s = "";
+        participantes.forEach((p) => {
+          // Todos ponen
+          p.capital -= CAPITAL_ENTRADA;
+          // Nivel 1 gana
+          if (p.nivel == 1) {
+            p.capital += CAPITAL_ENTRADA * participantes.length;
+          }
+          // Todos ascienden
+          p.nivel--;
+          if (p.nivel == 0) p.nivel = 8; // Ganador va a niv 8
+          s += p.capital + " / ";
+        });
+        console.log(s);
+      }
+
+
+      // UNIVERSAL OPERATIONS AFTER SIM STEP
+      categorize();
+      refreshUI();
+      setTimeout(() => {
+        if (ronda < maxRondas && EJECUTANDO_SIM == simulacion) {
+          simStep();
+        }
+      }, 400);
+    };
+
+    simStep();
+  }
 
   window.onscroll = function() {
     $('.scrollDisplay').text(document.body.scrollTop + " / " + pos);
@@ -964,6 +1259,7 @@ $( document ).ready(function() {
     <div class="ganadores">recibieron $8000<span class="ganadoresNum">0</span></div>
     <div class="perdedores"><span class="perdedoresNum">0</span>regalaron $1000</div>
   </div>
+  <!-- HTML PIRAMIDE -->
   <div class="piramide">
     <div class="nivel _agua n1">
       <div class="bloque"><div class="relleno"></div></div>
@@ -1009,28 +1305,247 @@ $( document ).ready(function() {
   <!-- ............. WHITE AGAIN ............. -->
   <!-- ............. Fase ESTAFA ............. -->
   <div class="spacer-400"> </div>
-  <div class="diccionario">
-    <h1 data-aos-anchor-placement="center-center"  data-aos="flip-down"><span>estufa</span></h1>
-    <h4 class="definicion"><em>f.</em>  Aparato que sirve para calentar espacios cerrados
-      mediante la combustión de carbón, de leña, de gas o gracias a la energía eléctrica.</h4>
-  </div>
-  <div class="spacer-600"> </div>
+
+  <h2>Hagamos algunas</h2>
+  <h1 style="margin-top: 0px"><span>simulaciones</span></h1>
 
   <div class="spacer-400"> </div>
-  <div class="diccionario">
-    <h1><span>estafa</span></h1>
-    <h4 class="definicion"><em>(Der.)</em> Delito consistente en provocar un <span>perjuicio patrimonial</span> a
-      alguien mediante engaño y con ánimo de lucro.</h4>
+
+  <div class="simulaciones">
+
+    <div class="sim sim2">
+      <div class="titulos">
+        <h4>Círculo de Confianza</h4>
+        <h5>(nunca se suma gente nueva)</h5>
+      </div>
+      <div class="sim_data">
+        <div class="dato floatRight">
+          Grupos: <span class="grupos">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Ronda: <span class="ronda">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato floatRight">
+          Participantes reciclados: <span class="reciclados">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Participantes nuevos: <span class="nuevos">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato">Personas involucradas: <span class="total">0</span></div>
+        <table class="sim_table">
+        <tr class="tabla_titulos">
+          <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>
+        </tr>
+        <tr class="capital_0">
+          <td width="24%">Perdió $7.000</td>
+          <td width="20%" class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_1">
+          <td>Perdió menos de $7.000</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_2">
+          <td>Cero</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_3">
+          <td>Ganó menos de $7.000</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_4">
+          <td>Ganó $7.000</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="sim sim1">
+      <div class="titulos">
+        <h4>Telar 100% Abierto</h4>
+        <h5>(ningún ganador reingresa)</h5>
+      </div>
+      <div class="sim_data">
+        <div class="dato floatRight">
+          Grupos: <span class="grupos">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Ronda: <span class="ronda">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato floatRight">
+          Participantes reciclados: <span class="reciclados">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Participantes nuevos: <span class="nuevos">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato">Personas involucradas: <span class="total">0</span></div>
+        <table class="sim_table">
+        <tr class="tabla_titulos">
+          <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>
+        </tr>
+        <tr class="capital_0">
+          <td width="22%">Negativo</td>
+          <td width="20%" class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_1">
+          <td>Cero</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_2">
+          <td>$1 a $7.999</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_3">
+          <td>$8.000 a $19.999</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_4">
+          <td>$20.000 a $49.999</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_5">
+          <td>$50.000 o más</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="sim sim3">
+      <div class="titulos">
+        <h4>Telar (reciclaje=25%)</h4>
+        <h5>(1 de cada 4 ganadores reingresa al sistema)</h5>
+      </div>
+      <div class="sim_data">
+        <div class="dato floatRight">
+          Grupos: <span class="grupos">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Ronda: <span class="ronda">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato floatRight">
+          Participantes reciclados: <span class="reciclados">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Participantes nuevos: <span class="nuevos">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato">Personas involucradas: <span class="total">0</span></div>
+        <table class="sim_table">
+        <tr class="tabla_titulos">
+          <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>
+        </tr>
+        <tr class="capital_0">
+          <td width="22%">Negativo</td>
+          <td width="20%" class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_1">
+          <td>Cero</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_2">
+          <td>$1 a $7.999</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_3">
+          <td>$8.000 a $19.999</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_4">
+          <td>$20.000 a $49.999</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_5">
+          <td>$50.000 o más</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="sim sim4">
+      <div class="titulos">
+      <h4>Telar (reciclaje=100%)</h4>
+      <h5>(todos los ganadores reingresan al sistema)</h5>
+      </div>
+      <div class="sim_data">
+        <div class="dato floatRight">
+          Grupos: <span class="grupos">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Ronda: <span class="ronda">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato floatRight">
+          Participantes reciclados: <span class="reciclados">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Participantes nuevos: <span class="nuevos">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato">Personas involucradas: <span class="total">0</span></div>
+        <table class="sim_table">
+        <tr class="tabla_titulos">
+          <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>
+        </tr>
+        <tr class="capital_0">
+          <td width="22%">Negativo</td>
+          <td width="20%" class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_1">
+          <td>Cero</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_2">
+          <td>$1 a $7.999</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_3">
+          <td>$8.000 a $19.999</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_4">
+          <td>$20.000 a $49.999</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        <tr class="capital_5">
+          <td>$50.000 o más</td>
+          <td class="count">0</td>
+          <td class="barContainer"><div class="bar"></div></td>
+        </tr>
+        </table>
+      </div>
+    </div>
   </div>
+
   <div class="spacer-600"> </div>
-
-  <h1>O SEA</h1>
-  <div class="spacer-400"> </div>
-  <div class="diccionario">
-    <h1><span>estafa</span></h1>
-    <h4 class="definicion">Chamuyar a alguien para que te regale guita.</h4>
-  </div>
-
   <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>

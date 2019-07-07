@@ -132,16 +132,6 @@ h5 { font-size: 30px; }
   display: block;
 }
 
-
-.diccionario {
-  width: 750px;
-  margin: 0 auto;
-  text-align: left;
-}
-.diccionario em {
-  color: #B0B0B0;
-}
-
 .petalo {
   position: absolute;
   width: 200px;
@@ -395,6 +385,7 @@ h5 { font-size: 30px; }
   font-size: 40px;
   z-index: 99;
   text-align: left;
+  pointer-events: none;
 }
 .contadores > div {
   position: absolute;
@@ -416,4 +407,97 @@ h5 { font-size: 30px; }
   opacity: 0;
   color: #FF0000;
   bottom: 30px;
+}
+
+.simulaciones {
+  width: 100%;
+  height: 1080px;
+  background-color: #707070;
+}
+
+.simulaciones .sim {
+  width: 47.7%;
+  height: 500px;
+  background-color: white;
+  float: left;
+  margin: 30px;
+  margin-right: 0;
+  margin-bottom: 0;
+}
+
+.simulaciones .sim h5 {
+  margin-top: -10px;
+  color: #909090;
+  margin-bottom: 0;
+}
+
+.simulaciones .sim .titulos {
+  height: 105px;
+  border-bottom: 2px solid #707070;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.sim_data {
+  padding: 10px 30px 30px 30px;
+  text-align: left;
+  font-size: 20px;
+}
+
+.sim_table {
+  width: 100%;
+  border: 1px solid black;
+  background-color: black;
+}
+.sim_table .tabla_titulos td {
+  font-weight: bold;
+}
+.sim_table td {
+  padding: 2px;
+  background-color: white;
+}
+.sim_table td.count, .sim_table td.right {
+  text-align: right;
+}
+.sim_table .barContainer {
+  position: relative;
+  background-color: #404040;
+}
+.sim_table .bar {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  background-color: gray;
+  position: absolute;
+  line-height: 24px;
+  -webkit-transition: width 0.4s; /* Safari prior 6.1 */
+}
+.capital_0 .bar { background-color: red; }
+.capital_1 .bar { background-color: yellow; }
+.capital_2 .bar { background-color: #449944; }
+.capital_3 .bar { background-color: #22BB22; }
+.capital_4 .bar { background-color: #00CC00; }
+.capital_5 .bar { background-color: #00FF00; }
+
+.sim2 .capital_0 .bar { background-color: red; }
+.sim2 .capital_1 .bar { background-color: #ff7700; }
+.sim2 .capital_2 .bar { background-color: yellow; }
+.sim2 .capital_3 .bar { background-color: #22BB22; }
+.sim2 .capital_4 .bar { background-color: #00CC00; }
+.sim2 .capital_5 .bar { background-color: BLACK; }
+
+.floatRight {
+  float: right;
+  width: 48%;
+}
+.floatLeft {
+  float: left;
+  width: 48%;
+}
+.clear {
+  clear: both;
+}
+.dato, .sim_table {
+  margin-top: 20px;
 }
