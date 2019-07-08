@@ -34,7 +34,6 @@ body::-webkit-scrollbar {
   width: 200px;
   padding: 5px;
   z-index: 9999;
-  display: none;
 }
 
 h1, h2, h3, h4, h5 {
@@ -415,14 +414,32 @@ h5 { font-size: 30px; }
   background-color: #707070;
 }
 
+.sim_left {
+  width: 48%;
+  height: 100%;
+  float: left;
+}
+.sim_right {
+  width: 48%;
+  height: 100%;
+  float: right;
+  background-color: black;
+  position: relative;
+}
+
 .simulaciones .sim {
-  width: 47.7%;
+  width: 100%;
   height: 500px;
   background-color: white;
   float: left;
   margin: 30px;
   margin-right: 0;
   margin-bottom: 0;
+  overflow: hidden;
+}
+.simulaciones .sim.colapsado {
+  height: 115px;
+  opacity: 0.3;
 }
 
 .simulaciones .sim h5 {
@@ -501,3 +518,117 @@ h5 { font-size: 30px; }
 .dato, .sim_table {
   margin-top: 20px;
 }
+
+.viz2, .viz1, .viz3, .viz4 {
+  opacity: 0;
+}
+.viz2 {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+}
+.viz2 .nodo {
+  width: 50px;
+  height: 244px;
+  position: absolute;
+  left: 40%;
+  top: 40%;
+}
+.viz2 .nodo .circulo {
+  background-color: gray;
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  z-index: 99;
+  position: absolute;
+  border: 1px solid black;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.viz2 .nodo .dinero_positivo {
+  margin-bottom: -4px;
+  margin-left: 11px;
+  height: 21px;
+  margin-top: 129px;
+  width: 30px;
+  background-color: #00AA00;
+  z-index: 10;
+  -webkit-transition: all 0.3s ease;
+}
+.viz2 .nodo .dinero_negativo {
+  position: absolute;
+  top: 60%;
+  margin-top: 48px;
+  -webkit-transition: all 0.3s ease;
+  margin-left: 11px;
+  height: 0px;
+  width: 30px;
+  background-color: #AA0000;
+  z-index: 10;
+  -webkit-transition: all 0.3s ease;
+}
+
+/*
+   2  3
+ 1      4
+ 8      5
+   7  6
+*/
+.viz2 .nodo1, .viz2 .nodo4 { top: 20%; }
+.viz2 .nodo2, .viz2 .nodo3 { top: 5%; }
+.viz2 .nodo5, .viz2 .nodo8 { top: 55%; }
+.viz2 .nodo6, .viz2 .nodo7 { top: 65%; }
+.viz2 .nodo1, .viz2 .nodo8 { left: 10%; }
+.viz2 .nodo4, .viz2 .nodo5 { left: 80%; }
+.viz2 .nodo2, .viz2 .nodo7 { left: 35%; }
+.viz2 .nodo3, .viz2 .nodo6 { left: 55%; }
+
+.vizX {
+  background-color: #707070;
+  height: 100%;
+}
+.vizX .bloq {
+  display: block;
+  width: 97.3%;
+  border-bottom: 4px solid #707070;
+  padding: 15px 4px 4px 12px;
+  line-height: 4px;
+  text-align: left;
+  min-height: 100px;
+  background-color: black;
+}
+.vizX .bloq0 {
+  border-top: 4px solid #707070;
+}
+.vizX .bloq h4 {
+  margin-top: 6px;
+  padding-top: 6px;
+  padding-bottom: 20px;
+}
+.vizX .bloq .white,
+.vizX .bloq .whiteR {
+  color: black;
+  background-color: white;
+  -webkit-transition: all 0.3s ease;
+}
+.vizX .bloq .red,
+.vizX .bloq .redR {
+  color: black;
+  background-color: red;
+  -webkit-transition: all 0.3s ease;
+}
+.vizX .bloq .green,
+.vizX .bloq .greenR {
+  color: black;
+  background-color: #00ff00;
+  -webkit-transition: all 0.3s ease;
+}
+
+.vizX .bloq4 { min-height: 386px; }
+.vizX .bloq3 { min-height: 235px; }
+.vizX .bloq2 { min-height: 135px; }
+
+.bloq0 h4 { color: #00ff00; }
+.bloq1 h4 { color: #C8C9F6; }
+.bloq2 h4 { color: #E7CF33; }
+.bloq3 h4 { color: #C6A46E; }
+.bloq4 h4 { color: #BB98B4; }

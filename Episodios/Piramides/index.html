@@ -9,6 +9,7 @@
   <script src="lib/smoothscrollto.jquery.js"></script>
   <script src="lib/jquery-ui/jquery-ui.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js" integrity="sha256-xKeoJ50pzbUGkpQxDYHD7o7hxe0LaOGeguUidbq6vis=" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
 $( document ).ready(function() {
@@ -152,7 +153,7 @@ $( document ).ready(function() {
     {y: 400}, // 2
     {y: 550}, // 3
     {y: 600}, // 4
-    {y: 830, delay: 1000},
+    {y: 830, delay: 700},
     {animacion: 'emoji_amor'},
     {animacion: 'emoji_odio'},
     {animacion: 'emoji_pensando'},
@@ -216,13 +217,25 @@ $( document ).ready(function() {
 
   // 55: Fase 4, simulaciones
   mapa = mapa.concat([
-    {y: '5930'},
+    {y: '6110'},
     {animacion: 'sim_panorama1'},
+    {animacion: 'sim_prep2'},
     {animacion: 'sim_run2'},
+    {animacion: 'sim_prep1'},
     {animacion: 'sim_run1'},
+    {animacion: 'sim_prep3'},
     {animacion: 'sim_run3'},
-    {animacion: 'sim_run4'},
+    {animacion: 'sim_prep4'},
+    {animacion: 'sim_run4'}
+  ]);
 
+  mapa = mapa.concat([
+    {animacion: 'sim_prep1b'},
+    {animacion: 'sim_run1b'},
+    {animacion: 'sim_prep3b'},
+    {animacion: 'sim_run3b'},
+    {animacion: 'sim_prep4b'},
+    {animacion: 'sim_run4b'},
   ]);
 
 
@@ -233,13 +246,17 @@ $( document ).ready(function() {
   // 0  - Inicio
   // 16 - Flor
   // 31 - Post Flor
-  // 53 - Simulaciones
+  // 55 - Simulaciones
   var pos = 55;
 
   // Inicializacion
   console.log("Start!");
-  pos--;
-  nextPos();
+  if (pos > 0) {
+    pos--;
+    nextPos();
+  } else {
+    scrollToPos(0);
+  }
   // $("HTML, BODY").animate({ scrollTop: mapa[pos].y }, 300);
   AOS.init();
 
@@ -267,7 +284,7 @@ $( document ).ready(function() {
     var delay = mapa[pos].delay || defaultDelay;
     $('.scrollDisplay').text(document.body.scrollTop + " / " + pos);
     if (mapa[pos].y) {
-      scrollToPos(mapa[pos].y, mapa[pos], easing);
+      scrollToPos(mapa[pos].y, delay, easing);
     }
     // animacion
     if (mapa[pos].animacion) {
@@ -426,6 +443,23 @@ $( document ).ready(function() {
       setTimeout(resolve, delay);
     });
   };
+
+  function resetSim(sim) {
+    var $sim = $(`.sim${sim}`);
+    var $grupos = $sim.find(".grupos");
+    var $ronda = $sim.find(".ronda");
+    var $reciclados = $sim.find(".reciclados");
+    var $nuevos = $sim.find(".nuevos");
+    var $total = $sim.find(".total");
+    $grupos.text(0);
+    $ronda.text(0);
+    $reciclados.text(0);
+    $nuevos.text(0);
+    $total.text(0);
+    $sim.find('.count').text('0');
+    $sim.find('.bar').text('0.0%');
+    $sim.find('.bar').css({width: "0%"});
+  }
 
   // ANIMACIONES
   function ejecutarAnimacion(id) {
@@ -863,25 +897,101 @@ $( document ).ready(function() {
       // SIMULACIONES
       case 'sim_panorama1':
       console.log('SIMULACIONES >>>');
-      // scrollToPos(7064, 1000, 'easeOutQuart');
-      scrollToPos(7064, 100);
+      scrollToPos(7264, 1000, 'easeOutQuart');
       break;
 
+      case 'sim_prep1':
+      var go = 1;
+      if (EJECUTANDO_SIM) {
+        $('.sim' + EJECUTANDO_SIM).addClass('colapsado', 1000);
+        $('.viz' + EJECUTANDO_SIM).fadeOut(1000, () => {
+          $(`.sim${go}`).removeClass('colapsado', 1000);
+          $(`.viz${go}`).animate({opacity: 1}, 1000);
+        });
+      }
+      EJECUTANDO_SIM = 0;
+      break;
       case 'sim_run1':
       runSim(1);
       break;
 
+      case 'sim_prep2':
+      var go = 2;
+      if (EJECUTANDO_SIM) {
+        $('.sim' + EJECUTANDO_SIM).addClass('colapsado', 1000);
+        $('.viz' + EJECUTANDO_SIM).fadeOut(1000, () => {
+          $(`.sim${go}`).removeClass('colapsado', 1000);
+          $(`.viz${go}`).animate({opacity: 1}, 1000);
+        });
+      } else {
+        $(`.sim${go}`).removeClass('colapsado', 1000);
+        $(`.viz${go}`).animate({opacity: 1}, 1000);
+      }
+      EJECUTANDO_SIM = 0;
+      break;
       case 'sim_run2':
       runSim(2);
       break;
 
+      case 'sim_prep3':
+      var go = 3;
+      if (EJECUTANDO_SIM) {
+        $('.sim' + EJECUTANDO_SIM).addClass('colapsado', 1000);
+        $('.viz' + EJECUTANDO_SIM).fadeOut(1000, () => {
+          $(`.sim${go}`).removeClass('colapsado', 1000);
+          $(`.viz${go}`).animate({opacity: 1}, 1000);
+        });
+      }
+      EJECUTANDO_SIM = 0;
+      break;
       case 'sim_run3':
       runSim(3);
       break;
 
+      case 'sim_prep4':
+      var go = 4;
+      if (EJECUTANDO_SIM) {
+        $('.sim' + EJECUTANDO_SIM).addClass('colapsado', 1000);
+        $('.viz' + EJECUTANDO_SIM).fadeOut(1000, () => {
+          $(`.sim${go}`).removeClass('colapsado', 1000);
+          $(`.viz${go}`).animate({opacity: 1}, 1000);
+        });
+      }
+      EJECUTANDO_SIM = 0;
+      break;
       case 'sim_run4':
       runSim(4);
       break;
+
+
+      // sim 1b &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+      case 'sim_prep1b':
+      resetSim(1);
+      ejecutarAnimacion('sim_prep1');
+      break;
+      case 'sim_run1b':
+      runSim(1,true);
+      break;
+
+      // sim 3b &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+      case 'sim_prep3b':
+      resetSim(3);
+      ejecutarAnimacion('sim_prep3');
+      break;
+      case 'sim_run3b':
+      runSim(3,true);
+      break;
+
+      // sim 4b &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+      case 'sim_prep4b':
+      resetSim(4);
+      ejecutarAnimacion('sim_prep4');
+      break;
+      case 'sim_run4b':
+      runSim(4,true);
+      break;
+
+
 
     }
   };
@@ -890,10 +1000,10 @@ $( document ).ready(function() {
 
 */
 
-  function runSim(simulacion) {
+  function runSim(simulacion, plotChart) {
     EJECUTANDO_SIM = simulacion;
-    var maxRondas = 16;
-    if (simulacion == 2) maxRondas = 1;
+    var maxRondas = 18;
+    if (simulacion == 2) maxRondas = 99;
     var CAPITAL_ENTRADA = 1000;
     var grupos = 1;
     var ronda = 0;
@@ -902,6 +1012,15 @@ $( document ).ready(function() {
     var ganadores = 0;
     var participantes = [];
     var listosParaReingresar = [];
+
+    // nivel: [green, white, red]
+    var medidores = {
+      0: [0,0,0],
+      1: [0,0,0],
+      2: [0,0,0],
+      3: [0,0,0],
+      4: [0,0,0]
+    };
 
     if (simulacion == 1 || simulacion > 2) {
       participantes = [
@@ -926,6 +1045,52 @@ $( document ).ready(function() {
       ];
     };
 
+    var refrescarMedidorUI = (medidor) => {
+      var ROW_SIZE = 890;
+      var DOT_W = 1;
+      var DOT_H = 1;
+      var n = 0, filas = 0, resto = 0;
+      var colores = {0: 'green', 1: 'white', 2: 'red'};
+      console.log('refresh', medidor);
+      // iterar colores
+
+      /*
+      if (ronda > 0) {
+        ROW_SIZE = 1780;
+        DOT_W = 0.5;
+        DOT_H = 0.5;
+      }
+      */
+
+      for (c=0; c<=2; c++) {
+        n = medidores[medidor][c] / 4;
+        filas = Math.floor(n / ROW_SIZE);
+        resto = n % ROW_SIZE;
+        $(`.viz${EJECUTANDO_SIM} .bloq${medidor} .${colores[c]}`).text("").css({
+          width: ROW_SIZE*DOT_W + "px", height: DOT_H*filas + "px"
+        });
+        $(`.viz${EJECUTANDO_SIM} .bloq${medidor} .${colores[c]}R`).css({
+          width: resto*DOT_W + "px", height: DOT_H + "px"
+        });
+      }
+    };
+
+    var refrescarMedidores = () => {
+      // Reiniciar
+      medidores = { 0: [0,0,0], 1: [0,0,0], 2: [0,0,0], 3: [0,0,0], 4: [0,0,0] };
+      // Contar:
+      participantes.forEach((p) => {
+        var colorId = 1;
+        if (p.capital < 0) colorId = 2;
+        if (p.capital > 0) colorId = 0;
+        medidores[p.nivel][colorId]++;
+      });
+
+      for(i=0; i<=4; i++) {
+        refrescarMedidorUI(i);
+      }
+      console.log(medidores);
+    };
 
     var total = 0;
     var $sim = $(".sim" + simulacion);
@@ -964,6 +1129,32 @@ $( document ).ready(function() {
         breakdown[item].elBar.css({width: breakdown[item].perc + "%"});
         breakdown[item].elBar.text(breakdown[item].perc + "%");
       });
+    };
+
+    var viz2 = [];
+    if (simulacion == 2) {
+      for (i=1; i<=8; i++) {
+        viz2.push($('.viz2 .nodo' + i));
+      }
+    }
+    var vizCirculoBarras = ($nodo, positivo, negativo) => {
+      var altoBarra = 150;
+      var hPositivo = parseInt(positivo*altoBarra);
+      $nodo.find('.dinero_positivo').css({
+          'height': `${hPositivo}px`,
+          'margin-top': `${150-hPositivo}px`
+        });
+      $nodo.find('.dinero_negativo').css({'height': parseInt(negativo*altoBarra) + "px"});
+    };
+    var vizCirculo = (participanteIndex, capital) => {
+      console.log(viz2);
+      if (capital == 0) {
+        vizCirculoBarras(viz2[participanteIndex], 0, 0);
+      } else if (capital > 0) {
+        vizCirculoBarras(viz2[participanteIndex], capital / 7000, 0);
+      } else {
+        vizCirculoBarras(viz2[participanteIndex], 0, capital / -7000);
+      }
     };
 
     var categorize = () => {
@@ -1015,6 +1206,7 @@ $( document ).ready(function() {
         nuevos = 0;
         acumuladorGanadores = 0;
 
+
         // 3. Contar aguas, formaran grupos nuevos:
         grupos = 0;
         participantes.forEach((p) => {
@@ -1031,6 +1223,9 @@ $( document ).ready(function() {
           }
         });
         total = participantes.length;
+
+
+        refrescarMedidores();
 
         // 1. Ver cuantos aguas pueden ganar:
         participantes.forEach((p) => {
@@ -1081,13 +1276,13 @@ $( document ).ready(function() {
             });
           }
         });
+
       } // Fin Sim1
 
       if (simulacion == 2) {
         ronda++;
         total = participantes.length;
-        var s = "";
-        participantes.forEach((p) => {
+        participantes.forEach((p, pIndex) => {
           // Todos ponen
           p.capital -= CAPITAL_ENTRADA;
           // Nivel 1 gana
@@ -1097,9 +1292,8 @@ $( document ).ready(function() {
           // Todos ascienden
           p.nivel--;
           if (p.nivel == 0) p.nivel = 8; // Ganador va a niv 8
-          s += p.capital + " / ";
+          vizCirculo(pIndex, p.capital);
         });
-        console.log(s);
       }
 
 
@@ -1110,7 +1304,7 @@ $( document ).ready(function() {
         if (ronda < maxRondas && EJECUTANDO_SIM == simulacion) {
           simStep();
         }
-      }, 400);
+      }, 500);
     };
 
     simStep();
@@ -1304,7 +1498,7 @@ $( document ).ready(function() {
 
   <!-- ............. WHITE AGAIN ............. -->
   <!-- ............. Fase ESTAFA ............. -->
-  <div class="spacer-400"> </div>
+  <div class="spacer-600"> </div>
 
   <h2>Hagamos algunas</h2>
   <h1 style="margin-top: 0px"><span>simulaciones</span></h1>
@@ -1313,14 +1507,16 @@ $( document ).ready(function() {
 
   <div class="simulaciones">
 
-    <div class="sim sim2">
+    <div class="sim_left">
+
+    <div class="sim sim2 colapsado">
       <div class="titulos">
-        <h4>Círculo de Confianza</h4>
+        <h4>Círculo de Ahorro</h4>
         <h5>(nunca se suma gente nueva)</h5>
       </div>
       <div class="sim_data">
         <div class="dato floatRight">
-          Grupos: <span class="grupos">0</span>
+          Grupos: <span class="grupos">1</span>
         </div>
         <div class="dato floatLeft">
           Ronda: <span class="ronda">0</span>
@@ -1333,7 +1529,7 @@ $( document ).ready(function() {
           Participantes nuevos: <span class="nuevos">0</span>
         </div>
         <div class="clear"></div>
-        <div class="dato">Personas involucradas: <span class="total">0</span></div>
+        <div class="dato">Personas involucradas: <span class="total">8</span></div>
         <table class="sim_table">
         <tr class="tabla_titulos">
           <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>
@@ -1367,7 +1563,7 @@ $( document ).ready(function() {
       </div>
     </div>
 
-    <div class="sim sim1">
+    <div class="sim sim1 colapsado">
       <div class="titulos">
         <h4>Telar 100% Abierto</h4>
         <h5>(ningún ganador reingresa)</h5>
@@ -1426,7 +1622,7 @@ $( document ).ready(function() {
       </div>
     </div>
 
-    <div class="sim sim3">
+    <div class="sim sim3 colapsado">
       <div class="titulos">
         <h4>Telar (reciclaje=25%)</h4>
         <h5>(1 de cada 4 ganadores reingresa al sistema)</h5>
@@ -1485,7 +1681,7 @@ $( document ).ready(function() {
       </div>
     </div>
 
-    <div class="sim sim4">
+    <div class="sim sim4 colapsado">
       <div class="titulos">
       <h4>Telar (reciclaje=100%)</h4>
       <h5>(todos los ganadores reingresan al sistema)</h5>
@@ -1543,7 +1739,194 @@ $( document ).ready(function() {
         </table>
       </div>
     </div>
+
+  </div> <!-- sim left -->
+  <div class="sim_right">
+    <div class="viz2">
+      <div class="nodo nodo1">
+        <div class="dinero_positivo"></div>
+        <div class="circulo"></div>
+        <div class="dinero_negativo"></div>
+      </div>
+      <div class="nodo nodo2">
+        <div class="dinero_positivo"></div>
+        <div class="circulo"></div>
+        <div class="dinero_negativo"></div>
+      </div>
+      <div class="nodo nodo3">
+        <div class="dinero_positivo"></div>
+        <div class="circulo"></div>
+        <div class="dinero_negativo"></div>
+      </div>
+      <div class="nodo nodo4">
+        <div class="dinero_positivo"></div>
+        <div class="circulo"></div>
+        <div class="dinero_negativo"></div>
+      </div>
+      <div class="nodo nodo5">
+        <div class="dinero_positivo"></div>
+        <div class="circulo"></div>
+        <div class="dinero_negativo"></div>
+      </div>
+      <div class="nodo nodo6">
+        <div class="dinero_positivo"></div>
+        <div class="circulo"></div>
+        <div class="dinero_negativo"></div>
+      </div>
+      <div class="nodo nodo7">
+        <div class="dinero_positivo"></div>
+        <div class="circulo"></div>
+        <div class="dinero_negativo"></div>
+      </div>
+      <div class="nodo nodo8">
+        <div class="dinero_positivo"></div>
+        <div class="circulo"></div>
+        <div class="dinero_negativo"></div>
+      </div>
+    </div> <!-- viz2 -->
+    <div class="viz1 vizX">
+      <div class="bloq bloq0">
+        <h4>Ganadores</h4>
+        <div class="green"></div>
+        <div class="greenR"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq1">
+        <h4>Agua</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq2">
+        <h4>Tierra</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq3">
+        <h4>Aire</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq4">
+        <h4>Fuego</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+    </div>
+    <div class="viz3 vizX">
+      <div class="bloq bloq0">
+        <h4>Ganadores</h4>
+        <div class="green"></div>
+        <div class="greenR"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq1">
+        <h4>Agua</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq2">
+        <h4>Tierra</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq3">
+        <h4>Aire</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq4">
+        <h4>Fuego</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+    </div>
+    <div class="viz4 vizX">
+      <div class="bloq bloq0">
+        <h4>Ganadores</h4>
+        <div class="green"></div>
+        <div class="greenR"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq1">
+        <h4>Agua</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq2">
+        <h4>Tierra</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq3">
+        <h4>Aire</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq4">
+        <h4>Fuego</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+    </div>
   </div>
+</div>
 
   <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>
