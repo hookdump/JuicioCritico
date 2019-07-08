@@ -480,9 +480,11 @@ $( document ).ready(function() {
     $reciclados.text(0);
     $nuevos.text(0);
     $total.text(0);
+    /*
     $sim.find('.count').text('0');
     $sim.find('.bar').text('0.0%');
     $sim.find('.bar').css({width: "0%"});
+    */
   }
 
   // ANIMACIONES
@@ -1290,9 +1292,11 @@ $( document ).ready(function() {
       [0,1,2,3,4,5].forEach((item) => {
         breakdown[item].percN = (breakdown[item].count / total)*100;
         breakdown[item].perc = (breakdown[item].percN).toFixed(1);
+        /*
         breakdown[item].elCount.text(locale(breakdown[item].count));
         breakdown[item].elBar.css({width: breakdown[item].perc + "%"});
         breakdown[item].elBar.text(breakdown[item].perc + "%");
+        */
       });
       if (CHART_MODE && simulacion !== 2) {
         var perdieron = breakdown[0].percN + breakdown[1].percN;
@@ -1754,6 +1758,13 @@ $( document ).ready(function() {
         </div>
         <div class="clear"></div>
         <div class="dato">Personas involucradas: <span class="total">0</span></div>
+
+
+        <div class="sim-chart-container"
+          style="position: relative; height:278px; width:862px">
+          <canvas id="simChart1"></canvas>
+        </div>
+
         <table class="sim_table">
         <tr class="tabla_titulos">
           <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>

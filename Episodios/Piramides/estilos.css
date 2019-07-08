@@ -430,7 +430,7 @@ h5 { font-size: 30px; }
 
 .simulaciones .sim {
   width: 100%;
-  height: 500px;
+  height: 588px;
   background-color: white;
   float: left;
   margin: 30px;
@@ -463,6 +463,7 @@ h5 { font-size: 30px; }
 }
 
 .sim_table {
+  display: none;
   width: 100%;
   border: 1px solid black;
   background-color: black;
@@ -651,4 +652,11 @@ h5 { font-size: 30px; }
   left: 20px;
   width: 870px;
   height: 310px;
+}
+
+.sim-chart-container {
+  background-color: white;
+  top: 20px;
+  width: 862px;
+  height: 278px;
 }
