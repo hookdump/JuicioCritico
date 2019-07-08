@@ -34,6 +34,7 @@ body::-webkit-scrollbar {
   width: 200px;
   padding: 5px;
   z-index: 9999;
+  display: none;
 }
 
 h1, h2, h3, h4, h5 {
@@ -439,7 +440,7 @@ h5 { font-size: 30px; }
 }
 .simulaciones .sim.colapsado {
   height: 115px;
-  opacity: 0.3;
+  opacity: 0.1;
 }
 
 .simulaciones .sim h5 {
@@ -632,3 +633,22 @@ h5 { font-size: 30px; }
 .bloq2 h4 { color: #E7CF33; }
 .bloq3 h4 { color: #C6A46E; }
 .bloq4 h4 { color: #BB98B4; }
+
+.vizChart {
+  display: none;
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  padding-top: 20px;
+  position: absolute;
+  z-index: 999;
+}
+
+.chart-container {
+  background-color: white;
+  top: 20px;
+  left: 20px;
+  width: 870px;
+  height: 310px;
+}
