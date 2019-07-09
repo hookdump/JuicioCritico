@@ -190,12 +190,15 @@ $( document ).ready(function() {
     {animacion: 'emoji_odio'},
     {animacion: 'emoji_pensando'},
     {y: 1760}, // 9
-    {animacion: 'parte1'}
+    {animacion: 'parte1'},
+    {animacion: 'parte2'},
+    {animacion: 'parte1_center'}
   ]);
 
   // Fase 2: Telar de la Abundancia
   mapa = mapa.concat([
     {y: 3150},
+    {animacion: 'nombre1'},
     {animacion: 'nombre2'},
     {animacion: 'nombre3'},
     {animacion: 'nombre4'},
@@ -294,7 +297,7 @@ $( document ).ready(function() {
   // 31 - Post Flor
   // 55 - Simulaciones
   // 73 - Post Simulaciones
-  var pos = 9;
+  var pos = 0;
 
   // Inicializacion
   console.log("Start!");
@@ -533,6 +536,28 @@ $( document ).ready(function() {
       $(".hparte1 em").css({'text-shadow': '0 0 10px white'});
       $(".hparte1 span").css({'text-shadow': '0 0 10px red'});
       break;
+
+      case 'parte2':
+      $(".hparte1").animate({opacity: 0.1}, 500);
+      $(".hparte2").animate({opacity: 1}, 500);
+      $(".hparte1 em").css({'text-shadow': 'none'});
+      $(".hparte1 span").css({'text-shadow': 'none'});
+      $(".hparte2 em").css({'text-shadow': '0 0 10px white'});
+      $(".hparte2 span").css({'text-shadow': '0 0 10px red'});
+      break;
+
+      case 'parte1_center':
+      $(".hparte1").animate({
+        'top': '+=200',
+        'font-size': 100,
+        'transform': 'scale(1.5)',
+        opacity: 1
+      }, 1200, 'easeOutQuart');
+      $(".hparte2").animate({'top': '+=600', opacity: 0}, 600);
+      $(".hparte1 em").css({'text-shadow': '0 0 10px white'});
+      $(".hparte1 span").css({'text-shadow': '0 0 10px red'});
+      break;
+
 
       case 'florParcial1':
       posicionarPetalo('tierra1', genericDelay);
@@ -787,6 +812,11 @@ $( document ).ready(function() {
       posicionarPetalo('fuego6', fuegoDelay);
       posicionarPetalo('fuego7', fuegoDelay);
       posicionarPetalo('fuego8', fuegoDelay);
+      break;
+
+    case 'nombre1':
+      $('.nombre.n0').animate({'top': -700});
+      $('.nombre.n1').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
       break;
 
       case 'nombre2':
@@ -1677,11 +1707,11 @@ $( document ).ready(function() {
 
     <h2 class="hparte1" data-aos-anchor-placement="center-center" data-aos="flip-down"
     style="position: absolute; margin-top: -450px; text-align: center; width: 100%">
-      <span>Parte 1</span><br /><em style="font-style: normal'">El lado matemático</em></h2>
+      <span>Episodio 1</span><br /><em style="font-style: normal">El lado matemático</em></h2>
 
     <h2  class="hparte2" data-aos-anchor-placement="bottom-bottom" data-aos="flip-down"
     style="position: absolute; margin-bottom: -400px; text-align: center; width: 100%">
-      <span>Parte 2</span><br />El lado psicológico</h2>
+      <span>Episodio 2</span><br />El lado psicológico</h2>
 
     <div class="spacer-500"> </div>
   </div>
@@ -1689,6 +1719,9 @@ $( document ).ready(function() {
   <div class="spacer-700"> </div>
   <div class="spacer-50"> </div>
   <div class="nombres">
+    <div class="nombre n0">
+      <div class="redCenter">"El avión"</div>
+    </div>
     <div class="nombre n1">
       <div class="align-right">Telar de&nbsp;</div>
       <div class="red">mujeres</div>

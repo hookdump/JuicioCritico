@@ -131,6 +131,12 @@ h5 { font-size: 30px; }
   display: block;
 }
 
+.redCenter {
+  width: 100%;
+  color: red;
+  text-align: center;
+}
+
 
 .petalo {
   position: absolute;
