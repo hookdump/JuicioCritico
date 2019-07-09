@@ -34,7 +34,6 @@ body::-webkit-scrollbar {
   width: 200px;
   padding: 5px;
   z-index: 9999;
-  display: none;
 }
 
 h1, h2, h3, h4, h5 {
@@ -128,9 +127,10 @@ h5 { font-size: 30px; }
 .nombres .nombre {
   display: none;
 }
-.nombres .nombre.n1 {
+.nombres .nombre.n0 {
   display: block;
 }
+
 
 .petalo {
   position: absolute;
@@ -410,6 +410,7 @@ h5 { font-size: 30px; }
 }
 
 .simulaciones {
+  font-family: 'Ubuntu Mono';
   width: 100%;
   height: 1080px;
   background-color: #707070;
@@ -646,6 +647,22 @@ h5 { font-size: 30px; }
   z-index: 999;
 }
 
+.perdedores1, .perdedores3, .perdedores4 {
+  font-family: 'Roboto Slab', serif;
+  position: absolute;
+  left: 100px;
+  right: 47px;
+  height: 230px;
+  color: red;
+  font-size: 200px;
+  z-index: 999;
+  opacity: 0.2;
+  text-align: left;
+}
+.perdedores1 { top: 164px; }
+.perdedores3 { top: 473px; }
+.perdedores4 { top: 783px; }
+
 .chart-container {
   background-color: white;
   top: 20px;
@@ -660,3 +677,47 @@ h5 { font-size: 30px; }
   width: 862px;
   height: 278px;
 }
+
+.simuladores_foto {
+  width: 1140px;
+  height: 424px;
+  background-image: url('simuladores.png');
+  transform: rotate(270deg);
+  position: fixed;
+  top: 300px;
+  right: -780px;
+}
+
+.chart_derecha_1, .chart_derecha_3, .chart_derecha_4 {
+  opacity: 0;
+}
+
+.winner_chart {
+  text-align: center;
+}
+.winner_chart .mujer {
+  width: 220px;
+  height: 409px;
+  margin: 0 -10px;
+  display: inline-block;
+}
+.winner_chart .mujer.rojo {
+  background: url('icon_red_mujer.png');
+  background-size: contain;
+  opacity: 0;
+}
+.winner_chart .mujer.verde {
+  background: url('icon_green_mujer.png');
+  background-size: contain;
+  opacity: 0;
+}
+
+.chartB { opacity: 0; }
+.chartB .mujer { margin: 0 -60px; }
+
+.chartC { opacity: 0; }
+.chartC .mujer { margin: 0 -60px -300px -60px; }
+.chartD { opacity: 0; margin-top: 300px; }
+.chartD .mujer { margin: 0px -60px -300px -60px; }
+.chartE { opacity: 0; margin-top: 300px; }
+.chartE .mujer { margin: 0px -60px -300px -60px; }

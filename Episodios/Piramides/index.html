@@ -13,6 +13,12 @@
 
 <script type="text/javascript">
 $( document ).ready(function() {
+    Chart.defaults.global.defaultFontFamily = 'Ubuntu Mono';
+
+
+    function locale(nro) {
+      return nro.toLocaleString().replace(/,/g, ".");
+    };
 
   var ctx = {
     1: document.getElementById('myChart1').getContext('2d'),
@@ -28,6 +34,13 @@ $( document ).ready(function() {
     1: null,
     3: null,
     4: null
+  };
+
+  var SIM_CHARTS = {
+    1: {chart: null, data: [], ctx: document.getElementById('simChart1').getContext('2d')},
+    2: {chart: null, data: [], ctx: document.getElementById('simChart2').getContext('2d')},
+    3: {chart: null, data: [], ctx: document.getElementById('simChart3').getContext('2d')},
+    4: {chart: null, data: [], ctx: document.getElementById('simChart4').getContext('2d')}
   };
 
   var CHART_MODE = false;
@@ -176,7 +189,8 @@ $( document ).ready(function() {
     {animacion: 'emoji_amor'},
     {animacion: 'emoji_odio'},
     {animacion: 'emoji_pensando'},
-    {y: 1760},
+    {y: 1760}, // 9
+    {animacion: 'parte1'}
   ]);
 
   // Fase 2: Telar de la Abundancia
@@ -237,6 +251,7 @@ $( document ).ready(function() {
   // 55: Fase 4, simulaciones
   mapa = mapa.concat([
     {y: '6110'},
+    {animacion: 'simuladores_foto'},
     {animacion: 'sim_panorama1'},
     {animacion: 'sim_prep2'},
     {animacion: 'sim_run2'},
@@ -259,6 +274,14 @@ $( document ).ready(function() {
 
   mapa = mapa.concat([
     {y: 8380, delay: 1800, easing: 'easeOutQuart'},
+    {y: 8754, delay: 1000, easing: 'easeOutQuart'},
+    // 73 WINNER CHART
+    {animacion: 'winners1'},
+    {animacion: 'winners2'},
+    {animacion: 'winners3'},
+    {animacion: 'winners4'},
+    {animacion: 'winners5'},
+    {animacion: 'winners6'}
   ]);
 
 
@@ -270,8 +293,8 @@ $( document ).ready(function() {
   // 16 - Flor
   // 31 - Post Flor
   // 55 - Simulaciones
-  // 71 - Post Simulaciones
-  var pos = 55;
+  // 73 - Post Simulaciones
+  var pos = 9;
 
   // Inicializacion
   console.log("Start!");
@@ -503,6 +526,12 @@ $( document ).ready(function() {
 
       case 'emoji_pensando':
       $('.emoji_pensando').animate({opacity: 1});
+      break;
+
+      case 'parte1':
+      $(".hparte2").animate({opacity: 0.1}, 500);
+      $(".hparte1 em").css({'text-shadow': '0 0 10px white'});
+      $(".hparte1 span").css({'text-shadow': '0 0 10px red'});
       break;
 
       case 'florParcial1':
@@ -920,13 +949,18 @@ $( document ).ready(function() {
       $(".contadores").fadeOut();
       break;
 
+      case 'simuladores_foto':
+      $('.simuladores_foto').animate({right: -380}, 2000);
+      break;
+
       // SIMULACIONES
       case 'sim_panorama1':
       console.log('SIMULACIONES >>>');
-      scrollToPos(7264, 1000, 'easeOutQuart');
+      scrollToPos(7254, 1000, 'easeOutQuart');
       break;
 
       case 'sim_prep1':
+      $('.simuladores_foto').hide();
       var go = 1;
       if (EJECUTANDO_SIM) {
         $('.sim' + EJECUTANDO_SIM).addClass('colapsado', 1000);
@@ -993,8 +1027,15 @@ $( document ).ready(function() {
       // sim 1b &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
       case 'sim_prep1b':
       CHART_MODE = true;
+      for (iSim=1; iSim<=4; iSim++) {
+        for (iDataset=0; iDataset<3; iDataset++) {
+          SIM_CHARTS[iSim].chart.data.datasets[iDataset].data = [];
+        }
+        SIM_CHARTS[iSim].chart.update();
+      }
       $('.vizChart').fadeIn();
       resetSim(1);
+      $('.chart_derecha_1').animate({opacity: 1}, 600);
       ejecutarAnimacion('sim_prep1');
       break;
       case 'sim_run1b':
@@ -1005,6 +1046,7 @@ $( document ).ready(function() {
       case 'sim_prep3b':
       CHART_MODE = true;
       resetSim(3);
+      $('.chart_derecha_3').animate({opacity: 1}, 600);
       ejecutarAnimacion('sim_prep3');
       break;
       case 'sim_run3b':
@@ -1015,6 +1057,7 @@ $( document ).ready(function() {
       case 'sim_prep4b':
       CHART_MODE = true;
       resetSim(4);
+      $('.chart_derecha_4').animate({opacity: 1}, 600);
       ejecutarAnimacion('sim_prep4');
       break;
       case 'sim_run4b':
@@ -1022,7 +1065,32 @@ $( document ).ready(function() {
       break;
 
 
+      case 'winners1':
+      $('.winner_chart .mujer.verde').animate({opacity: 1});
+      break;
 
+      case 'winners2':
+      $('.winner_chart .mujer.rojo').animate({opacity: 1});
+      break;
+
+      case 'winners3':
+      $('.chartA .mujer.rojo').switchClass("rojo", "verde", 1000, "linear");
+      break;
+
+      case 'winners4':
+      $('.chartB').animate({opacity: 1});
+      $('.chartC').animate({opacity: 1});
+      $('.chartD').css({opacity: 1});
+      $('.chartE').css({opacity: 1});
+      break;
+
+      case 'winners5':
+      scrollToPos(10408, 3000, 'easeOutQuart');
+      break;
+
+      case 'winners6':
+      scrollToPos(11035, 3000, 'easeOutQuart');
+      break;
     }
   };
 
@@ -1035,6 +1103,7 @@ $( document ).ready(function() {
             {
               label: 'Telar sin reingresos',
               fill: false,
+              lineTension: 0,
               backgroundColor: 'red',
               borderColor: 'red',
               pointBackgroundColor: 'red',
@@ -1079,6 +1148,7 @@ $( document ).ready(function() {
             {
               label: 'Telar con 25% de reingresos',
               fill: false,
+              lineTension: 0,
               backgroundColor: 'red',
               borderColor: 'red',
               pointBackgroundColor: 'red',
@@ -1123,6 +1193,7 @@ $( document ).ready(function() {
             {
               label: 'Telar con 100% de reingresos',
               fill: false,
+              lineTension: 0,
               backgroundColor: 'red',
               borderColor: 'red',
               pointBackgroundColor: 'red',
@@ -1159,6 +1230,71 @@ $( document ).ready(function() {
       }
     });
 
+
+
+
+    var initSimChart = (nro) => {
+      var setup = {
+        type: 'bar',
+        data: {
+            datasets: [
+              {
+                label: 'Saldo negativo',
+                backgroundColor: 'red',
+                data: []
+              },
+              {
+                label: 'En cero',
+                backgroundColor: 'gray',
+                data: []
+              },
+              {
+                label: 'Saldo positivo',
+                backgroundColor: 'rgb(0,200,0)',
+                data: []
+              },
+            ]
+        },
+        options: {
+          animation: {
+            easing: 'linear',
+            duration: 100,
+          },
+          legend: {
+             display: true,
+          },
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [{
+              stacked: true,
+              ticks: {
+                fontSize: 20,
+              }
+            }],
+            yAxes: [{
+              stacked: true,
+              ticks: {
+                callback: locale,
+                fontSize: 20,
+              }
+            }]
+          }
+        }
+      };
+      if (nro !== 2) {
+        setup.data.labels = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18];
+      } else {
+        setup.data.labels = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
+      }
+      var chart = new Chart(SIM_CHARTS[nro].ctx, setup);
+      SIM_CHARTS[nro].chart = chart;
+    };
+
+    initSimChart(1);
+    initSimChart(2);
+    initSimChart(3);
+    initSimChart(4);
+
   };
 
 /*
@@ -1168,7 +1304,7 @@ $( document ).ready(function() {
   function runSim(simulacion, plotChart) {
     EJECUTANDO_SIM = simulacion;
     var maxRondas = 18;
-    if (simulacion == 2) maxRondas = 99;
+    if (simulacion == 2) maxRondas = 16;
     var CAPITAL_ENTRADA = 1000;
     var grupos = 1;
     var ronda = 0;
@@ -1210,13 +1346,14 @@ $( document ).ready(function() {
       ];
     };
 
+    // PIXELS!!!
+    // 1 pixel = 4 personas
     var refrescarMedidorUI = (medidor) => {
       var ROW_SIZE = 890;
       var DOT_W = 1;
       var DOT_H = 1;
       var n = 0, filas = 0, resto = 0;
       var colores = {0: 'green', 1: 'white', 2: 'red'};
-      console.log('refresh', medidor);
       // iterar colores
 
       /*
@@ -1228,7 +1365,7 @@ $( document ).ready(function() {
       */
 
       for (c=0; c<=2; c++) {
-        n = medidores[medidor][c] / 4;
+        n = medidores[medidor][c] / 4; // 1 pixel = 4 personas
         filas = Math.floor(n / ROW_SIZE);
         resto = n % ROW_SIZE;
         $(`.viz${EJECUTANDO_SIM} .bloq${medidor} .${colores[c]}`).text("").css({
@@ -1273,15 +1410,14 @@ $( document ).ready(function() {
       {count: 0, perc: 0},
       {count: 0, perc: 0},
     ];
+    /*
     [0,1,2,3,4,5].forEach((item) => {
       breakdown[item].elCapital = $sim.find(".capital_" + item);
       breakdown[item].elCount = breakdown[item].elCapital.find(".count");
       breakdown[item].elBar = breakdown[item].elCapital.find(".bar");
     });
+    */
 
-    var locale = (nro) => {
-      return nro.toLocaleString().replace(/,/g, ".");
-    };
 
     var refreshUI = () => {
       $grupos.text(locale(grupos));
@@ -1289,7 +1425,7 @@ $( document ).ready(function() {
       $reciclados.text(locale(reciclados));
       $nuevos.text(locale(nuevos));
       $total.text(locale(total));
-      [0,1,2,3,4,5].forEach((item) => {
+      [0,1,2].forEach((item) => {
         breakdown[item].percN = (breakdown[item].count / total)*100;
         breakdown[item].perc = (breakdown[item].percN).toFixed(1);
         /*
@@ -1299,10 +1435,16 @@ $( document ).ready(function() {
         */
       });
       if (CHART_MODE && simulacion !== 2) {
-        var perdieron = breakdown[0].percN + breakdown[1].percN;
+        var perdieron = breakdown[0].percN;
         CHART_OBJ[simulacion].data.datasets[0].data.push(perdieron);
         CHART_OBJ[simulacion].update();
+        $('.perdedores' + simulacion).text((breakdown[0].percN).toFixed(2) + "%");
       }
+      // SIM SIM_CHARTS
+      [0,1,2].forEach((item) => {
+        SIM_CHARTS[simulacion].chart.data.datasets[item].data.push(breakdown[item].count);
+        SIM_CHARTS[simulacion].chart.update();
+      });
     };
 
     var viz2 = [];
@@ -1321,7 +1463,6 @@ $( document ).ready(function() {
       $nodo.find('.dinero_negativo').css({'height': parseInt(negativo*altoBarra) + "px"});
     };
     var vizCirculo = (participanteIndex, capital) => {
-      console.log(viz2);
       if (capital == 0) {
         vizCirculoBarras(viz2[participanteIndex], 0, 0);
       } else if (capital > 0) {
@@ -1337,6 +1478,10 @@ $( document ).ready(function() {
         i.count = 0;
       });
       participantes.forEach((p) => {
+        if (p.capital < 0) breakdown[0].count++;
+        if (p.capital == 0) breakdown[1].count++;
+        if (p.capital > 0) breakdown[2].count++;
+        /*
         if (simulacion == 1 || simulacion > 2) {
           if (p.capital < 0) breakdown[0].count++;
           if (p.capital == 0) breakdown[1].count++;
@@ -1351,6 +1496,7 @@ $( document ).ready(function() {
           if (p.capital > 0 && p.capital < 7000) breakdown[3].count++;
           if (p.capital >= 7000) breakdown[4].count++;
         }
+        */
       });
     };
 
@@ -1527,8 +1673,16 @@ $( document ).ready(function() {
       <img src="thinking.gif" class="emoji_pensando" />
     </div>
 
-    <div class="spacer-500"> </div>
-    <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">¿Qué es el <span>Telar de la Abundancia</span>?</h2>
+    <div class="spacer-500" style="margin-bottom: 126px"> </div>
+
+    <h2 class="hparte1" data-aos-anchor-placement="center-center" data-aos="flip-down"
+    style="position: absolute; margin-top: -450px; text-align: center; width: 100%">
+      <span>Parte 1</span><br /><em style="font-style: normal'">El lado matemático</em></h2>
+
+    <h2  class="hparte2" data-aos-anchor-placement="bottom-bottom" data-aos="flip-down"
+    style="position: absolute; margin-bottom: -400px; text-align: center; width: 100%">
+      <span>Parte 2</span><br />El lado psicológico</h2>
+
     <div class="spacer-500"> </div>
   </div>
 
@@ -1677,6 +1831,10 @@ $( document ).ready(function() {
   <h2>Hagamos algunas</h2>
   <h1 style="margin-top: 0px"><span>simulaciones</span></h1>
 
+  <div class='simuladores_foto'>
+
+  </div>
+
   <div class="spacer-400"> </div>
 
   <div class="simulaciones">
@@ -1696,7 +1854,7 @@ $( document ).ready(function() {
           Ronda: <span class="ronda">0</span>
         </div>
         <div class="clear"></div>
-        <div class="dato floatRight">
+        <div class="dato floatRight" style="display: none">
           Participantes reciclados: <span class="reciclados">0</span>
         </div>
         <div class="dato floatLeft">
@@ -1704,36 +1862,11 @@ $( document ).ready(function() {
         </div>
         <div class="clear"></div>
         <div class="dato">Personas involucradas: <span class="total">8</span></div>
-        <table class="sim_table">
-        <tr class="tabla_titulos">
-          <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>
-        </tr>
-        <tr class="capital_0">
-          <td width="24%">Perdió $7.000</td>
-          <td width="20%" class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_1">
-          <td>Perdió menos de $7.000</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_2">
-          <td>Cero</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_3">
-          <td>Ganó menos de $7.000</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_4">
-          <td>Ganó $7.000</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        </table>
+        <!-- Chart -->
+        <div class="sim-chart-container"
+          style="position: relative; height:278px; width:862px">
+          <canvas id="simChart2"></canvas>
+        </div>
       </div>
     </div>
 
@@ -1750,7 +1883,7 @@ $( document ).ready(function() {
           Ronda: <span class="ronda">0</span>
         </div>
         <div class="clear"></div>
-        <div class="dato floatRight">
+        <div class="dato floatRight" style="display: none">
           Participantes reciclados: <span class="reciclados">0</span>
         </div>
         <div class="dato floatLeft">
@@ -1759,47 +1892,12 @@ $( document ).ready(function() {
         <div class="clear"></div>
         <div class="dato">Personas involucradas: <span class="total">0</span></div>
 
-
+        <!-- Chart -->
         <div class="sim-chart-container"
           style="position: relative; height:278px; width:862px">
           <canvas id="simChart1"></canvas>
         </div>
 
-        <table class="sim_table">
-        <tr class="tabla_titulos">
-          <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>
-        </tr>
-        <tr class="capital_0">
-          <td width="22%">Negativo</td>
-          <td width="20%" class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_1">
-          <td>Cero</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_2">
-          <td>$1 a $7.999</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_3">
-          <td>$8.000 a $19.999</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_4">
-          <td>$20.000 a $49.999</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_5">
-          <td>$50.000 o más</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        </table>
       </div>
     </div>
 
@@ -1824,41 +1922,12 @@ $( document ).ready(function() {
         </div>
         <div class="clear"></div>
         <div class="dato">Personas involucradas: <span class="total">0</span></div>
-        <table class="sim_table">
-        <tr class="tabla_titulos">
-          <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>
-        </tr>
-        <tr class="capital_0">
-          <td width="22%">Negativo</td>
-          <td width="20%" class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_1">
-          <td>Cero</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_2">
-          <td>$1 a $7.999</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_3">
-          <td>$8.000 a $19.999</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_4">
-          <td>$20.000 a $49.999</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_5">
-          <td>$50.000 o más</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        </table>
+
+        <!-- Chart -->
+        <div class="sim-chart-container"
+          style="position: relative; height:278px; width:862px">
+          <canvas id="simChart3"></canvas>
+        </div>
       </div>
     </div>
 
@@ -1883,41 +1952,11 @@ $( document ).ready(function() {
         </div>
         <div class="clear"></div>
         <div class="dato">Personas involucradas: <span class="total">0</span></div>
-        <table class="sim_table">
-        <tr class="tabla_titulos">
-          <td>Capital</td><td class="right">Nro. de personas</td><td>Proporción</td>
-        </tr>
-        <tr class="capital_0">
-          <td width="22%">Negativo</td>
-          <td width="20%" class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_1">
-          <td>Cero</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_2">
-          <td>$1 a $7.999</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_3">
-          <td>$8.000 a $19.999</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_4">
-          <td>$20.000 a $49.999</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        <tr class="capital_5">
-          <td>$50.000 o más</td>
-          <td class="count">0</td>
-          <td class="barContainer"><div class="bar"></div></td>
-        </tr>
-        </table>
+        <!-- Chart -->
+        <div class="sim-chart-container"
+          style="position: relative; height:278px; width:862px">
+          <canvas id="simChart4"></canvas>
+        </div>
       </div>
     </div>
 
@@ -2107,14 +2146,17 @@ $( document ).ready(function() {
       </div>
     </div>
     <div class="vizChart">
-      <h4>Porcentaje de gente que perdió dinero</h4>
-      <div class="chart-container" style="position: relative; height:310px; width:870px">
+      <h4>Porcentaje de gente que sale perdiendo</h4>
+      <div class="perdedores1"></div>
+      <div class="perdedores3"></div>
+      <div class="perdedores4"></div>
+      <div class="chart-container chart_derecha_1" style="position: relative; height:310px; width:870px">
         <canvas id="myChart1"></canvas>
       </div>
-      <div class="chart-container" style="position: relative; height:310px; width:870px">
+      <div class="chart-container chart_derecha_3" style="position: relative; height:310px; width:870px">
         <canvas id="myChart3"></canvas>
       </div>
-      <div class="chart-container" style="position: relative; height:310px; width:870px">
+      <div class="chart-container chart_derecha_4" style="position: relative; height:310px; width:870px">
         <canvas id="myChart4"></canvas>
       </div>
     </div>
@@ -2124,6 +2166,119 @@ $( document ).ready(function() {
   <div class="spacer-400"> </div>
 
   <h1>Conclusión:</h1>
+
+  <div class="winner_chart chartA">
+    <div class="mujer verde"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+  </div>
+  <div class="winner_chart chartB">
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+  </div>
+  <div class="winner_chart chartC">
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
+  </div>
+
+  <div class="winner_chart chartD">
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
+
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <!-- 8 -->
+    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
+     <div class="mujer verde"></div> <div class="mujer verde"></div>
+    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
+
+  </div>
+
+
+  <div class="winner_chart chartE">
+    <!-- 8 -->
+    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+    <!-- 8 -->
+    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div>
+    <!-- 8 -->
+    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+    <!-- 8 -->
+    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div>
+    <!-- 8 -->
+    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+    <!-- 8 -->
+    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div>
+    <!-- 8 -->
+    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+    <!-- 8 -->
+    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div>
+
+  </div>
+
+
+
 
   <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>
