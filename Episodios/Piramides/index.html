@@ -47,6 +47,8 @@ $( document ).ready(function() {
   var EJECUTANDO_SIM = 0;
   var contadorGanadores = 0;
   var contadorPerdedores = 0;
+  var contadorTelares = 0;
+  var contadorPorcentaje = 0;
 
   initChart();
 
@@ -65,14 +67,14 @@ $( document ).ready(function() {
       6: 36,
       7: 37,
       8: 24,
-      9: 24
+      9: 10
     };
     var targetH = {
       5: 80,
       6: 80,
       7: 50,
       8: 40,
-      9: 30
+      9: 20
     };
     console.log('agregando nivel ' + nivel + ' (' + cantidad + ')');
     var $bloque = $("<div class='bloque nuevoBloque'" +
@@ -99,7 +101,7 @@ $( document ).ready(function() {
         if (i % 64 == 0) { $nuevoNivel.append("<br class='lineBreak' />"); }
       }
       if (nivel == 9) {
-        if (i % 64 == 0) { $nuevoNivel.append("<br class='lineBreak' />"); }
+        if (i % 128 == 0) { $nuevoNivel.append("<br class='lineBreak' />"); }
       }
       if (nivel == 5 && i == 8) {
         // agregar split para level 5 (showcase split!)
@@ -124,18 +126,30 @@ $( document ).ready(function() {
     });
   }
 
-  function animarContador(actual, valor, $elemento) {
+  function animarContador(actual, valor, $elemento, opt) {
+    if (!opt) opt = {};
+    var formatear = (_data) => {
+      var _val;
+      if (opt.decimales) {
+        _val = _data.toFixed(opt.decimales);
+      } else {
+        _val = parseInt(_data);
+      }
+      if (opt.sufijo) _val += opt.sufijo;
+      return _val;
+    }
     return new Promise(function(resolve, reject) {
+      var _easing = opt.easing ? opt.easing : 'easeOutQuad';
+      var _dur = opt.duration ? opt.duration : 2000;
       console.log('Animando contador:', valor, $elemento);
       $({num: actual}).stop(true).animate({num: valor}, {
-        duration : 2000,
-        easing: "easeOutQuad",
+        duration : _dur,
+        easing: _easing,
         step: function () {
-          var valor = parseInt(this.num);
-          $elemento.text(valor);
+          $elemento.text(formatear(this.num));
         }
       }).promise().done(function () {
-          $elemento.text(valor);
+          $elemento.text(formatear(valor));
           return resolve();
       });
     });
@@ -144,30 +158,41 @@ $( document ).ready(function() {
   function animarContadores(nivel, ganador) {
     console.log('anim contadores', nivel);
     var g, p;
+    var tot;
     switch (nivel) {
       case 1:
       g=1;
       p=8;
       break;
+
       case 2:
       g=3;
       p=24;
       break;
+
       case 3:
       g=7;
       p=56;
       break;
+
       case 4:
       g=15;
       p=120;
       break;
+
       case 5:
       g=31;
       p=248;
       break;
+
       case 6:
       g=63;
       p=504;
+      break;
+
+      case 7:
+      g=127;
+      p=1016;
       break;
     }
     if (ganador) {
@@ -180,7 +205,26 @@ $( document ).ready(function() {
       animarContador(contadorPerdedores, p, $('.perdedoresNum')).then(function() {
         contadorPerdedores = p;
       });
+      animarContadorPorcentaje(contadorPorcentaje, nivel, g, p, $('.porcentajeNum')).then((nuevoVal) => {
+        contadorPorcentaje = nuevoVal;
+      });
     }
+  }
+
+  function animarContadorPorcentaje(prev, nivel, g, p, el) {
+    return new Promise((resolve, reject) => {
+      // if (nivel < 4) g = 7;
+      var nuevoPorcentaje = (1-(g/p)) * 100;
+      animarContador(prev, nuevoPorcentaje, el, {decimales: 2, sufijo: '%'}).then(() => {
+        return resolve(nuevoPorcentaje);
+      });
+    })
+  }
+
+  function animarContadorTelares(nuevo) {
+    animarContador(contadorTelares, nuevo, $('.telaresNum'), {easing: 'linear', duration: 400}).then(() => {
+      contadorTelares = nuevo;
+    });
   }
 
 
@@ -210,7 +254,7 @@ $( document ).ready(function() {
     {y: 400}, // 2
     {y: 550}, // 3
     {y: 600}, // 4
-    {y: 830, delay: 700},
+    {y: 798, delay: 700},
     {animacion: 'emoji_amor'},
     {animacion: 'emoji_odio'},
     {animacion: 'emoji_pensando'},
@@ -276,14 +320,16 @@ $( document ).ready(function() {
     {animacion: 'piramide_insert9'},
     {animacion: 'piramide_transfer6'},
     {animacion: 'piramide_gana6'},
+    {animacion: 'ordenar_perdedores'},
+    {animacion: 'ordenar_perdedores2'},
     {animacion: 'hide_ganadores'}
   ]);
 
-  // 55: Fase 4, simulaciones
+  // Fase 4, simulaciones
   mapa = mapa.concat([
-    {y: '6110'},
-    {animacion: 'simuladores_foto'},
-    {animacion: 'sim_panorama1'},
+    /* {y: '6110'},
+    {animacion: 'simuladores_foto'}, */
+    {animacion: 'sim_panorama1'},  // 57
     {animacion: 'sim_prep2'},
     {animacion: 'sim_run2'},
     {animacion: 'sim_prep1'},
@@ -303,9 +349,10 @@ $( document ).ready(function() {
     {animacion: 'sim_run4b'},
   ]);
 
+ // 72
   mapa = mapa.concat([
-    {y: 8380, delay: 1800, easing: 'easeOutQuart'},
-    {y: 8754, delay: 1000, easing: 'easeOutQuart'},
+    {y: 8500, delay: 1800, easing: 'easeOutQuart'},
+    {y: 9200, delay: 1000, easing: 'easeOutQuart'},
     // 73 WINNER CHART
     {animacion: 'winners1'},
     {animacion: 'winners2'},
@@ -324,8 +371,8 @@ $( document ).ready(function() {
   // 16 - Flor
   // 31 - Post Flor
   // 55 - Simulaciones
-  // 73 - Post Simulaciones
-  var pos = 31;
+  // 72 - Post Simulaciones
+  var pos = 0;
 
   // Inicializacion
   console.log("Start!");
@@ -870,6 +917,9 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_inicial':
+      contadorTelares = 1;
+      $('.telaresNum').text(1);
+      $(".contadores").animate({opacity: 1}, 500);
       $('.piramide').animate({opacity: 1}, 500);
       break;
 
@@ -895,6 +945,8 @@ $( document ).ready(function() {
       break;
 
       case 'showcaseSplit':
+      contadorTelares = 2;
+      $('.telaresNum').text(2);
       $('.tmpSplit.split1').animate({width: 360}, 1000, 'easeOutQuart');
       $('.tmpSplit.split2').animate({width: 200}, 1000, 'easeOutQuart');
       $('.tmpSplit.split3').animate({width: 200}, 1000, 'easeOutQuart');
@@ -909,6 +961,7 @@ $( document ).ready(function() {
       $('.tmpSplitB.splitB3').animate({width: 100}, 1000, 'easeOutQuart');
       $('.tmpSplit.split4').animate({width: 80},    1000, 'easeOutQuart');
       $('.tmpSplitB.splitB4').animate({width: 80},  1000, 'easeOutQuart');
+      animarContadorTelares(4);
       break;
 
       case 'showcaseSplit2':
@@ -920,6 +973,7 @@ $( document ).ready(function() {
       $('.nivel.n4').addClass('yaEsAgua');
       $('.nivel.n5').addClass('yaEsTierra');
       $('.nivel.n6').addClass('yaEsAire');
+      animarContadorTelares(8);
       break;
 
       case 'rejoinLvl3':
@@ -988,6 +1042,7 @@ $( document ).ready(function() {
       $('.n5 .bloque').animate({'width': 40}, 500);
       $('.n6 .bloque').animate({'width': 26}, 500);
       $('.n7 .bloque').animate({'width': 20}, 500);
+      animarContadorTelares(16);
       setTimeout(function() {
         $('.n7').find('.lineBreak').remove();
         ejecutarAnimacion('rejoinLvl5');
@@ -1013,10 +1068,20 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana5':
-      ejecutarAnimacion('rejoinLvl5');
-      $('.n5').removeClass('yaEsAgua').addClass('ganadores', 20, function() {
-        $('.n5 .bloque').animate({'top': -284, 'left': -315, 'width': 20, 'height': 40});
-      });
+      $('.n6 .bloque').animate({'width': 18}, 500);
+      $('.n7 .bloque').animate({'width': 16}, 500);
+      $('.n8 .bloque').animate({'width': 10}, 500);
+      animarContadorTelares(32);
+      setTimeout(function(){
+        $('.n8').find('.lineBreak').remove();
+        ejecutarAnimacion('rejoinLvl5');
+        $('.n5').removeClass('yaEsAgua').addClass('ganadores', 20, function() {
+          $('.n5 .bloque').animate({'top': -284, 'left': -315, 'width': 20, 'height': 40});
+        });
+        $('.n6').removeClass('yaEsTierra').addClass('yaEsAgua');
+        $('.n7').removeClass('yaEsAire').addClass('yaEsTierra');
+        $('.n8').removeClass('splitting').addClass('yaEsAire');
+      }, 600);
       break;
 
       case 'piramide_insert9':
@@ -1031,27 +1096,47 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana6':
-      $('.n6').removeClass('yaEsTierra splitting').addClass('ganadores', 20, function() {
+      // animarContadorTelares(64);
+      $('.n6').removeClass('yaEsTierra yaEsAgua splitting').addClass('ganadores', 20, function() {
         $('.n6 .bloque').animate({'top': -330, 'left': 294, 'width': 20, 'height': 40});
       });
       break;
 
-      case 'hide_ganadores':
-      $(".contadores").fadeOut();
+      case 'ordenar_perdedores':
+      $('.n7').animate({opacity: 0});
+      $('.n8').animate({opacity: 0});
+      $('.n9').animate({opacity: 0});
+      $('.ordenados').animate({opacity: 1});
       break;
 
+      case 'ordenar_perdedores2':
+      animarContadores(7, false);
+      animarContadores(7, true);
+      animarContadorTelares(64);
+      $('.ordenados2').animate({opacity: 1});
+      break;
+
+      case 'hide_ganadores':
+      $(".contadores").animate({opacity: 0});
+      $(".piramide").animate({opacity: 0});
+      break;
+
+/*
       case 'simuladores_foto':
       $('.simuladores_foto').animate({right: -380}, 2000);
       break;
+      */
 
       // SIMULACIONES
       case 'sim_panorama1':
+      $(".contadores").animate({opacity: 0});
+      $(".piramide").animate({opacity: 0});
       console.log('SIMULACIONES >>>');
-      scrollToPos(7254, 1000, 'easeOutQuart');
+      scrollToPos(7350, 1000, 'easeOutQuart');
       break;
 
       case 'sim_prep1':
-      $('.simuladores_foto').hide();
+      // $('.simuladores_foto').hide();
       var go = 1;
       if (EJECUTANDO_SIM) {
         $('.sim' + EJECUTANDO_SIM).addClass('colapsado', 1000);
@@ -1215,12 +1300,14 @@ $( document ).ready(function() {
         maintainAspectRatio: false,
         scales: {
           xAxes: [{
+            gridLines: { color: 'rgba(255,255,255,0.2)' },
             ticks: {
               fontSize: 22,
-              fontColor: 'black'
+              fontColor: 'white'
             }
           }],
           yAxes: [{
+            gridLines: { color: 'rgba(255,255,255,0.2)' },
             ticks: {
               callback: function(value, index, values) {
                 return value + '%';
@@ -1228,7 +1315,7 @@ $( document ).ready(function() {
               min: 0,
               max: 100,
               fontSize: 22,
-              fontColor: 'black'
+              fontColor: 'white'
             }
           }]
         }
@@ -1264,12 +1351,14 @@ $( document ).ready(function() {
         maintainAspectRatio: false,
         scales: {
           xAxes: [{
+            gridLines: { color: 'rgba(255,255,255,0.2)' },
             ticks: {
               fontSize: 22,
-              fontColor: 'black'
+              fontColor: 'white'
             }
           }],
           yAxes: [{
+            gridLines: { color: 'rgba(255,255,255,0.2)' },
             ticks: {
               callback: function(value, index, values) {
                 return value + '%';
@@ -1277,7 +1366,7 @@ $( document ).ready(function() {
               min: 0,
               max: 100,
               fontSize: 22,
-              fontColor: 'black'
+              fontColor: 'white'
             }
           }]
         }
@@ -1313,12 +1402,14 @@ $( document ).ready(function() {
         maintainAspectRatio: false,
         scales: {
           xAxes: [{
+            gridLines: { color: 'rgba(255,255,255,0.2)' },
             ticks: {
               fontSize: 22,
-              fontColor: 'black'
+              fontColor: 'white'
             }
           }],
           yAxes: [{
+            gridLines: { color: 'rgba(255,255,255,0.2)' },
             ticks: {
               callback: function(value, index, values) {
                 return value + '%';
@@ -1326,13 +1417,17 @@ $( document ).ready(function() {
               min: 0,
               max: 100,
               fontSize: 22,
-              fontColor: 'black'
+              fontColor: 'white'
             }
           }]
         }
       }
     });
 
+    $(`#myChart1`).css('background-color', 'black');
+    $(`#myChart2`).css('background-color', 'black');
+    $(`#myChart3`).css('background-color', 'black');
+    $(`#myChart4`).css('background-color', 'black');
 
 
 
@@ -1353,7 +1448,7 @@ $( document ).ready(function() {
               },
               {
                 label: 'Saldo positivo',
-                backgroundColor: 'rgb(0,200,0)',
+                backgroundColor: 'rgb(0,255,0)',
                 data: []
               },
             ]
@@ -1369,12 +1464,18 @@ $( document ).ready(function() {
           maintainAspectRatio: false,
           scales: {
             xAxes: [{
+              gridLines: {
+                color: 'rgba(255,255,255,0.2)'
+              },
               stacked: true,
               ticks: {
                 fontSize: 20,
               }
             }],
             yAxes: [{
+              gridLines: {
+                color: 'rgba(255,255,255,0.2)'
+              },
               stacked: true,
               ticks: {
                 callback: locale,
@@ -1391,6 +1492,8 @@ $( document ).ready(function() {
       }
       var chart = new Chart(SIM_CHARTS[nro].ctx, setup);
       SIM_CHARTS[nro].chart = chart;
+
+      $(`#simChart${nro}`).css('background-color', 'black');
     };
 
     initSimChart(1);
@@ -1886,6 +1989,10 @@ $( document ).ready(function() {
   <div class="contadores">
     <div class="ganadores">recibieron $8000<span class="ganadoresNum">0</span></div>
     <div class="perdedores"><span class="perdedoresNum">0</span>regalaron $1000</div>
+    <div class="telares">telares<span class="telaresNum">0</span></div>
+    <div class="porcentaje"><span class="porcentajeNum">0.00%</span>porcentaje de perdedores</div>
+    <div class="ordenados"></div>
+    <div class="ordenados2"></div>
   </div>
   <!-- HTML PIRAMIDE -->
   <div class="piramide">
@@ -1934,8 +2041,8 @@ $( document ).ready(function() {
   <!-- ............. Fase ESTAFA ............. -->
   <div class="spacer-600"> </div>
 
-  <h2>Hagamos algunas</h2>
-  <h1 style="margin-top: 0px"><span>simulaciones</span></h1>
+  <h2 style='opacity: 0'>Hagamos algunas</h2>
+  <h1 style="margin-top: 0px opacity: 0;"><span>simulaciones</span></h1>
 
   <div class='simuladores_foto'>
 
@@ -1949,7 +2056,7 @@ $( document ).ready(function() {
 
     <div class="sim sim2 colapsado">
       <div class="titulos">
-        <h4>Círculo de Ahorro</h4>
+        <h4>Círculo de ahorro</h4>
         <h5>(nunca se suma gente nueva)</h5>
       </div>
       <div class="sim_data">
@@ -1978,7 +2085,7 @@ $( document ).ready(function() {
 
     <div class="sim sim1 colapsado">
       <div class="titulos">
-        <h4>Telar 100% Abierto</h4>
+        <h4>Telar sin reingresos</h4>
         <h5>(ningún ganador reingresa)</h5>
       </div>
       <div class="sim_data">
@@ -2009,7 +2116,7 @@ $( document ).ready(function() {
 
     <div class="sim sim3 colapsado">
       <div class="titulos">
-        <h4>Telar (reciclaje=25%)</h4>
+        <h4>Telar con algunos reingresos</h4>
         <h5>(1 de cada 4 ganadores reingresa al sistema)</h5>
       </div>
       <div class="sim_data">
@@ -2039,7 +2146,7 @@ $( document ).ready(function() {
 
     <div class="sim sim4 colapsado">
       <div class="titulos">
-      <h4>Telar (reciclaje=100%)</h4>
+      <h4>Telar con 100% de reingreso</h4>
       <h5>(todos los ganadores reingresan al sistema)</h5>
       </div>
       <div class="sim_data">
@@ -2269,12 +2376,22 @@ $( document ).ready(function() {
   </div>
 </div>
 
-  <div class="spacer-400"> </div>
+  <div class="conclusiones">
 
+  <div class="spacer-400"> </div>
   <h1>Conclusión:</h1>
+  <div class="spacer-400"> </div>
 
   <div class="winner_chart chartA">
     <div class="mujer verde"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
+    <div class="mujer rojo"></div>
     <div class="mujer rojo"></div>
     <div class="mujer rojo"></div>
     <div class="mujer rojo"></div>
@@ -2383,6 +2500,7 @@ $( document ).ready(function() {
 
   </div>
 
+  </div> <!-- conclusiones -->
 
 
 
