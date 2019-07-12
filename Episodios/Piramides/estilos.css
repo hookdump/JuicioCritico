@@ -1,5 +1,6 @@
 body {
-  color: black;
+  color: white;
+  background-color: black;
   text-align: center;
   font-family: 'Lora', serif;
   padding: 0;
@@ -336,21 +337,82 @@ h5 { font-size: 30px; }
   -o-transition: all 1s ease;
   transition: all 1s ease;
 }
+
+
+.ganadores.nivel.n6.splitting .bloque { margin-right: 2px !important; }
+.ganadores.nivel.n7.splitting .bloque { margin-right: 1px !important; }
+.ganadores.nivel.n8.splitting .bloque { margin-right: 1px !important; }
+
+/* nivel 4 */
+.nivel.n4.yaEsAgua .bloque:nth-child(1) { margin-right: 80px !important; }
+.nivel.n4.yaEsAgua .bloque:nth-child(4) { margin-right: 80px !important; }
+.nivel.n4.yaEsAgua .bloque:nth-child(7) { margin-right: 80px !important; }
+.nivel.n4.yaEsAgua .bloque:nth-child(10) { margin-right: 80px !important; }
+
+/* nivel 5 */
+.nivel.n5.yaEsTierra .bloque:nth-child(2) { margin-right: 80px !important; }
+.nivel.n5.yaEsTierra .bloque:nth-child(7) { margin-right: 80px !important; }
+.nivel.n5.yaEsTierra .bloque:nth-child(12) { margin-right: 80px !important; }
+.nivel.n5.yaEsTierra .bloque:nth-child(17) { margin-right: 80px !important; }
+
+.nivel.n5.yaEsAgua .bloque { margin-right: 70px !important; }
+.nivel.n5.yaEsAgua .bloque:last-of-type { margin-right: 0px !important; }
+
+/* nivel 6 */
+.nivel.n6.splitting .bloque:nth-of-type(8n) { margin-right: 30px !important; }
+.nivel.n6.splitting .bloque:last-of-type    { margin-right: 0px !important; }
+.nivel.n6.yaEsTierra .bloque:nth-child(2n) { margin-right: 55px !important; }
+.nivel.n6.yaEsTierra .bloque:last-child    { margin-right: 0px !important; }
+.nivel.n6.yaEsAire .bloque:nth-child(4n) { margin-right: 55px !important; }
+.nivel.n6.yaEsAire .bloque:last-child    { margin-right: 0px !important; }
+
+/* nivel 7 */
+.nivel.n7.splitting .bloque:nth-of-type(4n) { margin-right: 60px !important; }
+.nivel.n7.splitting .bloque:nth-of-type(32) { margin-right: 0px !important; }
+.nivel.n7.splitting .bloque:last-of-type    { margin-right: 0px !important; }
+.nivel.n7.yaEsAire .bloque:nth-of-type(4n) { margin-right: 26px !important; }
+.nivel.n7.yaEsAire .bloque:nth-of-type(32) { margin-right: 26px !important; }
+.nivel.n7.yaEsAire .bloque:last-of-type    { margin-right: 0px !important; }
+
+/* nivel 8 */
+.nivel.n8.splitting .bloque:nth-of-type(4n) { margin-right: 10px !important; }
+.nivel.n8.splitting .bloque:nth-of-type(64) { margin-right: 0px !important; }
+.nivel.n8.splitting .bloque:last-of-type    { margin-right: 0px !important; }
+
+/* nivel 8 */
+.nivel.n9.splitting .bloque:nth-of-type(4n) { margin-right: 10px !important; }
+.nivel.n9.splitting .bloque:nth-of-type(64) { margin-right: 0px !important; }
+.nivel.n9.splitting .bloque:nth-of-type(128) { margin-right: 0px !important; }
+.nivel.n9.splitting .bloque:nth-of-type(192) { margin-right: 0px !important; }
+.nivel.n9.splitting .bloque:last-of-type    { margin-right: 0px !important; }
+
+
+
+
+
+
+
+/* .nivel._fuego.n6 .bloque:nth-child(1) { margin-left: 20px !important; }
+.nivel._fuego.n6 .bloque:nth-child(32) { margin-right: 0 !important; }
+*/
+
 .n1 .bloque { width: 320px; }
 .n2 .bloque { width: 320px; }
 .n3 .bloque { width: 240px; }
 .n4 .bloque {  width: 118px; }
+/* overriden!!!  a partir de aca, en codigo! agregarNivel() targetW */
 .n5 .bloque {  width: 61px; }
 .n6 .bloque {  width: 36px; margin-left: 2px; margin-right: 2px; }
-.n7 .bloque {  width: 22px; margin-left: 1px; margin-right: 1px; }
-.n8 .bloque {  width: 12px; margin-left: 1px; margin-right: 1px; }
-.n9 .bloque {  width: 5px; margin-left: 1px; margin-right: 1px; }
+.n7 .bloque {  width: 20px; margin-left: 1px; margin-right: 1px; height: 50px; }
+.n8 .bloque {  width: 12px; margin-left: 1px; margin-right: 1px; height: 30px; }
+.n9 .bloque {  width: 5px; margin-left: 1px; margin-right: 1px; height: 20px; }
 ._agua    .bloque { background-color: #C8C9F6; }
 ._tierra  .bloque { background-color: #E7CF33; }
 ._aire    .bloque { background-color: #C6A46E; }
 ._fuego   .bloque { background-color: #BB98B4; }
 .relleno {
-  background: #10AB0C;
+  background: #00FF00;
+  box-shadow: 0 0 10px #00FF00;
   position: absolute;
   width: 100%;
   bottom: 0;
@@ -365,13 +427,14 @@ h5 { font-size: 30px; }
 .piramide.vizMoney   ._agua    .bloque { background-color: #C0C0C0; }
 .piramide.vizMoney   ._tierra  .bloque { background-color: #C0C0C0; }
 .piramide.vizMoney   ._aire    .bloque { background-color: #C0C0C0; }
-.piramide.vizMoney   ._fuego   .bloque { background-color: #FFA4A4; }
+.piramide.vizMoney   ._fuego   .bloque { background-color: #FF0000; }
 
 .ganadores .bloque {
   /* careful!!!! SIZE OVERRIDEN IN CODE! */
   width: 20px;
   height: 40px;
   position: relative;
+  margin-right: 3px !important;
 }
 .ganadores .tmpSplit, .ganadores .tmpSplitB {
   width: 0;
@@ -401,13 +464,14 @@ h5 { font-size: 30px; }
 .ganadoresNum, .perdedoresNum {
   font-weight: bold;
   display: block;
-  font-size: 100px;
-  line-height: 80px;
+  font-size: 150px;
+  line-height: 130px;
 }
 
 .contadores .ganadores {
   opacity: 0;
-  color: #00AA00;
+  color: #00FF00;
+  text-shadow: 0 0 10px #00FF00;
   top: 100px;
 }
 .contadores .perdedores {

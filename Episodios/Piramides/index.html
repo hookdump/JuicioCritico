@@ -63,19 +63,44 @@ $( document ).ready(function() {
     var targetW = {
       5: 61,
       6: 36,
-      7: 22,
-      8: 12,
-      9: 5
+      7: 37,
+      8: 24,
+      9: 24
+    };
+    var targetH = {
+      5: 80,
+      6: 80,
+      7: 50,
+      8: 40,
+      9: 30
     };
     console.log('agregando nivel ' + nivel + ' (' + cantidad + ')');
     var $bloque = $("<div class='bloque nuevoBloque'" +
     "style='margin-top: 450; margin-left: 3; margin-right: 3; opacity: 0; " +
     "height: 40px; width: 2px;'>" +
     "<div class='relleno' style='height: 100%; opacity: 1;'></div></div>");
-    var $nuevoNivel = $(`<div class='nivel _fuego n${nivel}'></div>`);
+    var $nuevoNivel = $(`<div class='nivel _fuego n${nivel} splitting'></div>`);
 
     for (var i=1; i<=cantidad; i++) {
       $bloque.clone().appendTo($nuevoNivel);
+      if (nivel == 7) {
+        /*
+        if (i == 32) { $nuevoNivel.append("<br />"); }
+*/
+        if (i % 32 == 0) { $nuevoNivel.append("<br class='lineBreak' />"); }
+      }
+      if (nivel == 8) {
+        /*
+        if (i == 32) { $nuevoNivel.append("<br />"); }
+        if (i == 64) { $nuevoNivel.append("<br />"); }
+        if (i == 96) { $nuevoNivel.append("<br />"); }
+        */
+        // if (i % 32 == 0) { $nuevoNivel.append("<br class='lineBreak' />"); }
+        if (i % 64 == 0) { $nuevoNivel.append("<br class='lineBreak' />"); }
+      }
+      if (nivel == 9) {
+        if (i % 64 == 0) { $nuevoNivel.append("<br class='lineBreak' />"); }
+      }
       if (nivel == 5 && i == 8) {
         // agregar split para level 5 (showcase split!)
         $nuevoNivel.append("<div class='tmpSplit split4' style='width: 160px'></div>");
@@ -90,7 +115,7 @@ $( document ).ready(function() {
       'margin-bottom': 6, 'margin-top': 0,
       'margin-left': targetMarginHoriz[nivel],
       'margin-right': targetMarginHoriz[nivel],
-      'width': targetW[nivel], 'height': 80,
+      'width': targetW[nivel], 'height': targetH[nivel],
       'opacity': 1
     }, 500, function() {
       $('.nuevoBloque').each(function() {
@@ -189,10 +214,10 @@ $( document ).ready(function() {
     {animacion: 'emoji_amor'},
     {animacion: 'emoji_odio'},
     {animacion: 'emoji_pensando'},
-    {y: 1760}, // 9
-    {animacion: 'parte1'},
+    // {y: 1760}, // 9
+    /* {animacion: 'parte1'},
     {animacion: 'parte2'},
-    {animacion: 'parte1_center'}
+    {animacion: 'parte1_center'} */
   ]);
 
   // Fase 2: Telar de la Abundancia
@@ -235,16 +260,19 @@ $( document ).ready(function() {
     {animacion: 'piramide_transfer2'},
     {animacion: 'piramide_gana2'},
     {animacion: 'showcaseSplitB'},
-    {animacion: 'showcaseSplit2'},
+    // {animacion: 'showcaseSplit2'},
     {animacion: 'piramide_insert6'},
     {animacion: 'piramide_transfer3'},
     {animacion: 'piramide_gana3'},
+    {animacion: 'naturalSplitN4'},
     {animacion: 'piramide_insert7'},
     {animacion: 'piramide_transfer4'},
     {animacion: 'piramide_gana4'},
+    // {animacion: 'naturalSplitN5'},
     {animacion: 'piramide_insert8'},
     {animacion: 'piramide_transfer5'},
     {animacion: 'piramide_gana5'},
+    // {animacion: 'naturalSplitN6'},
     {animacion: 'piramide_insert9'},
     {animacion: 'piramide_transfer6'},
     {animacion: 'piramide_gana6'},
@@ -297,7 +325,7 @@ $( document ).ready(function() {
   // 31 - Post Flor
   // 55 - Simulaciones
   // 73 - Post Simulaciones
-  var pos = 0;
+  var pos = 31;
 
   // Inicializacion
   console.log("Start!");
@@ -888,6 +916,26 @@ $( document ).ready(function() {
       $('.tmpSplitB').animate({width: 0}, 1000, 'easeOutQuart');
       break;
 
+      case 'naturalSplitN4':
+      $('.nivel.n4').addClass('yaEsAgua');
+      $('.nivel.n5').addClass('yaEsTierra');
+      $('.nivel.n6').addClass('yaEsAire');
+      break;
+
+      case 'rejoinLvl3':
+      $('.n3 .tmpSplit').animate({width: 0}, 1000, 'easeOutQuart');
+      $('.n3 .tmpSplitB').animate({width: 0}, 1000, 'easeOutQuart');
+      break;
+
+      case 'rejoinLvl4':
+      $('.n4 .tmpSplit').animate({width: 0}, 1000, 'easeOutQuart');
+      $('.n4 .tmpSplitB').animate({width: 0}, 1000, 'easeOutQuart');
+      break;
+
+      case 'rejoinLvl5':
+      $('.n5 .tmpSplit').animate({width: 0}, 1000, 'easeOutQuart');
+      $('.n5 .tmpSplitB').animate({width: 0}, 1000, 'easeOutQuart');
+      break;
       // ANIMACIONES PIRAMIDE
       case 'piramide_insert5':
       agregarNivel(5, 16);
@@ -919,6 +967,7 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana3':
+      ejecutarAnimacion('rejoinLvl3');
       $('.n3').addClass('ganadores', 20, function() {
         $('.n3 .bloque').animate({'top': -192, 'left': -783, 'width': 20, 'height': 40});
       });
@@ -936,9 +985,20 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana4':
-      $('.n4').addClass('ganadores', 20, function() {
-        $('.n4 .bloque').animate({'top': -238, 'left': -627, 'width': 20, 'height': 40});
-      });
+      $('.n5 .bloque').animate({'width': 40}, 500);
+      $('.n6 .bloque').animate({'width': 26}, 500);
+      $('.n7 .bloque').animate({'width': 20}, 500);
+      setTimeout(function() {
+        $('.n7').find('.lineBreak').remove();
+        ejecutarAnimacion('rejoinLvl5');
+        ejecutarAnimacion('rejoinLvl4');
+        $('.n4').removeClass('yaEsAgua').addClass('ganadores', 20, function() {
+          $('.n4 .bloque').animate({'top': -238, 'left': -627, 'width': 20, 'height': 40});
+        });
+        $('.n5').removeClass('yaEsTierra').addClass('yaEsAgua');
+        $('.n6').removeClass('yaEsAire').addClass('yaEsTierra');
+        $('.n7').removeClass('splitting').addClass('yaEsAire');
+      }, 600);
       break;
 
       case 'piramide_insert8':
@@ -953,7 +1013,8 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana5':
-      $('.n5').addClass('ganadores', 20, function() {
+      ejecutarAnimacion('rejoinLvl5');
+      $('.n5').removeClass('yaEsAgua').addClass('ganadores', 20, function() {
         $('.n5 .bloque').animate({'top': -284, 'left': -315, 'width': 20, 'height': 40});
       });
       break;
@@ -970,8 +1031,8 @@ $( document ).ready(function() {
       break;
 
       case 'piramide_gana6':
-      $('.n6').addClass('ganadores', 20, function() {
-        $('.n6 .bloque').animate({'top': -330, 'left': 278, 'width': 20, 'height': 40});
+      $('.n6').removeClass('yaEsTierra splitting').addClass('ganadores', 20, function() {
+        $('.n6 .bloque').animate({'top': -330, 'left': 294, 'width': 20, 'height': 40});
       });
       break;
 
@@ -1144,6 +1205,10 @@ $( document ).ready(function() {
           ]
       },
       options: {
+        animation: {
+          easing: 'easeOutQuart',
+          duration: 400,
+        },
         legend: {
            display: true,
         },
@@ -1189,6 +1254,10 @@ $( document ).ready(function() {
           ]
       },
       options: {
+        animation: {
+          easing: 'easeOutQuart',
+          duration: 400,
+        },
         legend: {
            display: true,
         },
@@ -1234,6 +1303,10 @@ $( document ).ready(function() {
           ]
       },
       options: {
+        animation: {
+          easing: 'easeOutQuart',
+          duration: 400,
+        },
         legend: {
            display: true,
         },
@@ -1288,7 +1361,7 @@ $( document ).ready(function() {
         options: {
           animation: {
             easing: 'easeOutQuart',
-            duration: 1000,
+            duration: 400,
           },
           legend: {
              display: true,
@@ -1654,7 +1727,7 @@ $( document ).ready(function() {
         if (ronda < maxRondas && EJECUTANDO_SIM == simulacion) {
           simStep();
         }
-      }, 1500);
+      }, 500);
     };
 
     simStep();
@@ -1706,11 +1779,11 @@ $( document ).ready(function() {
     <div class="spacer-500" style="margin-bottom: 126px"> </div>
 
     <h2 class="hparte1" data-aos-anchor-placement="center-center" data-aos="flip-down"
-    style="position: absolute; margin-top: -450px; text-align: center; width: 100%">
+    style="position: absolute; margin-top: -450px; text-align: center; width: 100%; opacity: 0">
       <span>Episodio 1</span><br /><em style="font-style: normal">¿Cómo funciona?</em></h2>
 
     <h2  class="hparte2" data-aos-anchor-placement="bottom-bottom" data-aos="flip-down"
-    style="position: absolute; margin-bottom: -400px; text-align: center; width: 100%">
+    style="position: absolute; margin-bottom: -400px; text-align: center; width: 100%; opacity: 0">
       <span>Episodio 2</span><br />AMIGA DATE CUENTA</h2>
 
     <div class="spacer-500"> </div>
