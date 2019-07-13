@@ -48,7 +48,10 @@ $( document ).ready(function() {
   var contadorGanadores = 0;
   var contadorPerdedores = 0;
   var contadorTelares = 0;
+  var contadorTotal = 15;
   var contadorPorcentaje = 0;
+
+  var OCULTAR_CLONES = false;
 
   initChart();
 
@@ -75,6 +78,13 @@ $( document ).ready(function() {
       7: 50,
       8: 40,
       9: 20
+    };
+    var tot = {
+      5: 31,
+      6: 63,
+      7: 127,
+      8: 255,
+      9: 511
     };
     console.log('agregando nivel ' + nivel + ' (' + cantidad + ')');
     var $bloque = $("<div class='bloque nuevoBloque'" +
@@ -120,6 +130,7 @@ $( document ).ready(function() {
       'width': targetW[nivel], 'height': targetH[nivel],
       'opacity': 1
     }, 500, function() {
+      animarContadorTotal(tot[nivel]);
       $('.nuevoBloque').each(function() {
         $(this).removeClass('nuevoBloque');
       });
@@ -177,22 +188,22 @@ $( document ).ready(function() {
 
       case 4:
       g=15;
-      p=120;
+      p=112;
       break;
 
       case 5:
       g=31;
-      p=248;
+      p=224;
       break;
 
       case 6:
       g=63;
-      p=504;
+      p=448;
       break;
 
       case 7:
       g=127;
-      p=1016;
+      p=896;
       break;
     }
     if (ganador) {
@@ -213,12 +224,49 @@ $( document ).ready(function() {
 
   function animarContadorPorcentaje(prev, nivel, g, p, el) {
     return new Promise((resolve, reject) => {
-      // if (nivel < 4) g = 7;
-      var nuevoPorcentaje = (1-(g/p)) * 100;
+      // var nuevoPorcentaje = (1-(g/p)) * 100;
+      /*
+var tots = [15,
+31,
+63,
+127,
+255,
+511,
+1023,
+2047];
+      if (nivel < 4) g = 0;
+      var tot = tots[nivel-1];
+      */
+/*
+    Pusieron  -   Tot
+1:        8         15    53.33
+2:       24         31    77.42
+3:       56         63    88.89
+4:      120-8      127    88.19
+5:      248-8-64      255    87.84
+6:      504-8-64-128  511
+*/
+
+      // var nuevoPorcentaje = (1-(g/p)) * 100;
+      var nuevoPorcentaje;
+      if (nivel == 1) nuevoPorcentaje = 53.33;
+      if (nivel == 2) nuevoPorcentaje = 77.42;
+      if (nivel == 3) nuevoPorcentaje = 88.89;
+      if (nivel == 4) nuevoPorcentaje = 88.19;
+      if (nivel == 5) nuevoPorcentaje = 87.84;
+      if (nivel == 6) nuevoPorcentaje = 87.67;
+      if (nivel == 7) nuevoPorcentaje = 87.59;
+
       animarContador(prev, nuevoPorcentaje, el, {decimales: 2, sufijo: '%'}).then(() => {
         return resolve(nuevoPorcentaje);
       });
     })
+  }
+
+  function animarContadorTotal(nuevo) {
+    animarContador(contadorTotal, nuevo, $('.totalNum'), {easing: 'linear', duration: 500}).then(() => {
+      contadorTotal = nuevo;
+    });
   }
 
   function animarContadorTelares(nuevo) {
@@ -258,20 +306,23 @@ $( document ).ready(function() {
     {animacion: 'emoji_amor'},
     {animacion: 'emoji_odio'},
     {animacion: 'emoji_pensando'},
-    // {y: 1760}, // 9
-    /* {animacion: 'parte1'},
+    {y: 1760}, // 9
+    {animacion: 'parte1'},
     {animacion: 'parte2'},
-    {animacion: 'parte1_center'} */
+    {animacion: 'parte1_center'}
   ]);
 
   // Fase 2: Telar de la Abundancia
   mapa = mapa.concat([
     {y: 3150},
+    {animacion: 'nombreA'},
+    {animacion: 'nombreB'},
     {animacion: 'nombre1'},
     {animacion: 'nombre2'},
     {animacion: 'nombre3'},
     {animacion: 'nombre4'},
     {animacion: 'nombre5'},
+    {animacion: 'nombre5b'},
     {animacion: 'nombre6'},
     {y: 4140, delay: 1800, easing: 'easeOutQuart'},
     //{animacion: 'florParcial1'},
@@ -321,7 +372,7 @@ $( document ).ready(function() {
     {animacion: 'piramide_transfer6'},
     {animacion: 'piramide_gana6'},
     {animacion: 'ordenar_perdedores'},
-    {animacion: 'ordenar_perdedores2'},
+    // {animacion: 'ordenar_perdedores2'},
     {animacion: 'hide_ganadores'}
   ]);
 
@@ -334,25 +385,26 @@ $( document ).ready(function() {
     {animacion: 'sim_run2'},
     {animacion: 'sim_prep1'},
     {animacion: 'sim_run1'},
+    {animacion: 'sim_prep4'},
+    {animacion: 'sim_run4'},
     {animacion: 'sim_prep3'},
     {animacion: 'sim_run3'},
-    {animacion: 'sim_prep4'},
-    {animacion: 'sim_run4'}
+    {animacion: 'ocultar_clones'},
   ]);
 
   mapa = mapa.concat([
     {animacion: 'sim_prep1b'},
     {animacion: 'sim_run1b'},
-    {animacion: 'sim_prep3b'},
-    {animacion: 'sim_run3b'},
     {animacion: 'sim_prep4b'},
     {animacion: 'sim_run4b'},
+    {animacion: 'sim_prep3b'},
+    {animacion: 'sim_run3b'},
   ]);
 
  // 72
   mapa = mapa.concat([
     {y: 8500, delay: 1800, easing: 'easeOutQuart'},
-    {y: 9200, delay: 1000, easing: 'easeOutQuart'},
+    {y: 9400, delay: 1000, easing: 'easeOutQuart'},
     // 73 WINNER CHART
     {animacion: 'winners1'},
     {animacion: 'winners2'},
@@ -368,11 +420,11 @@ $( document ).ready(function() {
 
   // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // 0  - Inicio
-  // 16 - Flor
-  // 31 - Post Flor
-  // 55 - Simulaciones
-  // 72 - Post Simulaciones
-  var pos = 0;
+  // 19 - Flor
+  // 38 - Post Flor
+  // 63 - Simulaciones
+  // 78 - Post Simulaciones
+  var pos = 63;
 
   // Inicializacion
   console.log("Start!");
@@ -889,8 +941,16 @@ $( document ).ready(function() {
       posicionarPetalo('fuego8', fuegoDelay);
       break;
 
-    case 'nombre1':
+    case 'nombreA':
       $('.nombre.n0').animate({'top': -700});
+      $('.nombre.nA').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
+      break;
+    case 'nombreB':
+      $('.nombre.nA').animate({'top': -700});
+      $('.nombre.nB').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
+      break;
+    case 'nombre1':
+      $('.nombre.nB').animate({'top': -700});
       $('.nombre.n1').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
       break;
 
@@ -911,6 +971,10 @@ $( document ).ready(function() {
       $('.nombre.n4 .align-right').animate({'top': -700});
       $('.nombre.n5').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
       break;
+      case 'nombre5b':
+      $('.nombre.n5 .align-right').animate({'top': -700});
+      $('.nombre.n5b').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
+      break;
       case 'nombre6':
       $('.nombre.n2 .red').animate({'top': -700});
       $('.nombre.n6').css({'top': '+=700', 'display': 'block'}).animate({'top': '-=700'});
@@ -919,6 +983,8 @@ $( document ).ready(function() {
       case 'piramide_inicial':
       contadorTelares = 1;
       $('.telaresNum').text(1);
+      contadorTotal = 15;
+      $('.totalNum').text(15);
       $(".contadores").animate({opacity: 1}, 500);
       $('.piramide').animate({opacity: 1}, 500);
       break;
@@ -1204,8 +1270,10 @@ $( document ).ready(function() {
       case 'sim_prep1b':
       CHART_MODE = true;
       for (iSim=1; iSim<=4; iSim++) {
-        for (iDataset=0; iDataset<3; iDataset++) {
-          SIM_CHARTS[iSim].chart.data.datasets[iDataset].data = [];
+        for (iDataset=0; iDataset<4; iDataset++) {
+          if (SIM_CHARTS[iSim].chart.data.datasets[iDataset]) {
+            SIM_CHARTS[iSim].chart.data.datasets[iDataset].data = [];
+          }
         }
         SIM_CHARTS[iSim].chart.update();
       }
@@ -1216,6 +1284,15 @@ $( document ).ready(function() {
       break;
       case 'sim_run1b':
       runSim(1,true);
+      break;
+
+      // OCULTAR CLONES:
+      case 'ocultar_clones':
+      OCULTAR_CLONES = true;
+      SIM_CHARTS[3].chart.data.datasets[3].data = [];
+      SIM_CHARTS[3].chart.update();
+      $('.viz3 .white').slideUp();
+      $('.viz3 .whiteR').slideUp();
       break;
 
       // sim 3b &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
@@ -1328,7 +1405,7 @@ $( document ).ready(function() {
           labels: [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
           datasets: [
             {
-              label: 'Telar con 25% de reingresos',
+              label: 'Telar con 700% de reingresos',
               fill: false,
               lineTension: 0,
               backgroundColor: 'red',
@@ -1490,6 +1567,15 @@ $( document ).ready(function() {
       } else {
         setup.data.labels = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16];
       }
+
+      if (nro == 3) {
+        setup.data.datasets.push({
+          label: 'Clones',
+          backgroundColor: 'white',
+          data: []
+        });
+      }
+
       var chart = new Chart(SIM_CHARTS[nro].ctx, setup);
       SIM_CHARTS[nro].chart = chart;
 
@@ -1516,6 +1602,7 @@ $( document ).ready(function() {
     var ronda = 0;
     var nuevos = 0;
     var reciclados = 0;
+    var clonados = 0;
     var ganadores = 0;
     var participantes = [];
     var listosParaReingresar = [];
@@ -1531,13 +1618,13 @@ $( document ).ready(function() {
 
     if (simulacion == 1 || simulacion > 2) {
       participantes = [
-        {nivel: 1, capital: 0},
-        {nivel: 2, capital: 0},
-        {nivel: 2, capital: 0},
-        {nivel: 3, capital: 0},
-        {nivel: 3, capital: 0},
-        {nivel: 3, capital: 0},
-        {nivel: 3, capital: 0},
+        {nivel: 1, capital: 0, clonesRestantes: 0, clon: false},
+        {nivel: 2, capital: 0, clonesRestantes: 0, clon: false},
+        {nivel: 2, capital: 0, clonesRestantes: 0, clon: false},
+        {nivel: 3, capital: 0, clonesRestantes: 0, clon: false},
+        {nivel: 3, capital: 0, clonesRestantes: 0, clon: false},
+        {nivel: 3, capital: 0, clonesRestantes: 0, clon: false},
+        {nivel: 3, capital: 0, clonesRestantes: 0, clon: false},
       ];
     } else if (simulacion == 2) {
       participantes = [
@@ -1590,9 +1677,18 @@ $( document ).ready(function() {
         // Contar:
         participantes.forEach((p) => {
           var colorId = 1;
-          if (p.capital < 0) colorId = 2;
-          if (p.capital > 0) colorId = 0;
-          medidores[p.nivel][colorId]++;
+          if (!p.clon) { // si es clon, dejarlo en blanco
+            if (p.capital < 0) colorId = 2;
+            if (p.capital > 0) colorId = 0;
+          }
+
+          if (OCULTAR_CLONES) {
+            if (!p.clon) {
+              medidores[p.nivel][colorId]++;
+            }
+          } else {
+            medidores[p.nivel][colorId]++;
+          }
         });
 
         for(i=0; i<=4; i++) {
@@ -1606,16 +1702,21 @@ $( document ).ready(function() {
     var $grupos = $sim.find(".grupos");
     var $ronda = $sim.find(".ronda");
     var $reciclados = $sim.find(".reciclados");
+    var $clonados = $sim.find(".clonados");
     var $nuevos = $sim.find(".nuevos");
     var $total = $sim.find(".total");
     var breakdown = [
-      {count: 0, perc: 0},
-      {count: 0, perc: 0},
-      {count: 0, perc: 0},
-      {count: 0, perc: 0},
+      {count: 0, perc: 0}, // negativo
+      {count: 0, perc: 0}, // cero
+      {count: 0, perc: 0}, // positivo
+      {count: 0, perc: 0}, //
       {count: 0, perc: 0},
       {count: 0, perc: 0},
     ];
+
+    limiteDeReingresos = 7; // 6
+    var FUEGOS_AGREGADOS_ESTA_RONDA = 0;
+    var NECESITO_FUEGOS = 0;
     /*
     [0,1,2,3,4,5].forEach((item) => {
       breakdown[item].elCapital = $sim.find(".capital_" + item);
@@ -1629,6 +1730,7 @@ $( document ).ready(function() {
       $grupos.text(locale(grupos));
       $ronda.text(ronda);
       $reciclados.text(locale(reciclados));
+      $clonados.text(locale(clonados));
       $nuevos.text(locale(nuevos));
       $total.text(locale(total));
       [0,1,2].forEach((item) => {
@@ -1641,13 +1743,24 @@ $( document ).ready(function() {
         */
       });
       if (CHART_MODE && simulacion !== 2) {
-        var perdieron = breakdown[0].percN;
+        var tot = total;
+        // if (ronda < 4) tot = tot - 7;
+        /*
+        if (ronda == 1) tot = 15;
+        if (ronda == 2) tot = 31;
+        if (ronda == 3) tot = 63;
+        */
+        var percN = (breakdown[0].count / tot)*100;
+        var perdieron = percN;
         CHART_OBJ[simulacion].data.datasets[0].data.push(perdieron);
         CHART_OBJ[simulacion].update();
-        $('.perdedores' + simulacion).text((breakdown[0].percN).toFixed(2) + "%");
+        $('.perdedores' + simulacion).text(percN.toFixed(2) + "%");
+        // $('.perdedores' + simulacion).text((breakdown[0].percN).toFixed(2) + "%");
       }
       // SIM SIM_CHARTS
-      [0,1,2].forEach((item) => {
+      var cats = [0,1,2];
+      if (simulacion == 3 && !OCULTAR_CLONES) cats.push(3);
+      cats.forEach((item) => {
         SIM_CHARTS[simulacion].chart.data.datasets[item].data.push(breakdown[item].count);
         SIM_CHARTS[simulacion].chart.update();
       });
@@ -1684,9 +1797,14 @@ $( document ).ready(function() {
         i.count = 0;
       });
       participantes.forEach((p) => {
-        if (p.capital < 0) breakdown[0].count++;
-        if (p.capital == 0) breakdown[1].count++;
-        if (p.capital > 0) breakdown[2].count++;
+        if (!p.clon) {
+          if (p.capital < 0) breakdown[0].count++;
+          if (p.capital == 0) breakdown[1].count++;
+          if (p.capital > 0) breakdown[2].count++;
+        } else {
+          breakdown[3].count++; // CAT 3: CLONES
+        }
+
         /*
         if (simulacion == 1 || simulacion > 2) {
           if (p.capital < 0) breakdown[0].count++;
@@ -1707,22 +1825,47 @@ $( document ).ready(function() {
     };
 
     var agregarPersona = (nivel, capital) => {
+      if (FUEGOS_AGREGADOS_ESTA_RONDA >= NECESITO_FUEGOS) {
+        console.log('ABORTANDO agregarPersona! Ya tengo los ' + NECESITO_FUEGOS + ' que necesito!');
+      }
+
+
       var reingreseAUno = false;
+      if (simulacion == 3)
+
       if (simulacion > 2) {
         if (listosParaReingresar.length > 0) {
           var reingresa = listosParaReingresar.pop();
           if (participantes[reingresa].nivel > 0) {
             console.log('ERROR: REINGRESANDO A ALGUIEN QUE NO ES NIVEL 0');
           }
+
+          if (simulacion == 3) {
+            // crear clones ------------------------------------------------------
+            for (i=0; i<participantes[reingresa].clonesRestantes; i++) {
+              // transferimos CAPITAL a 1 clon y lo insertamos:
+              participantes[reingresa].capital -= capital;
+              participantes.push({nivel: nivel, capital: capital, clon: true});
+              clonados++;
+              FUEGOS_AGREGADOS_ESTA_RONDA++;
+            }
+            participantes[reingresa].clonesRestantes = 0;
+            // -------------------------------------------------------------------
+          }
+
+          // Por ultimo el verdadero participante (NO CLON) reingresa
           participantes[reingresa].nivel = nivel;
           participantes[reingresa].capital -= capital;
+          FUEGOS_AGREGADOS_ESTA_RONDA++;
+
           reciclados++;
           reingreseAUno = true;
         }
       }
       if (!reingreseAUno) {
         nuevos++;
-        participantes.push({nivel: nivel, capital: capital});
+        participantes.push({nivel: nivel, capital: capital, clon: false});
+        FUEGOS_AGREGADOS_ESTA_RONDA++;
       }
     };
 
@@ -1731,7 +1874,7 @@ $( document ).ready(function() {
         ronda++;
         nuevos = 0;
         acumuladorGanadores = 0;
-
+        console.log('simStep ', ronda);
 
         // 3. Contar aguas, formaran grupos nuevos:
         grupos = 0;
@@ -1742,13 +1885,26 @@ $( document ).ready(function() {
         });
 
         // 4. Cada Aire recluta a 2 personas
+        console.log(' >> Aires reclutando...');
+        FUEGOS_AGREGADOS_ESTA_RONDA = 0;
+
+        // Contar aires:
+        var contarAires = 0;
         participantes.forEach((p) => {
-          if (p.nivel == 3) {
-            agregarPersona(4, -CAPITAL_ENTRADA);
-            agregarPersona(4, -CAPITAL_ENTRADA);
+          if (p.nivel == 3) contarAires++;
+        });
+        NECESITO_FUEGOS = contarAires * 2;
+
+        participantes.forEach((p) => {
+          if (NECESITO_FUEGOS > FUEGOS_AGREGADOS_ESTA_RONDA) {
+            if (p.nivel == 3) {
+              agregarPersona(4, -CAPITAL_ENTRADA);
+              agregarPersona(4, -CAPITAL_ENTRADA);
+            }
           }
         });
-        total = participantes.length;
+        // 1979515
+        total = participantes.length - clonados;
 
 
         refrescarMedidores();
@@ -1781,7 +1937,8 @@ $( document ).ready(function() {
                   p.capital += CAPITAL_ENTRADA*8;
 
                   // REINGRESOS ----
-                  if (simulacion == 3) {
+                  if (simulacion == 5) { // antes sim3. Eliminada. Reingresan 25%
+                    // DEPRECATED vvv ------------------
                     if (reContador == reTope) {
                       reContador = 1;
                       p.reingresar = true;
@@ -1790,9 +1947,19 @@ $( document ).ready(function() {
                       p.reingresar = false;
                       reContador++;
                     }
+                    // DEPRECATED ^^^ -----------------
                   } else if (simulacion == 4) {
                     p.reingresar = true;
                     listosParaReingresar.push(indiceP);
+                  } else if (simulacion == 3) { // REINGRESO DEL 600%!!!
+                    if (!p.clon) {
+                      p.reingresar = true;
+                      participantes[indiceP].clonesRestantes = limiteDeReingresos - 1;
+                      listosParaReingresar.push(indiceP);
+                    } else {
+                      p.reingresar = false;
+                      participantes[indiceP].clonesRestantes = 0;
+                    }
                   }
                   // REINGRESOS ----
                 }
@@ -1856,10 +2023,10 @@ $( document ).ready(function() {
     ¡Hola!
   </h1>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    Este es un pequeño resumen
+    Te invito a que exploremos
   </h2>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    de cómo funciona
+    cómo funciona
   </h2>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
     <span>el Telar de la Abundancia</span>
@@ -1882,12 +2049,12 @@ $( document ).ready(function() {
     <div class="spacer-500" style="margin-bottom: 126px"> </div>
 
     <h2 class="hparte1" data-aos-anchor-placement="center-center" data-aos="flip-down"
-    style="position: absolute; margin-top: -450px; text-align: center; width: 100%; opacity: 0">
-      <span>Episodio 1</span><br /><em style="font-style: normal">¿Cómo funciona?</em></h2>
+    style="position: absolute; margin-top: -450px; text-align: center; width: 100%; ">
+      <span>Episodio 1</span><br /><em style="font-style: normal">Aspecto matemático</em></h2>
 
     <h2  class="hparte2" data-aos-anchor-placement="bottom-bottom" data-aos="flip-down"
-    style="position: absolute; margin-bottom: -400px; text-align: center; width: 100%; opacity: 0">
-      <span>Episodio 2</span><br />AMIGA DATE CUENTA</h2>
+    style="position: absolute; margin-bottom: -400px; text-align: center; width: 100%; ">
+      <span>Episodio 2</span><br />Aspecto psicológico</h2>
 
     <div class="spacer-500"> </div>
   </div>
@@ -1897,6 +2064,12 @@ $( document ).ready(function() {
   <div class="nombres">
     <div class="nombre n0">
       <div class="redCenter">"El avión"</div>
+    </div>
+    <div class="nombre nA">
+      <div class="redCenter">"El arbolito"</div>
+    </div>
+    <div class="nombre nB">
+      <div class="redCenter">"La cadena del cheque"</div>
     </div>
     <div class="nombre n1">
       <div class="align-right">Telar de&nbsp;</div>
@@ -1911,11 +2084,15 @@ $( document ).ready(function() {
       <div class="red"></div>
     </div>
     <div class="nombre n4">
-      <div class="align-right">Burbujas de la&nbsp;</div>
+      <div class="align-right">Flor de la&nbsp;</div>
       <div class="red"></div>
     </div>
     <div class="nombre n5">
-      <div class="align-right">Flor de la&nbsp;</div>
+      <div class="align-right">Fractal de la&nbsp;</div>
+      <div class="red"></div>
+    </div>
+    <div class="nombre n5b">
+      <div class="align-right">Círculo de la&nbsp;</div>
       <div class="red"></div>
     </div>
     <div class="nombre n6">
@@ -1987,9 +2164,10 @@ $( document ).ready(function() {
   <div class="spacer-400"> </div>
 
   <div class="contadores">
-    <div class="ganadores">recibieron $8000<span class="ganadoresNum">0</span></div>
-    <div class="perdedores"><span class="perdedoresNum">0</span>regalaron $1000</div>
+    <div class="ganadores">ganadores<span class="ganadoresNum">0</span></div>
+    <div class="perdedores"><span class="perdedoresNum">0</span>perdieron dinero</div>
     <div class="telares">telares<span class="telaresNum">0</span></div>
+    <div class="contadorTotal"><span class="totalNum">0</span>participantes</div>
     <div class="porcentaje"><span class="porcentajeNum">0.00%</span>porcentaje de perdedores</div>
     <div class="ordenados"></div>
     <div class="ordenados2"></div>
@@ -2042,7 +2220,7 @@ $( document ).ready(function() {
   <div class="spacer-600"> </div>
 
   <h2 style='opacity: 0'>Hagamos algunas</h2>
-  <h1 style="margin-top: 0px opacity: 0;"><span>simulaciones</span></h1>
+  <h1 style="margin-top: 0px; opacity: 0;"><span>simulaciones</span></h1>
 
   <div class='simuladores_foto'>
 
@@ -2114,40 +2292,10 @@ $( document ).ready(function() {
       </div>
     </div>
 
-    <div class="sim sim3 colapsado">
-      <div class="titulos">
-        <h4>Telar con algunos reingresos</h4>
-        <h5>(1 de cada 4 ganadores reingresa al sistema)</h5>
-      </div>
-      <div class="sim_data">
-        <div class="dato floatRight">
-          Grupos: <span class="grupos">0</span>
-        </div>
-        <div class="dato floatLeft">
-          Ronda: <span class="ronda">0</span>
-        </div>
-        <div class="clear"></div>
-        <div class="dato floatRight">
-          Participantes reciclados: <span class="reciclados">0</span>
-        </div>
-        <div class="dato floatLeft">
-          Participantes nuevos: <span class="nuevos">0</span>
-        </div>
-        <div class="clear"></div>
-        <div class="dato">Personas involucradas: <span class="total">0</span></div>
-
-        <!-- Chart -->
-        <div class="sim-chart-container"
-          style="position: relative; height:278px; width:862px">
-          <canvas id="simChart3"></canvas>
-        </div>
-      </div>
-    </div>
-
     <div class="sim sim4 colapsado">
       <div class="titulos">
-      <h4>Telar con 100% de reingreso</h4>
-      <h5>(todos los ganadores reingresan al sistema)</h5>
+      <h4>Telar con reingreso obligatorio</h4>
+      <h5>(cada ganador reingresa como Fuego)</h5>
       </div>
       <div class="sim_data">
         <div class="dato floatRight">
@@ -2172,6 +2320,41 @@ $( document ).ready(function() {
         </div>
       </div>
     </div>
+
+
+    <div class="sim sim3 colapsado">
+      <div class="titulos">
+        <h4>Telar con reingreso máximo</h4>
+        <h5>(cada ganador regala TODO lo que ganó)</h5>
+      </div>
+      <div class="sim_data">
+        <div class="dato floatRight">
+          Grupos: <span class="grupos">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Ronda: <span class="ronda">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato floatRight">
+          Participantes reciclados: <span class="reciclados">0</span>
+        </div>
+        <div class="dato floatLeft">
+          Participantes nuevos: <span class="nuevos">0</span>
+        </div>
+        <div class="clear"></div>
+        <div class="dato floatRight">
+          Clones: <span class="clonados">0</span>
+        </div>
+        <div class="dato">Personas involucradas: <span class="total">0</span></div>
+
+        <!-- Chart -->
+        <div class="sim-chart-container"
+          style="position: relative; height:278px; width:862px">
+          <canvas id="simChart3"></canvas>
+        </div>
+      </div>
+    </div>
+
 
   </div> <!-- sim left -->
   <div class="sim_right">
@@ -2361,16 +2544,16 @@ $( document ).ready(function() {
     <div class="vizChart">
       <h4>Porcentaje de gente que sale perdiendo</h4>
       <div class="perdedores1"></div>
-      <div class="perdedores3"></div>
       <div class="perdedores4"></div>
+      <div class="perdedores3"></div>
       <div class="chart-container chart_derecha_1" style="position: relative; height:310px; width:870px">
         <canvas id="myChart1"></canvas>
       </div>
-      <div class="chart-container chart_derecha_3" style="position: relative; height:310px; width:870px">
-        <canvas id="myChart3"></canvas>
-      </div>
       <div class="chart-container chart_derecha_4" style="position: relative; height:310px; width:870px">
         <canvas id="myChart4"></canvas>
+      </div>
+      <div class="chart-container chart_derecha_3" style="position: relative; height:310px; width:870px">
+        <canvas id="myChart3"></canvas>
       </div>
     </div>
   </div>
@@ -2381,6 +2564,7 @@ $( document ).ready(function() {
   <div class="spacer-400"> </div>
   <h1>Conclusión:</h1>
   <div class="spacer-400"> </div>
+  <div class="spacer-300"> </div>
 
   <div class="winner_chart chartA">
     <div class="mujer verde"></div>
@@ -2391,119 +2575,19 @@ $( document ).ready(function() {
     <div class="mujer rojo"></div>
     <div class="mujer rojo"></div>
     <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-  </div>
-  <div class="winner_chart chartB">
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-  </div>
-  <div class="winner_chart chartC">
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
   </div>
 
-  <div class="winner_chart chartD">
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
-
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <!-- 8 -->
-    <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div> <div class="mujer verde"></div>
-     <div class="mujer verde"></div> <div class="mujer verde"></div>
-    <div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div><div class="mujer verde"></div>
-
-  </div>
-
-
-  <div class="winner_chart chartE">
-    <!-- 8 -->
-    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-    <!-- 8 -->
-    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div>
-    <!-- 8 -->
-    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-    <!-- 8 -->
-    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div>
-    <!-- 8 -->
-    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-    <!-- 8 -->
-    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div>
-    <!-- 8 -->
-    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-    <!-- 8 -->
-    <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-     <div class="mujer rojo"></div> <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div><div class="mujer rojo"></div>
-
-  </div>
 
   </div> <!-- conclusiones -->
 
 
 
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>

@@ -35,6 +35,7 @@ body::-webkit-scrollbar {
   width: 200px;
   padding: 5px;
   z-index: 9999;
+  opacity: 0;
 }
 
 h1, h2, h3, h4, h5 {
@@ -343,9 +344,9 @@ h5 { font-size: 30px; }
 .ganadores.nivel.n8.splitting .bloque { margin-right: 1px !important; }
 
 /*
-.ganadores.n1 .bloque .relleno { background-color: yellow; box-shadow: 0 0 10px yellow; }
-.ganadores.n2 .bloque .relleno { background-color: yellow; box-shadow: 0 0 10px yellow; }
-.ganadores.n3 .bloque .relleno { background-color: yellow; box-shadow: 0 0 10px yellow; }
+.ganadores.n1 .bloque .relleno { background-color: #808080; box-shadow: 0 0 10px #606060; }
+.ganadores.n2 .bloque .relleno { background-color: #808080; box-shadow: 0 0 10px #606060; }
+.ganadores.n3 .bloque .relleno { background-color: #808080; box-shadow: 0 0 10px #606060; }
 */
 
 /* nivel 4 */
@@ -471,13 +472,21 @@ h5 { font-size: 30px; }
   position: absolute;
   left: 30px;
 }
-.ganadoresNum, .perdedoresNum, .telaresNum, .porcentajeNum {
+.ganadoresNum, .perdedoresNum, .telaresNum, .porcentajeNum, .totalNum {
   font-weight: bold;
   display: block;
   font-size: 150px;
   line-height: 130px;
 }
-
+.contadores .contadorTotal {
+  opacity: 1;
+  color: #FFFFFF;
+  bottom: 30px;
+  left: 50%;
+  width: 440px;
+  margin-left: -220px;
+  text-align: center;
+}
 .contadores .ganadores {
   opacity: 0;
   color: #00FF00;
@@ -491,7 +500,7 @@ h5 { font-size: 30px; }
 }
 .contadores .telares {
   text-align: right;
-  opacity: 1;
+  opacity: 0;
   color: #FFFFFF;
   top: 100px;
   right: 30px;
@@ -790,8 +799,8 @@ h5 { font-size: 30px; }
   text-align: left;
 }
 .perdedores1 { top: 164px; }
-.perdedores3 { top: 473px; }
-.perdedores4 { top: 783px; }
+.perdedores4 { top: 473px; }
+.perdedores3 { top: 783px; }
 
 .chart-container {
   background-color: white;
@@ -829,7 +838,7 @@ h5 { font-size: 30px; }
 .winner_chart .mujer {
   width: 110px;
   height: 204px;
-  margin: 0 -10px;
+  margin: 0 0px;
   display: inline-block;
 }
 .winner_chart .mujer.rojo {
@@ -844,14 +853,14 @@ h5 { font-size: 30px; }
 }
 
 .chartB { opacity: 0; }
-.chartB .mujer { margin: 0 -60px; }
+.chartB .mujer { margin: 0 -30px; }
 
 .chartC { opacity: 0; }
-.chartC .mujer { margin: 0 -60px -300px -60px; }
+.chartC .mujer { margin: 0 -30px -300px -30px; }
 .chartD { opacity: 0; margin-top: 300px; }
-.chartD .mujer { margin: 0px -60px -300px -60px; }
+.chartD .mujer { margin: 0px -30px -300px -30px; }
 .chartE { opacity: 0; margin-top: 300px; }
-.chartE .mujer { margin: 0px -60px -300px -60px; }
+.chartE .mujer { margin: 0px -30px -300px -30px; }
 
 .conclusiones {
   width: 100%;
