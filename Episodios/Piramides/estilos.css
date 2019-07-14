@@ -686,11 +686,19 @@ h5 { font-size: 30px; }
   height: 21px;
   margin-top: 129px;
   width: 30px;
-  background-color: #00AA00;
-  box-shadow: 0 0 10px #00AA00;
+  background-color: #006600;
+  box-shadow: 0 0 10px #008800;
   z-index: 10;
   -webkit-transition: all 0.3s ease;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-align: center;
+  color: #00FF00;
+  padding-top: 3px;
+  font-size: 18px;
+  font-family: arial;
 }
+
 .viz2 .nodo .dinero_negativo {
   position: absolute;
   top: 60%;
@@ -699,10 +707,17 @@ h5 { font-size: 30px; }
   margin-left: 11px;
   height: 0px;
   width: 30px;
-  background-color: #AA0000;
-  box-shadow: 0 0 10px #AA0000;
+  background-color: #660000;
+  box-shadow: 0 0 10px #880000;
   z-index: 10;
   -webkit-transition: all 0.3s ease;
+  word-wrap: break-word;
+  overflow: hidden;
+  text-align: center;
+  color: #FF0000;
+  padding-top: 3px;
+  font-size: 14px;
+  font-family: arial;
 }
 
 /*
@@ -833,12 +848,13 @@ h5 { font-size: 30px; }
 
 .winner_chart {
   text-align: center;
-  width: 100%;
+  width: 48%;
+  position: absolute;
 }
 .winner_chart .mujer {
   width: 110px;
   height: 204px;
-  margin: 0 0px;
+  margin: 0 -8px;
   display: inline-block;
 }
 .winner_chart .mujer.rojo {
@@ -852,18 +868,54 @@ h5 { font-size: 30px; }
   opacity: 1;
 }
 
-.chartB { opacity: 0; }
-.chartB .mujer { margin: 0 -30px; }
+.chartA { z-index: 400; }
+.chartB { z-index: 300; opacity: 0; margin-top: -12px; }
+.chartB .mujer { margin: -180px -8px 0 -8px; }
 
-.chartC { opacity: 0; }
-.chartC .mujer { margin: 0 -30px -300px -30px; }
-.chartD { opacity: 0; margin-top: 300px; }
-.chartD .mujer { margin: 0px -30px -300px -30px; }
-.chartE { opacity: 0; margin-top: 300px; }
-.chartE .mujer { margin: 0px -30px -300px -30px; }
+.proporcion_chart { opacity: 0; }
 
 .conclusiones {
   width: 100%;
   top: 8500px;
   position: absolute;
+}
+
+/*
+// FLOR3.mp4 RENDER!
+.ref {
+  display: none !important;
+}
+*/
+
+.conclusion_boxes {
+  position: absolute;
+  top: 1100px;
+  width: 1918px;
+  height: 1078px;
+}
+.conclu_left, .conclu_right {
+  top: 0;
+  padding-top: 30px;
+  height: 100%;
+}
+.conclu_left h3, .conclu_left h5 {
+  padding-right: 0px;
+}
+.conclu_right h3, .conclu_right h5 {
+  padding-left: 0px;
+}
+.conclu_left { text-align: center; left: 0; width: 48%; }
+.conclu_right { text-align: center; right: 0; width: 48%; float: right;}
+.centro_exacto {
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  width: 74px;
+  height: 130px;
+  line-height: 120px;
+  top: -50px;
+  left: 922px;
+}
+.conclusion_boxes h3, .conclusion_boxes h5 {
+  opacity: 0;
 }

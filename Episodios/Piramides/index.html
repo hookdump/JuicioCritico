@@ -325,8 +325,8 @@ var tots = [15,
     {animacion: 'nombre5b'},
     {animacion: 'nombre6'},
     {y: 4140, delay: 1800, easing: 'easeOutQuart'},
-    //{animacion: 'florParcial1'},
-    //{animacion: 'florParcial2'},
+    // {animacion: 'florParcial1'}, // FLOR.mp4 render!
+    // {animacion: 'florParcial2'}, //
     {animacion: 'ref_agua'},
     {animacion: 'flor1'},
     {animacion: 'flor2'},
@@ -401,17 +401,23 @@ var tots = [15,
     {animacion: 'sim_run3b'},
   ]);
 
- // 72
+ // 79
   mapa = mapa.concat([
-    {y: 8500, delay: 1800, easing: 'easeOutQuart'},
-    {y: 9400, delay: 1000, easing: 'easeOutQuart'},
+    {y: 8490, delay: 1800, easing: 'easeOutQuart'}, // 97 Resumiendo.. .
+    {y: 9600, delay: 1000, easing: 'easeOutQuart'}, // 80 Black!
     // 73 WINNER CHART
-    {animacion: 'winners1'},
-    {animacion: 'winners2'},
-    {animacion: 'winners3'},
-    {animacion: 'winners4'},
-    {animacion: 'winners5'},
-    {animacion: 'winners6'}
+    {animacion: 'resumen1'}, // 81
+    {animacion: 'resumen2'},
+    {animacion: 'resumen3'},
+    {animacion: 'resumen4'},
+    {animacion: 'resumen5'},
+    {animacion: 'resumen6'},
+    {animacion: 'resumen7'},
+    {animacion: 'resumen8'},
+    {animacion: 'resumen9'},
+    {animacion: 'resumen10'},
+    {animacion: 'resumen11'},
+    {animacion: 'resumen12'},
   ]);
 
 
@@ -420,11 +426,11 @@ var tots = [15,
 
   // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
   // 0  - Inicio
-  // 19 - Flor
+  // 23 - Flor
   // 38 - Post Flor
   // 63 - Simulaciones
-  // 78 - Post Simulaciones
-  var pos = 63;
+  // 80 - RESUMEN
+  var pos = 38;
 
   // Inicializacion
   console.log("Start!");
@@ -626,6 +632,7 @@ var tots = [15,
     var $grupos = $sim.find(".grupos");
     var $ronda = $sim.find(".ronda");
     var $reciclados = $sim.find(".reciclados");
+    var $clonados = $sim.find(".clonados");
     var $nuevos = $sim.find(".nuevos");
     var $total = $sim.find(".total");
     $grupos.text(0);
@@ -696,14 +703,28 @@ var tots = [15,
       break;
 
       case 'florParcial2':
-      posicionarPetalo('fuego5', 500);
-      posicionarPetalo('fuego6', 600);
-      posicionarPetalo('fuego4', 700);
-      posicionarPetalo('fuego3', 800);
-      posicionarPetalo('fuego1', 900);
-      posicionarPetalo('fuego2', 1000);
-      posicionarPetalo('fuego8', 1100);
-      posicionarPetalo('fuego7', 1200);
+      posicionarPetalo('fuego5', 400);
+      esperar(200).then(() => {
+        posicionarPetalo('fuego6', 400);
+        esperar(200).then(() => {
+          posicionarPetalo('fuego4', 400);
+          esperar(200).then(() => {
+            posicionarPetalo('fuego3', 400);
+            esperar(200).then(() => {
+              posicionarPetalo('fuego1', 400);
+              esperar(200).then(() => {
+                posicionarPetalo('fuego2', 400);
+                esperar(200).then(() => {
+                  posicionarPetalo('fuego8', 400);
+                  esperar(200).then(() => {
+                    posicionarPetalo('fuego7', 400);
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
       break;
 
       case 'flor1':
@@ -1243,6 +1264,9 @@ var tots = [15,
           $(`.sim${go}`).removeClass('colapsado', 1000);
           $(`.viz${go}`).animate({opacity: 1}, 1000);
         });
+      } else {
+        $(`.sim${go}`).removeClass('colapsado', 1000);
+        $(`.viz${go}`).animate({opacity: 1}, 1000);
       }
       EJECUTANDO_SIM = 0;
       break;
@@ -1258,6 +1282,9 @@ var tots = [15,
           $(`.sim${go}`).removeClass('colapsado', 1000);
           $(`.viz${go}`).animate({opacity: 1}, 1000);
         });
+      } else {
+        $(`.sim${go}`).removeClass('colapsado', 1000);
+        $(`.viz${go}`).animate({opacity: 1}, 1000);
       }
       EJECUTANDO_SIM = 0;
       break;
@@ -1317,33 +1344,52 @@ var tots = [15,
       runSim(4,true);
       break;
 
-
-      case 'winners1':
-      $('.winner_chart .mujer.verde').animate({opacity: 1});
+      case 'resumen1':
+      $('.L1').animate({opacity: 1});
       break;
 
-      case 'winners2':
-      $('.winner_chart .mujer.rojo').animate({opacity: 1});
+      case 'resumen2':
+      $('.L2').animate({opacity: 1});
+      $('.proporcion_chart').animate({opacity: 1});
       break;
 
-      case 'winners3':
+      case 'resumen3':
       $('.chartA .mujer.rojo').switchClass("rojo", "verde", 1000, "linear");
       break;
 
-      case 'winners4':
+      case 'resumen4':
+      $('.proporcion_chart').animate({'margin-top': 220});
       $('.chartB').animate({opacity: 1});
-      $('.chartC').animate({opacity: 1});
-      $('.chartD').css({opacity: 1});
-      $('.chartE').css({opacity: 1});
       break;
 
-      case 'winners5':
-      scrollToPos(10408, 3000, 'easeOutQuart');
+      case 'resumen5':
+      $('.R1').animate({opacity: 1});
       break;
 
-      case 'winners6':
-      scrollToPos(11535, 3000, 'easeOutQuart');
+      case 'resumen6':
+      $('.R2').animate({opacity: 1});
       break;
+
+      case 'resumen7':
+      break;
+
+
+      case 'resumen8':
+      break;
+
+      case 'resumen9':
+      break;
+
+      case 'resumen10':
+      break;
+
+      case 'resumen11':
+      break;
+
+      case 'resumen12':
+      $('.centro_exacto').animate({opacity: 1});
+      break;
+
     }
   };
 
@@ -1511,20 +1557,24 @@ var tots = [15,
     var initSimChart = (nro) => {
       var setup = {
         type: 'bar',
+        //type: 'line',
         data: {
             datasets: [
               {
                 label: 'Saldo negativo',
+                //pointBackgroundColor: 'red',
                 backgroundColor: 'red',
                 data: []
               },
               {
                 label: 'En cero',
+                //pointBackgroundColor: 'gray',
                 backgroundColor: 'gray',
                 data: []
               },
               {
                 label: 'Saldo positivo',
+                //pointBackgroundColor: 'rgb(0,255,0)',
                 backgroundColor: 'rgb(0,255,0)',
                 data: []
               },
@@ -1571,6 +1621,7 @@ var tots = [15,
       if (nro == 3) {
         setup.data.datasets.push({
           label: 'Clones',
+          // pointBackgroundColor: 'white',
           backgroundColor: 'white',
           data: []
         });
@@ -1831,8 +1882,6 @@ var tots = [15,
 
 
       var reingreseAUno = false;
-      if (simulacion == 3)
-
       if (simulacion > 2) {
         if (listosParaReingresar.length > 0) {
           var reingresa = listosParaReingresar.pop();
@@ -2013,6 +2062,7 @@ var tots = [15,
   });
 });
 </script>
+ <meta charset="UTF-8">
 </head>
 <body class="noselect" oncontextmenu="return false">
   <div class="scrollDisplay">0</div>
@@ -2026,7 +2076,7 @@ var tots = [15,
     Te invito a que exploremos
   </h2>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    cómo funciona
+    c&oacute;mo funciona
   </h2>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
     <span>el Telar de la Abundancia</span>
@@ -2050,11 +2100,11 @@ var tots = [15,
 
     <h2 class="hparte1" data-aos-anchor-placement="center-center" data-aos="flip-down"
     style="position: absolute; margin-top: -450px; text-align: center; width: 100%; ">
-      <span>Episodio 1</span><br /><em style="font-style: normal">Aspecto matemático</em></h2>
+      <span>Episodio 1</span><br /><em style="font-style: normal">Aspecto matem&aacute;tico</em></h2>
 
     <h2  class="hparte2" data-aos-anchor-placement="bottom-bottom" data-aos="flip-down"
     style="position: absolute; margin-bottom: -400px; text-align: center; width: 100%; ">
-      <span>Episodio 2</span><br />Aspecto psicológico</h2>
+      <span>Episodio 2</span><br />Aspecto psicol&oacute;gico</h2>
 
     <div class="spacer-500"> </div>
   </div>
@@ -2063,7 +2113,7 @@ var tots = [15,
   <div class="spacer-50"> </div>
   <div class="nombres">
     <div class="nombre n0">
-      <div class="redCenter">"El avión"</div>
+      <div class="redCenter">"El avi&oacute;n"</div>
     </div>
     <div class="nombre nA">
       <div class="redCenter">"El arbolito"</div>
@@ -2092,7 +2142,7 @@ var tots = [15,
       <div class="red"></div>
     </div>
     <div class="nombre n5b">
-      <div class="align-right">Círculo de la&nbsp;</div>
+      <div class="align-right">C&iacute;rculo de la&nbsp;</div>
       <div class="red"></div>
     </div>
     <div class="nombre n6">
@@ -2154,10 +2204,10 @@ var tots = [15,
 </div>
 
 <video class="video1">
-  <source src="FLOR2.mp4" type="video/mp4">
+  <source src="FLOR3.mp4" type="video/mp4">
 </video>
 <video class="video2">
-  <source src="FLOR2.mp4" type="video/mp4">
+  <source src="FLOR3.mp4" type="video/mp4">
 </video>
 
   <div class="spacer-600"> </div>
@@ -2234,7 +2284,7 @@ var tots = [15,
 
     <div class="sim sim2 colapsado">
       <div class="titulos">
-        <h4>Círculo de ahorro</h4>
+        <h4>C&iacute;rculo de ahorro</h4>
         <h5>(nunca se suma gente nueva)</h5>
       </div>
       <div class="sim_data">
@@ -2264,7 +2314,7 @@ var tots = [15,
     <div class="sim sim1 colapsado">
       <div class="titulos">
         <h4>Telar sin reingresos</h4>
-        <h5>(ningún ganador reingresa)</h5>
+        <h5>(ning&uacute;n ganador reingresa)</h5>
       </div>
       <div class="sim_data">
         <div class="dato floatRight">
@@ -2324,8 +2374,8 @@ var tots = [15,
 
     <div class="sim sim3 colapsado">
       <div class="titulos">
-        <h4>Telar con reingreso máximo</h4>
-        <h5>(cada ganador regala TODO lo que ganó)</h5>
+        <h4>Telar con reingreso m&aacute;ximo</h4>
+        <h5>(cada ganador regala TODO lo que gan&oacute;)</h5>
       </div>
       <div class="sim_data">
         <div class="dato floatRight">
@@ -2360,94 +2410,47 @@ var tots = [15,
   <div class="sim_right">
     <div class="viz2">
       <div class="nodo nodo1">
-        <div class="dinero_positivo"></div>
+        <div class="dinero_positivo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
         <div class="circulo"></div>
-        <div class="dinero_negativo"></div>
+        <div class="dinero_negativo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
       </div>
       <div class="nodo nodo2">
-        <div class="dinero_positivo"></div>
+        <div class="dinero_positivo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
         <div class="circulo"></div>
-        <div class="dinero_negativo"></div>
+        <div class="dinero_negativo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
       </div>
       <div class="nodo nodo3">
-        <div class="dinero_positivo"></div>
+        <div class="dinero_positivo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
         <div class="circulo"></div>
-        <div class="dinero_negativo"></div>
+        <div class="dinero_negativo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
       </div>
       <div class="nodo nodo4">
-        <div class="dinero_positivo"></div>
+        <div class="dinero_positivo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
         <div class="circulo"></div>
-        <div class="dinero_negativo"></div>
+        <div class="dinero_negativo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
       </div>
       <div class="nodo nodo5">
-        <div class="dinero_positivo"></div>
+        <div class="dinero_positivo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
         <div class="circulo"></div>
-        <div class="dinero_negativo"></div>
+        <div class="dinero_negativo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
       </div>
       <div class="nodo nodo6">
-        <div class="dinero_positivo"></div>
+        <div class="dinero_positivo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
         <div class="circulo"></div>
-        <div class="dinero_negativo"></div>
+        <div class="dinero_negativo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
       </div>
       <div class="nodo nodo7">
-        <div class="dinero_positivo"></div>
+        <div class="dinero_positivo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
         <div class="circulo"></div>
-        <div class="dinero_negativo"></div>
+        <div class="dinero_negativo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
       </div>
       <div class="nodo nodo8">
-        <div class="dinero_positivo"></div>
+        <div class="dinero_positivo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
         <div class="circulo"></div>
-        <div class="dinero_negativo"></div>
+        <div class="dinero_negativo">$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$</div>
       </div>
     </div> <!-- viz2 -->
     <div class="viz1 vizX">
-      <div class="bloq bloq0">
-        <h4>Ganadores</h4>
-        <div class="green"></div>
-        <div class="greenR"></div>
-        <div class="white"></div>
-        <div class="whiteR"></div>
-        <div class="red"></div>
-        <div class="redR"></div>
-      </div>
-      <div class="bloq bloq1">
-        <h4>Agua</h4>
-        <div class="greenR"></div>
-        <div class="green"></div>
-        <div class="white"></div>
-        <div class="whiteR"></div>
-        <div class="red"></div>
-        <div class="redR"></div>
-      </div>
-      <div class="bloq bloq2">
-        <h4>Tierra</h4>
-        <div class="greenR"></div>
-        <div class="green"></div>
-        <div class="white"></div>
-        <div class="whiteR"></div>
-        <div class="red"></div>
-        <div class="redR"></div>
-      </div>
-      <div class="bloq bloq3">
-        <h4>Aire</h4>
-        <div class="greenR"></div>
-        <div class="green"></div>
-        <div class="white"></div>
-        <div class="whiteR"></div>
-        <div class="red"></div>
-        <div class="redR"></div>
-      </div>
-      <div class="bloq bloq4">
-        <h4>Fuego</h4>
-        <div class="greenR"></div>
-        <div class="green"></div>
-        <div class="white"></div>
-        <div class="whiteR"></div>
-        <div class="red"></div>
-        <div class="redR"></div>
-      </div>
-    </div>
-    <div class="viz3 vizX">
       <div class="bloq bloq0">
         <h4>Ganadores</h4>
         <div class="green"></div>
@@ -2541,6 +2544,53 @@ var tots = [15,
         <div class="redR"></div>
       </div>
     </div>
+    <div class="viz3 vizX">
+      <div class="bloq bloq0">
+        <h4>Ganadores</h4>
+        <div class="green"></div>
+        <div class="greenR"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq1">
+        <h4>Agua</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq2">
+        <h4>Tierra</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq3">
+        <h4>Aire</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+      <div class="bloq bloq4">
+        <h4>Fuego</h4>
+        <div class="greenR"></div>
+        <div class="green"></div>
+        <div class="white"></div>
+        <div class="whiteR"></div>
+        <div class="red"></div>
+        <div class="redR"></div>
+      </div>
+    </div>
     <div class="vizChart">
       <h4>Porcentaje de gente que sale perdiendo</h4>
       <div class="perdedores1"></div>
@@ -2562,21 +2612,46 @@ var tots = [15,
   <div class="conclusiones">
 
   <div class="spacer-400"> </div>
-  <h1>Conclusión:</h1>
+  <h1>Resumiendo:</h1>
   <div class="spacer-400"> </div>
-  <div class="spacer-300"> </div>
+  <div class="spacer-200"> </div>
 
-  <div class="winner_chart chartA">
-    <div class="mujer verde"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
-    <div class="mujer rojo"></div>
+  <div class='conclusion_boxes'>
+    <div class='conclu_right'>
+      <h3 class='R1'>El colapso es inevitable</h3>
+      <h5 class='R2'>Incluso si todos reinvierten todo lo que ganan</h5>
+    </div>
+    <div class='conclu_left'>
+      <h3 class='L1'>No hay punto de equilibrio</h3>
+      <h5 class='L2'>Siempre 7 de cada 8 participantes están en deuda</h5>
+      <div class='proporcion_chart'>
+        <div class="winner_chart chartB">
+          <div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> </div>
+          <div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> </div>
+          <div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> </div>
+          <div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> </div>
+          <div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> </div>
+          <div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> </div>
+          <div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> <div class="mujer rojo"></div> </div>
+        </div>
+        <div class="winner_chart chartA">
+          <div class="mujer verde"></div>
+          <div class="mujer rojo"></div>
+          <div class="mujer rojo"></div>
+          <div class="mujer rojo"></div>
+          <div class="mujer rojo"></div>
+          <div class="mujer rojo"></div>
+          <div class="mujer rojo"></div>
+          <div class="mujer rojo"></div>
+        </div>
+      </div>
+    </div>
+    <h1 class='centro_exacto'>+</h1>
   </div>
 
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
 
   </div> <!-- conclusiones -->
 
