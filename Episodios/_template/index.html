@@ -1,0 +1,180 @@
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="estilos.css" rel="stylesheet">
+  <link href="../_lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+  <link href="../_lib/jquery-ui/jquery-ui.structure.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="../_lib/smoothscrollto.jquery.js"></script>
+  <script src="../_lib/jquery-ui/jquery-ui.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js" integrity="sha256-xKeoJ50pzbUGkpQxDYHD7o7hxe0LaOGeguUidbq6vis=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+  function locale(nro) {
+    return nro.toLocaleString().replace(/,/g, ".");
+  };
+  function animarContador(valorActual, valorNuevo, $elemento, opt) {
+    if (!opt) opt = {};
+    var formatear = (_data) => {
+      var _val;
+      if (opt.decimales) {
+        _val = _data.toFixed(opt.decimales);
+      } else {
+        _val = parseInt(_data);
+      }
+      if (opt.sufijo) _val += opt.sufijo;
+      return _val;
+    }
+    return new Promise(function(resolve, reject) {
+      var _easing = opt.easing ? opt.easing : 'easeOutQuad';
+      var _dur = opt.duration ? opt.duration : 2000;
+      console.log('Animando contador:', valorNuevo, $elemento);
+      $({num: valorActual}).stop(true).animate({num: valorNuevo}, {
+        duration : _dur,
+        easing: _easing,
+        step: function () {
+          $elemento.text(formatear(this.num));
+        }
+      }).promise().done(function () {
+          $elemento.text(formatear(valorNuevo));
+          return resolve();
+      });
+    });
+  }
+  $.fn.animateRotate = function(angle, duration, easing, complete) {
+    var args = $.speed(duration, easing, complete);
+    var step = args.step;
+    return this.each(function(i, e) {
+      args.complete = $.proxy(args.complete, e);
+      args.step = function(now) {
+        $.style(e, 'transform', 'rotate(' + now + 'deg)');
+        if (step) return step.apply(e, arguments);
+      };
+
+      $({deg: 0}).animate({deg: angle}, args);
+    });
+  };
+  var defaultDelay = 300;
+  var defaultEasing = "linear";
+  var mapa = [];
+
+  // --- MAPA ---
+  mapa = mapa.concat([
+    {y: 0},
+    {y: 500},
+    {y: 1000, delay: 1000},
+    // {y: 1000, delay: 1800, easing: 'easeOutQuart'},
+    // {animacion: 'nombre'}
+  ]);
+
+  // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  // 0 - Inicio
+  var pos = 0;
+
+  // Inicializacion
+  console.log("Start!");
+  if (pos > 0) {
+    pos--;
+    nextPos();
+  } else {
+    scrollToPos(0);
+  }
+  // $("HTML, BODY").animate({ scrollTop: mapa[pos].y }, 300);
+  AOS.init();
+
+  function scrollToPos(y, delay, easing, cb) {
+    console.log('scroll:',y,delay,easing);
+    delay = delay || defaultDelay;
+    easing = easing || defaultEasing;
+    $("HTML, BODY").animate({ scrollTop: y }, delay, easing, () => {
+      console.log('anim done!');
+      if (cb) {
+        return cb();
+      }
+    });
+  };
+
+  function nextPos() {
+    pos++;
+    if (pos >= mapa.length) {
+      $('.scrollDisplay').text(document.body.scrollTop + " / " + "FIN");
+      return;
+    } else {
+      console.log('Going to pos ' + pos + '/' + mapa.length);
+    }
+    var easing = mapa[pos].easing || defaultEasing;
+    var delay = mapa[pos].delay || defaultDelay;
+    $('.scrollDisplay').text(document.body.scrollTop + " / " + pos);
+    if (mapa[pos].y) {
+      scrollToPos(mapa[pos].y, delay, easing);
+    }
+    // animacion
+    if (mapa[pos].animacion) {
+      ejecutarAnimacion(mapa[pos].animacion);
+    }
+  };
+
+  function esperar(delay) {
+    if (!delay) delay = 700;
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, delay);
+    });
+  };
+
+  function ejecutarAnimacion(id) {
+    console.log('ejecutando animacion:', id);
+    var genericDelay = 600;
+
+    switch(id) {
+      case 'emoji_amor':
+      $('.emoji_amor').animate({opacity: 1});
+      break;
+
+    }
+  }
+
+  window.onscroll = function() {
+    $('.scrollDisplay').text(document.body.scrollTop + " / " + pos);
+  };
+  $('body').mousedown(function(ev) {
+    if (ev.which === 3) {
+      nextPos();
+    }
+  });
+});
+</script>
+ <meta charset="UTF-8">
+</head>
+<body class="noselect" oncontextmenu="return false">
+  <div class="scrollDisplay">0</div>
+
+  <!-- ............. COMIENZO ............. -->
+  <div class="spacer-600"> </div>
+  <h1 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    ¡Hola!
+  </h1>
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    Te invito a que exploremos
+  </h2>
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    c&oacute;mo funciona
+  </h2>
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    <span>el Telar de la Abundancia</span>
+  </h2>
+  <div class="spacer-700"> </div>
+
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+  <div class="spacer-600"> </div>
+
+</body>
+</html>
