@@ -1,0 +1,30 @@
+En el presente archivo comprimido encontrará: 
+
+1. Un archivo .jpeg original sobre los sesgos cognitivos en ingles de John Manoogian III, 
+   basado en el trabajo de Buster Benson en una clasificación de los sesgos cognitivos.
+2. Un archivo .jpg de una versión en Español hecha por W. Einzhorn sobre la gráfica de John Manoogian III
+3. Un archivo .pdf de dicha gráfica donde cada sesgo redirecciona a Internet, a una traducción al español de dichos sesgos. 
+
+   Los enlaces son los proveídos por Buster Benson, el cual redujo algunos por querer decir los mismo. Por lo tanto puede que varios sesgos de distintos 
+nombres lleven a una misma dirección. La principal fuente es la wikipedia, pero algún que otro lleva a otras direcciones. No he tratado de buscar la disponibilidad 
+de dichos sesgos en la wikipedia española por tres motivos: 1. en muchos casos no existen, 2. la explicaciones y detalles de la Wikipedia española suele ser más concisa y pobre, 
+3. los nombres en español en muchos casos no son la traducción literal, con lo que es complicado buscar el equivalente en español.
+
+El documento .pdf se ha preparado así. 
+
+ Dado que es grande y si se pone la visión al 100% en el programa lector de pdf's, no se leen bien los nombres de los sesgos, 
+al pinchar sobre las 4 primeras categorías se ampliará la zona que abarca dicha categoría. Dentro de cada categoría si se pincha sobre el punto de una de las subcategorías, 
+se ampliará la visión a los sesgos que le corresponden. Para volver a la visión al 100% recurrir al icono del programa. Finalmente para ir a la explicación de cada sesgo, 
+pinchar sobre el punto de cada sesgo, no sobre los nombres.
+
+  También encontrará enlaces para ir a la página del Buster Benson (título central) en donde explica el por qué dicha clasificación a algunos trucos para memorizarlos. 
+Un enlace a su perfil , así como al perfil del creador de la gráfica. Y dando sobre el traductor se irá a la página traducida al español de Buster Benson.
+
+   El archivo PDF está abierto, para poder editar. Si alguien lo reedita ha de mantener las autorías, pues es el único requisito que se estipula en las comunidades que 
+trabajan de forma gratuita para el bien de la comunidad, como Creative Commons.
+
+Cognitive bias cheat sheet: https://betterhumans.coach.me/cognitive-bias-cheat-sheet-55a472476b18
+Buster Benson: https://betterhumans.coach.me/@buster?source=post_header_lockup
+John Manoogian III: https://medium.com/@jm3
+W. Einzhorn: http://einhornblack.blogspot.com.es/2017/09/codice-y-trucos-para-comprender-los.html
+Creative Commons: https://es.wikipedia.org/wiki/Creative_Commons
