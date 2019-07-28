@@ -1,0 +1,78 @@
+body {
+  color: white;
+  background-color: black;
+  text-align: center;
+  font-family: 'Lora', serif;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.scrollDisplay {
+  font-family: Arial;
+  position: fixed;
+  text-align: right;
+  right: 5px;
+  top: 5px;
+  color: white;
+  background-color: rgba(0,0,0,0.7);
+  width: 500px;
+  padding: 5px;
+  z-index: 9999;
+  opacity: 1;
+}
+.scrollDisplay b {
+  color: #00FF00;
+}
+.scrollDisplay small {
+  color: rgba(255,255,255,0.5);
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: 'Roboto Slab', serif;
+  margin: 10px 0;
+}
+h1 span, h2 span, h3 span, h4 span, h5 span {
+  color: red;
+}
+h1 { font-size: 100px; margin: 67px 0; }
+h2 { font-size: 80px; }
+h3 { font-size: 60px; }
+h4 { font-size: 40px; }
+h5 { font-size: 30px; }
+
+.big {
+  font-size: 80px;
+}
+
+.black-bg {
+  background-color: black;
+  width: 100%;
+  color: white;
+}
+
+.spacer-25  { height: 25px;   clear: both; }
+.spacer-50  { height: 50px;   clear: both; }
+.spacer-100 { height: 100px;   clear: both; }
+.spacer-200 { height: 200px;   clear: both; }
+.spacer-300 { height: 300px;   clear: both; }
+.spacer-400 { height: 400px;   clear: both; }
+.spacer-500 { height: 500px;   clear: both; }
+.spacer-600 { height: 600px;   clear: both; }
+.spacer-700 { height: 700px;   clear: both; }
