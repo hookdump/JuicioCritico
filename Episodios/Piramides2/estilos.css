@@ -76,3 +76,104 @@ h5 { font-size: 30px; }
 .spacer-500 { height: 500px;   clear: both; }
 .spacer-600 { height: 600px;   clear: both; }
 .spacer-700 { height: 700px;   clear: both; }
+
+.ingredientes {
+  height: 1078px;
+  position: relative;
+}
+
+.episodios_labels {
+  top: 0;
+  height: 1000px;
+  width: 1920px;
+  position: fixed;
+  pointer-events: none;
+}
+.episodios_labels h2 {
+  font-size: 80px;
+  width: 430px;
+}
+.episodio1 {
+  opacity: 0;
+  position: absolute;
+  float: left;
+  top: 236px;
+  width: 48%;
+  left: 243px;
+}
+.episodio2 {
+  opacity: 0;
+  position: absolute;
+  float: right;
+  top: 236px;
+  width: 48%;
+  right: 493px;
+}
+
+.indicador {
+  opacity: 0;
+  border-top: 8px solid white;
+  border-left: 8px solid white;
+  border-right: 8px solid white;
+  width: 500px;
+  height: 30px;
+  top: 357px;
+  position: absolute;
+}
+.indicador1 {
+  left: 204px;
+}
+.indicador2 {
+  right: 450px;
+}
+
+.video1 {
+  position: absolute;
+  top: 2239px;
+  left: 651px;
+}
+
+.ing, .torta_item {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  left: 50%;
+  top: 50%;
+  margin-left: -100px;
+  margin-top: -100px;
+  border-radius: 100px;
+  font-weight: bold;
+  font-family: Lato;
+  transform: scale(1);
+  transition: transform 1.5s ease-in-out;
+}
+.ing1 { opacity: 0; background-color: rgba(0,255,0,1); color: #00FF00; }
+.ing2 { opacity: 0; background-color: #346CF8; color: #3388FF; z-index: 999; }
+.ing3 { opacity: 0; background-color: rgba(255,0,0,1); color: #FF0000; }
+.ing_white { opacity: 0; background-color: rgba(255,255,255,1); color: #FFFFFF; }
+
+.ing.big { transform: scale(12); }
+
+
+.ing .label {
+  font-size: 50px;
+  opacity: 0;
+  width: 300px;
+  margin-left: -150px !important;
+  text-align: center;
+  position: absolute;
+  margin-left: -100px;
+  top: 210px;
+}
+
+.torta_item {
+  background-size: cover;
+  opacity: 0;
+  border-radius: 0;
+}
+
+.torta_full { background-image: url('assets/torta.png'); width: 400px; height: 400px; margin-top: -200px; margin-left: -200px; }
+.torta1 { background-image: url('assets/torta1.png'); }
+.torta2 { background-image: url('assets/torta2.png'); }
+.torta3 { background-image: url('assets/torta3.png'); }
+.torta4 { background-image: url('assets/torta4.png'); }
