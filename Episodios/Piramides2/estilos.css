@@ -35,7 +35,7 @@ body::-webkit-scrollbar {
   width: 500px;
   padding: 5px;
   z-index: 9999;
-  opacity: 0;
+  opacity: 1;
 }
 .scrollDisplay b {
   color: #00FF00;
@@ -77,6 +77,48 @@ h5 { font-size: 30px; }
 .spacer-600 { height: 600px;   clear: both; }
 .spacer-700 { height: 700px;   clear: both; }
 
+
+.overlayObjetivo {
+  position: absolute;
+  top: 2480px;
+  height: 300px;
+  width: 1900px;
+  z-index: 999;
+}
+.overlayObjetivo h2, .overlayObjetivo h1 {
+  display: inline-block;
+  width: 600px;
+  opacity: 0;
+  color: red;
+}
+.overlayObjetivo .left {
+  float: left;
+  text-align: left;
+  padding-left: 100px;
+  margin-top: 23px;
+}
+.overlayObjetivo .right {
+  float: right;
+  text-align: right;
+  padding-right: 100px;
+  margin-top: 23px;
+}
+.overlayObjetivo .entender {
+  position: absolute;
+  left: 50%;
+  margin-left: -290px;
+  margin-top: 6px;
+  color: #00FF00;
+  text-shadow: 0 0 20px black;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+
+
+
+
+/* ---- */
 .ingredientes {
   height: 1078px;
   position: relative;
@@ -152,7 +194,7 @@ h5 { font-size: 30px; }
 .ing3 { opacity: 0; background-color: rgba(255,0,0,1); color: #FF0000; }
 .ing_white { opacity: 0; background-color: rgba(255,255,255,1); color: #FFFFFF; }
 
-.ing.big { transform: scale(12); }
+.ing.big { transform: scale(15); }
 
 
 .ing .label {
@@ -177,3 +219,21 @@ h5 { font-size: 30px; }
 .torta2 { background-image: url('assets/torta2.png'); }
 .torta3 { background-image: url('assets/torta3.png'); }
 .torta4 { background-image: url('assets/torta4.png'); }
+
+.posinega {
+  position: absolute;
+  top: 3500px;
+  width: 1890px;
+}
+.posinega .adentro {
+  width: 49%;
+  font-size: 55px;
+}
+.posinega ul { list-style: none; }
+.posinega li {
+  opacity: 0;
+  margin-bottom: 50px;
+  padding: 0 20px;
+}
+.posinega .positivo { float: left; color: #00ff00; }
+.posinega .negativo { float: right; color: #ff0000; }

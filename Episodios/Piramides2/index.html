@@ -71,37 +71,42 @@ $( document ).ready(function() {
     {y: 0, id: 'COMIENZO'},
     {y: 300},
     {y: 400},
-    {y: 550},
-    {y: 600},
+    {y: 700},
+    {y: 1050},
+    {y: 1200},
     {y: 2014, id: 'FLOR'},
-    {animacion: 'play_flor'},
+    {animacion: 'objetivo1'},
+    {animacion: 'objetivo2'},
+    {animacion: 'objetivo3'},
     {animacion: 'ingredientes0', id: 'INGREDIENTES'},
-    {animacion: 'ingredientes1'},
-    {animacion: 'ingredientes2'},
-    {animacion: 'torta1'},
-    {animacion: 'torta2'},
-    {animacion: 'torta3'},
     {animacion: 'ingredientes3'},
-    {animacion: 'ingredientes4'},
     {animacion: 'ingredientes_highlight1'},
+    {animacion: 'ingredientes_highlight_scroll'},
+    {animacion: 'posi1'},
+    {animacion: 'posi2'},
+    {animacion: 'posi3'},
+    {animacion: 'posi4'},
+    {animacion: 'posi5'},
     {animacion: 'ingredientes_highlight2'},
+    {animacion: 'nega1'},
+    {animacion: 'nega2'},
+    {animacion: 'nega3'},
+    {animacion: 'nega4'},
+    {animacion: 'nega5'},
+
+    /* LADO CULTURAL SOCIAL */
+
+
+
+    /* LADO PSICOLOGICO */
     {animacion: 'ingredientes_highlight3'},
     {animacion: 'ingredientes_highlight4'},
-    {animacion: 'ingredientes2'},
-    {animacion: 'ingredientes4'},
-    {animacion: 'ingredientes_open1'},
-    {animacion: 'ingredientes_open2'},
-    {animacion: 'ingredientes_highlight5'},
-    // {animacion: 'parte1', id: 'EPISODIOS'},
-    // {animacion: 'parte2'},
-    // {animacion: 'parte1_center'},
-
     // {y: 1000, delay: 1800, easing: 'easeOutQuart'},
     // {animacion: 'nombre'}
   ]);
 
   // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  var jumpToId = '';
+  var jumpToId = 'INGREDIENTES';
   // jumpToId = 'FLOR';
 
   // Inicializacion
@@ -166,123 +171,75 @@ $( document ).ready(function() {
   };
 
   function ejecutarAnimacion(id) {
-    const BG_OPACITY = 0.15;
+    const BG_OPACITY = 0.25;
     console.log('ejecutando animacion:', id);
     var genericDelay = 600;
     mostrarPos();
 
     switch(id) {
-      case 'play_flor':
+      case 'objetivo1':
+      $('.overlayObjetivo .left').animate({opacity: 1});
+      break;
+      case 'objetivo2':
+      $('.overlayObjetivo .right').animate({opacity: 1});
+      break;
+      case 'objetivo3':
       $('.video1')[0].play();
-      break;
-
-      case 'parte1':
-      scrollToPos(1750, 1000, 'easeOutQuart');
-      $(".hparte2").animate({opacity: 0.1}, 500);
-      $(".hparte1 em").css({'text-shadow': '0 0 10px white'});
-      $(".hparte1 span").css({'text-shadow': '0 0 10px red'});
-      break;
-
-      case 'parte2':
-      $(".hparte1").animate({opacity: 0.1}, 500);
-      $(".hparte2").animate({opacity: 1}, 500);
-      $(".hparte1 em").css({'text-shadow': 'none'});
-      $(".hparte1 span").css({'text-shadow': 'none'});
-      $(".hparte2 em").css({'text-shadow': '0 0 10px white'});
-      $(".hparte2 span").css({'text-shadow': '0 0 10px red'});
-      break;
-
-      case 'parte1_center':
-      $(".hparte2").animate({
-        'top': '-=300',
-        'font-size': 100,
-        'transform': 'scale(1.5)',
-        opacity: 1
-      }, 1200, 'easeOutQuart');
-      $(".hparte1").animate({'top': '-=700', opacity: 0}, 600);
-      $(".hparte2 em").css({'text-shadow': '0 0 10px white'});
-      $(".hparte2 span").css({'text-shadow': '0 0 10px red'});
+      $('.overlayObjetivo .entender').animate({opacity: 1});
       break;
 
       case 'ingredientes0':
+      scrollToPos(2800);
       $('.video1').fadeOut();
       $('.ing_white').animate({opacity: 1});
-      break;
-
-      case 'ingredientes1':
-      $('.ing_white').animate({'opacity': 0}, 200);
-      $('.ing1').animate({'opacity': 1,'left': '-=500'}, 1000, EASING_QUART);
-      $('.ing2').animate({'opacity': 1}, 1000, EASING_QUART);
-      $('.ing3').animate({'opacity': 1, 'left': '+=500'}, 1000, EASING_QUART);
-      // $('.label').animate({opacity: 1}, 2000, EASING_QUART);
-      break;
-
-      case 'ingredientes2':
-      $('.ing1').animate({'opacity': 0,'left': '+=500'}, 1000, EASING_QUART);
-      $('.ing2').animate({'opacity': 0}, 1000, EASING_QUART);
-      $('.ing3').animate({'opacity': 0, 'left': '-=500'}, 1000, EASING_QUART);
-      $('.ing_white').delay(300).animate({'opacity': 1}, 300);
-      break;
-
-      case 'torta1':
-      $('.ing').animate({'opacity': '0'}, 1000, EASING_QUART);
-      $('.torta_full').animate({'opacity': '1'}, 1000, EASING_QUART);
-      break;
-
-      case 'torta2':
-      $('.torta_full').animate({opacity: 0}, 300);
-      esperar(200).then(() => {
-        $('.torta1').animate({'opacity': 1, 'left': '-=500'}, 1000, EASING_QUART);
-        $('.torta2').animate({'opacity': 1, 'left': '-=180'}, 1000, EASING_QUART);
-        $('.torta3').animate({'opacity': 1, 'left': '+=180'}, 1000, EASING_QUART);
-        $('.torta4').animate({'opacity': 1, 'left': '+=500'}, 1000, EASING_QUART);
-      });
-      break;
-
-      case 'torta3':
-      $('.torta1').animate({'opacity': 0, 'left': '+=400'}, 1000, EASING_QUART);
-      $('.torta2').animate({'opacity': 0, 'left': '+=180'}, 1000, EASING_QUART);
-      $('.torta3').animate({'opacity': 0, 'left': '-=180'}, 1000, EASING_QUART);
-      $('.torta4').animate({'opacity': 0, 'left': '-=500'}, 1000, EASING_QUART);
-      esperar(300).then(() => {
-        $('.torta_full').animate({opacity: 1}, 300);
-      });
-      break;
-
-      case 'ingredientes3':
-      $('.torta_full').animate({'opacity': 0}, 1000);
-      $('.ing_white').animate({'opacity': 1}, 1000);
       $('.label').animate({'opacity': 1}, 1000);
       break;
 
-      case 'ingredientes4':
-      $('.ing_white').animate({'opacity': 0}, 400);
-      $('.ing1').animate({'opacity': 1,'left': '-=500'}, 1700, EASING_QUART);
-      $('.ing2').animate({'opacity': 1}, 1700, EASING_QUART);
-      $('.ing3').animate({'opacity': 1, 'left': '+=500'}, 1700, EASING_QUART);
+      case 'ingredientes3':
+      $('.ing_white').animate({'opacity': 0}, 200);
+      $('.ing1').animate({'opacity': 1,'left': '-=480'}, 1700, EASING_QUART);
+      // $('.ing2').animate({'opacity': 1}, 1700, EASING_QUART);
+      $('.ing3').animate({'opacity': 1, 'left': '+=480'}, 1700, EASING_QUART);
       break;
 
       case 'ingredientes_highlight1':
-      $('.ing2').animate({opacity: BG_OPACITY}, 400);
-      $('.ing3').animate({opacity: BG_OPACITY}, 400);
+      // $('.ing2').animate({opacity: BG_OPACITY});
+      $('.ing3').animate({opacity: BG_OPACITY});
       $('.episodio1').animate({opacity: 1});
       $('.indicador1').animate({opacity: 1});
       break;
 
       case 'ingredientes_highlight2':
       $('.ing1').animate({opacity: BG_OPACITY}, 400);
-      $('.ing2').animate({opacity: 1}, 400);
-      $('.ing3').animate({opacity: BG_OPACITY}, 400);
+      // $('.ing2').animate({opacity: BG_OPACITY}, 400);
+      $('.ing3').animate({opacity: 1}, 400);
       $('.indicador1').animate({opacity: BG_OPACITY});
       $('.episodio1').animate({opacity: BG_OPACITY});
       $('.episodio2').animate({opacity: 1});
       $('.indicador2').animate({opacity: 1});
+      $('.posinega .positivo').animate({opacity: BG_OPACITY});
       break;
+
+      case 'ingredientes_highlight_scroll':
+      scrollToPos(3350, 1000, EASING_QUART);
+      break;
+
+      case 'posi1': $('.posi1').animate({opacity: 1}); break;
+      case 'posi2': $('.posi2').animate({opacity: 1}); break;
+      case 'posi3': $('.posi3').animate({opacity: 1}); break;
+      case 'posi4': $('.posi4').animate({opacity: 1}); break;
+      case 'posi5': $('.posi5').animate({opacity: 1}); break;
+
+      case 'nega1': $('.nega1').animate({opacity: 1}); break;
+      case 'nega2': $('.nega2').animate({opacity: 1}); break;
+      case 'nega3': $('.nega3').animate({opacity: 1}); break;
+      case 'nega4': $('.nega4').animate({opacity: 1}); break;
+      case 'nega5': $('.nega5').animate({opacity: 1}); break;
 
       case 'ingredientes_highlight3':
       $('.ing1').animate({opacity: BG_OPACITY});
-      $('.ing2').animate({opacity: BG_OPACITY});
-      $('.ing3').animate({opacity: 1});
+      // $('.ing2').animate({opacity: 1});
+      $('.ing3').animate({opacity: BG_OPACITY});
       break;
 
 
@@ -293,25 +250,13 @@ $( document ).ready(function() {
       $('.indicador2').animate({opacity: 0});
       $('.indicador3').animate({opacity: 0});
       $('.ing1').animate({opacity: 1});
-      $('.ing2').animate({opacity: 1});
+      // $('.ing2').animate({opacity: 1});
       $('.ing3').animate({opacity: 1});
       break;
 
-      case 'ingredientes_open1':
-      $('.ing2').addClass('big');
-      break;
-
-      case 'ingredientes_open2':
-      $('.ing2').removeClass('big');
-      break;
-
-      case 'ingredientes_highlight5':
-      $('.ing1').animate({opacity: BG_OPACITY});
-      $('.ing2').animate({opacity: BG_OPACITY});
-      $('.ing3').animate({opacity: 1});
-      break;
     }
   }
+
 
   window.onscroll = function() {
     mostrarPos();
@@ -333,25 +278,40 @@ $( document ).ready(function() {
   <!-- ............. COMIENZO ............. -->
   <div class="spacer-600"> </div>
   <h1 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    ¡Hola!
+    Hey, vos...
   </h1>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    Te invito a que exploremos
+    Si, ¡vos!
+  </h2>
+
+  <div class="spacer-100"></div>
+
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    <span>¿Estás en un Telar<br />de la Abundancia?</span>
+  </h2>
+
+  <div class="spacer-100"></div>
+
+  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
+    ¿Te intriga entender<br />por qué tanta gente
   </h2>
   <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    los distintos componentes
-  </h2>
-  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    del <span>Telar de la Abundancia</span>
+    <span>desconfía</span> y <span>critica</span> al sistema?
   </h2>
   <div class="spacer-700"> </div>
 
+<div class="overlayObjetivo">
+    <h2 class="left">CRITICAR</h2>
+    <h2 class="right">DEFENDER</h2>
+    <h1 class="entender">ENTENDER</h1>
+</div>
 <video class="video1">
   <source src="../Piramides/FLOR3.mp4" type="video/mp4">
 </video>
 
 
-  <div class='episodios_labels'>
+<!--
+  <div class='episodios_labels' style="display: none;">
     <div class="indicador indicador1">
     </div>
     <h2 class="hparte1 episodio1">
@@ -363,28 +323,49 @@ $( document ).ready(function() {
       Episodio 2
     </h2>
   </div>
+-->
 
-
-  <div class="spacer-100"> </div>
+  <div class="spacer-300"> </div>
 
   <div class="ingredientes">
     <div class="ing ing1 component">
-      <span class="label">Matemático</span>
+      <span class="label">Positivo</span>
     </div>
     <div class="ing ing_white">
       <span class="label">Telar de la Abundancia</span>
     </div>
     <div class="ing ing2 component">
-      <span class="label">Psicológico</span>
+      <span class="label"></span>
     </div>
     <div class="ing ing3 component">
-      <span class="label">Cultural y Social</span>
+      <span class="label">Negativo</span>
     </div>
     <div class="torta_item torta_full"></div>
     <div class="torta_item torta_ingrediente torta1"></div>
     <div class="torta_item torta_ingrediente torta2"></div>
     <div class="torta_item torta_ingrediente torta3"></div>
     <div class="torta_item torta_ingrediente torta4"></div>
+  </div>
+
+  <div class='posinega'>
+    <div class='adentro positivo'>
+      <ul>
+        <li class='posi1'>Apoyo mutuo</li>
+        <li class='posi2'>Mentalidad de la abundancia</li>
+        <li class='posi3'>Empoderamiento femenino</li>
+        <li class='posi4'>Recursos para cumplir sueños y proyectos</li>
+        <li class='posi5'>Recursos para cumplir sueños y proyectos</li>
+      </ul>
+    </div>
+    <div class='adentro negativo'>
+      <ul>
+        <li class='nega1'>Apoyo mutuo</li>
+        <li class='nega2'>Mentalidad de la abundancia</li>
+        <li class='nega3'>Empoderamiento femenino</li>
+        <li class='nega4'>Recursos para cumplir sueños y proyectos</li>
+        <li class='nega5'>Recursos para cumplir sueños y proyectos</li>
+      </ul>
+    </div>
   </div>
 
   <div class="spacer-600"> </div>
