@@ -71,17 +71,42 @@ $( document ).ready(function() {
     {y: 0, id: 'COMIENZO'},
     {y: 300},
     {y: 400},
-    {y: 700},
-    {y: 1050},
-    {y: 1200},
-    {y: 2014, id: 'FLOR'},
+    {y: 1080},
+    {animacion: 'tituloL'},
+    {animacion: 'preguntaL'},
+    {animacion: 'tituloR'},
+    {animacion: 'preguntaR'},
+    {animacion: 'goToFlor'},
     {animacion: 'objetivo1'},
     {animacion: 'objetivo2'},
     {animacion: 'objetivo3'},
     {animacion: 'ingredientes0', id: 'INGREDIENTES'},
+    {animacion: 'ingredientes_zoomIn'},
+    {animacion: 'ingredientes_zoomInB'},
+    {animacion: 'ingredientes_zoomOut'},
     {animacion: 'ingredientes3'},
+    // {animacion: 'ingredientes_highlight_scroll'},
+    /* TO DO: REACTIVAR FRASE */
+    /*
+    {animacion: 'frase1'},
+    {animacion: 'frase2'},
+    {animacion: 'frase3'},
+    {animacion: 'frase4'},
+    {animacion: 'frase5'},
+    {animacion: 'frase6'},
+    {animacion: 'frase7'},
+    {animacion: 'frase_hide'},
+    */
+    {animacion: 'scroll_flat', id: 'FLAT'},
+    {animacion: 'scroll_flat2'},
+    {animacion: 'evidencia1'},
+    {animacion: 'evidenciaFLAT1'},
+    {animacion: 'evidenciaFLAT2'},
+    {animacion: 'flat_bye'},
+    {animacion: 'scroll_sesgos', id: 'SESGOS'},
+    {animacion: 'evidencia3'},
+    // {animacion: 'evidencia3b'},
     {animacion: 'ingredientes_highlight1'},
-    {animacion: 'ingredientes_highlight_scroll'},
     {animacion: 'posi1'},
     {animacion: 'posi2'},
     {animacion: 'posi3'},
@@ -93,20 +118,15 @@ $( document ).ready(function() {
     {animacion: 'nega3'},
     {animacion: 'nega4'},
     {animacion: 'nega5'},
-
-    /* LADO CULTURAL SOCIAL */
-
-
-
-    /* LADO PSICOLOGICO */
     {animacion: 'ingredientes_highlight3'},
-    {animacion: 'ingredientes_highlight4'},
     // {y: 1000, delay: 1800, easing: 'easeOutQuart'},
     // {animacion: 'nombre'}
   ]);
 
   // $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-  var jumpToId = 'INGREDIENTES';
+  var jumpToId = '';
+  // jumpToId = 'FLAT';
+  // jumpToId = 'INGREDIENTES';
   // jumpToId = 'FLOR';
 
   // Inicializacion
@@ -177,6 +197,13 @@ $( document ).ready(function() {
     mostrarPos();
 
     switch(id) {
+      case 'goToFlor':
+      scrollToPos(2014, 1500, EASING_QUART);
+      esperar(1000).then(() => {
+        $('.video1')[0].play();
+      });
+      break;
+
       case 'objetivo1':
       $('.overlayObjetivo .left').animate({opacity: 1});
       break;
@@ -184,16 +211,43 @@ $( document ).ready(function() {
       $('.overlayObjetivo .right').animate({opacity: 1});
       break;
       case 'objetivo3':
-      $('.video1')[0].play();
       $('.overlayObjetivo .entender').animate({opacity: 1});
       break;
 
+      case 'tituloL':
+      $('.splitL h2.titulo').animate({opacity: 1});
+      break;
+      case 'tituloR':
+      $('.splitR h2.titulo').animate({opacity: 1});
+      break;
+      case 'preguntaL':
+      $('.splitL .question').animate({opacity: 1});
+      break;
+      case 'preguntaR':
+      $('.splitR .question').animate({opacity: 1});
+      break;
+
+
       case 'ingredientes0':
-      scrollToPos(2800);
+      scrollToPos(2853, 2000, EASING_QUART);
+      /*
       $('.video1').fadeOut();
+      */
       $('.ing_white').animate({opacity: 1});
       $('.label').animate({'opacity': 1}, 1000);
       break;
+      case 'ingredientes_zoomIn':
+      $('.ing_white').addClass('big');
+      $('.ing_white .small_inside').animate({opacity: 1}, 2000);
+      break;
+      case 'ingredientes_zoomInB':
+      $('.segundaParteSuma').animate({opacity: 1});
+      break;
+      case 'ingredientes_zoomOut':
+      $('.ing_white').removeClass('big');
+      $('.ing_white .small_inside').animate({opacity: 0}, 2000);
+      break;
+
 
       case 'ingredientes3':
       $('.ing_white').animate({'opacity': 0}, 200);
@@ -204,24 +258,80 @@ $( document ).ready(function() {
 
       case 'ingredientes_highlight1':
       // $('.ing2').animate({opacity: BG_OPACITY});
-      $('.ing3').animate({opacity: BG_OPACITY});
+      $('.evidencias_telar .evidencia.etelar1')
+        .addClass('evidenciaGrande');
+      // $('.ing3').animate({opacity: BG_OPACITY});
       $('.episodio1').animate({opacity: 1});
       $('.indicador1').animate({opacity: 1});
       break;
 
       case 'ingredientes_highlight2':
-      $('.ing1').animate({opacity: BG_OPACITY}, 400);
+      // $('.ing1').animate({opacity: BG_OPACITY}, 400);
       // $('.ing2').animate({opacity: BG_OPACITY}, 400);
-      $('.ing3').animate({opacity: 1}, 400);
+      // $('.ing3').animate({opacity: 1}, 400);
+      $('.evidencias_telar .evidencia.etelar2')
+        .addClass('evidenciaGrande');
       $('.indicador1').animate({opacity: BG_OPACITY});
       $('.episodio1').animate({opacity: BG_OPACITY});
       $('.episodio2').animate({opacity: 1});
       $('.indicador2').animate({opacity: 1});
-      $('.posinega .positivo').animate({opacity: BG_OPACITY});
+      // $('.posinega .positivo').animate({opacity: BG_OPACITY});
       break;
 
       case 'ingredientes_highlight_scroll':
-      scrollToPos(3350, 1000, EASING_QUART);
+      scrollToPos(3417, 1000, EASING_QUART);
+      break;
+
+      case 'frase1': $('.f1').animate({opacity: 1}, 1000); break;
+      case 'frase2': $('.f2').animate({opacity: 1}, 1000); break;
+      case 'frase3': $('.f3').animate({opacity: 1}, 1000); break;
+      case 'frase4': $('.f4').animate({opacity: 1}, 1000); break;
+      case 'frase5': $('.f5').animate({opacity: 1}, 1000); break;
+      case 'frase6': $('.f6').animate({opacity: 1}, 1000); break;
+      case 'frase7': $('.f7').animate({opacity: 1}, 1000); break;
+      case 'frase_hide': $('.frase1').animate({opacity: 0}, 1000); break;
+
+      case 'scroll_flat':
+      scrollToPos(4530, 1000, EASING_QUART);
+      esperar(200).then(() => {
+        $('.video2')[0].play();
+      });
+      break;
+
+      case 'scroll_flat2':
+      $('.flatEarth').animate({opacity: 1});
+      break;
+
+      case 'evidencia1':
+      $('.flatL').animate({opacity: 0});
+      $('.flatR').animate({opacity: 0});
+      $('.flat_split .evidencia').animate({opacity: 1});
+      break;
+
+      case 'evidenciaFLAT1':
+      $('.evidencia.eround')
+        .addClass('evidenciaGrande');
+      break;
+      case 'evidenciaFLAT2':
+      $('.evidencia.eflat')
+        .addClass('evidenciaGrande');
+      break;
+
+      case 'flat_bye':
+      $('.evidencia.eround').removeClass('evidenciaGrande');
+      $('.evidencia.eflat').removeClass('evidenciaGrande');
+      $('.flat_split .evidencia').animate({opacity: 0});
+      break;
+
+      /* SESGOS */
+      case 'scroll_sesgos':
+      scrollToPos(3417, 1000, EASING_QUART);
+      break;
+
+
+
+      /* FIN SESGOS */
+      case 'back_to_posinega':
       break;
 
       case 'posi1': $('.posi1').animate({opacity: 1}); break;
@@ -229,29 +339,46 @@ $( document ).ready(function() {
       case 'posi3': $('.posi3').animate({opacity: 1}); break;
       case 'posi4': $('.posi4').animate({opacity: 1}); break;
       case 'posi5': $('.posi5').animate({opacity: 1}); break;
+      case 'posi6': $('.posi6').animate({opacity: 1}); break;
 
       case 'nega1': $('.nega1').animate({opacity: 1}); break;
       case 'nega2': $('.nega2').animate({opacity: 1}); break;
       case 'nega3': $('.nega3').animate({opacity: 1}); break;
       case 'nega4': $('.nega4').animate({opacity: 1}); break;
       case 'nega5': $('.nega5').animate({opacity: 1}); break;
+      case 'nega6': $('.nega6').animate({opacity: 1}); break;
 
       case 'ingredientes_highlight3':
-      $('.ing1').animate({opacity: BG_OPACITY});
-      // $('.ing2').animate({opacity: 1});
-      $('.ing3').animate({opacity: BG_OPACITY});
-      break;
-
-
-      case 'ingredientes_highlight4':
-      $('.episodio1').animate({opacity: 0});
-      $('.episodio2').animate({opacity: 0});
-      $('.indicador1').animate({opacity: 0});
-      $('.indicador2').animate({opacity: 0});
-      $('.indicador3').animate({opacity: 0});
       $('.ing1').animate({opacity: 1});
       // $('.ing2').animate({opacity: 1});
       $('.ing3').animate({opacity: 1});
+      /*
+      $('.posinega .positivo').animate({opacity: 1});
+      $('.posinega .negativo').animate({opacity: 1});
+      */
+      break;
+
+
+      case 'evidencia3':
+      $('.evidencias_telar .evidencia').animate({opacity: 1});
+      break;
+
+      case 'evidencia3b':
+      break;
+
+      case 'evidencia4':
+      $('.evidencias_telar .evidencia.etelar1').animate({
+        left: 180,
+        bottom: 880,
+        width: 200,
+        height: 200
+      }, 1000, EASING_QUART);
+      $('.evidencias_telar .evidencia.etelar2').animate({
+        right: 200,
+        bottom: 880,
+        width: 200,
+        height: 200
+      }, 1000, EASING_QUART);
       break;
 
     }
@@ -286,23 +413,37 @@ $( document ).ready(function() {
 
   <div class="spacer-100"></div>
 
-  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    <span>¿Estás en un Telar<br />de la Abundancia?</span>
-  </h2>
+  <div class="splitter">
+    <div class="splitL">
+      <div class="spacer-200"></div>
+      <h2 class='titulo'>
+        <span>¿Estás a favor del Telar?</span>
+      </h2>
+      <div class="spacer-100"></div>
+      <h2 class='question'>
+        ¿Te intriga entender<br />por qué tanta gente<br />
+        <span>desconfía</span> del sistema<br />y lo <span>critica</span>?
+      </h2>
+    </div>
+    <div class="splitR">
+      <div class="spacer-200"></div>
+      <h2 class='titulo'>
+        <span>¿Estás en contra del Telar?</span>
+      </h2>
+      <div class="spacer-100"></div>
+      <h2 class='question'>
+        ¿Te intriga entender<br />por qué tanta gente<br />
+        <span>confía</span> en el sistema<br />y lo <span>defiende</span>?
+      </h2>
+    </div>
 
-  <div class="spacer-100"></div>
+  </div>
 
-  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    ¿Te intriga entender<br />por qué tanta gente
-  </h2>
-  <h2 data-aos-anchor-placement="center-center"  data-aos="flip-down">
-    <span>desconfía</span> y <span>critica</span> al sistema?
-  </h2>
   <div class="spacer-700"> </div>
 
 <div class="overlayObjetivo">
-    <h2 class="left">CRITICAR</h2>
-    <h2 class="right">DEFENDER</h2>
+    <h2 class="left">DEFENDER</h2>
+    <h2 class="right">CRITICAR</h2>
     <h1 class="entender">ENTENDER</h1>
 </div>
 <video class="video1">
@@ -325,51 +466,89 @@ $( document ).ready(function() {
   </div>
 -->
 
-  <div class="spacer-300"> </div>
 
   <div class="ingredientes">
     <div class="ing ing1 component">
-      <span class="label">Positivo</span>
+      <span class="label">Lo bueno</span>
     </div>
     <div class="ing ing_white">
+      <span class="small_inside">
+        Células de la Abundancia<br />
+        <span class='segundaParteSuma'>
+        <br />
+        +<br />
+        <br />
+        Consigna de empoderamiento femenino</span>
+      </span>
       <span class="label">Telar de la Abundancia</span>
     </div>
     <div class="ing ing2 component">
       <span class="label"></span>
     </div>
     <div class="ing ing3 component">
-      <span class="label">Negativo</span>
+      <span class="label">Lo malo</span>
     </div>
-    <div class="torta_item torta_full"></div>
-    <div class="torta_item torta_ingrediente torta1"></div>
-    <div class="torta_item torta_ingrediente torta2"></div>
-    <div class="torta_item torta_ingrediente torta3"></div>
-    <div class="torta_item torta_ingrediente torta4"></div>
   </div>
 
   <div class='posinega'>
     <div class='adentro positivo'>
       <ul>
-        <li class='posi1'>Apoyo mutuo</li>
-        <li class='posi2'>Mentalidad de la abundancia</li>
-        <li class='posi3'>Empoderamiento femenino</li>
-        <li class='posi4'>Recursos para cumplir sueños y proyectos</li>
-        <li class='posi5'>Recursos para cumplir sueños y proyectos</li>
+        <li class='posi1'>Red de mujeres a nivel mundial</li>
+        <li class='posi2'>Aprendizaje emocional y espiritual</li>
+        <li class='posi3'>Confianza y responsabilidad</li>
+        <li class='posi4'>Cumplir sueños y proyectos</li>
+        <li class='posi5'>Empoderamiento</li>
       </ul>
     </div>
     <div class='adentro negativo'>
       <ul>
-        <li class='nega1'>Apoyo mutuo</li>
-        <li class='nega2'>Mentalidad de la abundancia</li>
-        <li class='nega3'>Empoderamiento femenino</li>
-        <li class='nega4'>Recursos para cumplir sueños y proyectos</li>
-        <li class='nega5'>Recursos para cumplir sueños y proyectos</li>
+        <li class='nega1'>Tarde o temprano se corta</li>
+        <li class='nega2'>La mayoría pierde dinero</li>
+        <li class='nega3'>Ruptura de la confianza</li>
+        <li class='nega4'>Vínculos dañados</li>
+        <li class='nega5'>Desempoderamiento</li>
       </ul>
+    </div>
+    <div class='frase1'>
+      <span class='f1'>“La verdad puede ser desconcertante.</span>
+      <span class='f2'><br />Puede tomar algo de trabajo para digerirse.</span>
+      <span class='f3'><br />Puede ser contraintuitiva.</span>
+      <span class='f4'><br />Puede contradecir prejuicios profundamente arraigados.</span>
+      <span class='f5'><br />Puede que no sea acorde con lo que desesperadamente queremos que sea verdad.</span>
+      <span class='f6'><br /><b>Pero nuestras preferencias no determinan la verdad.</b>”</span>
+      <span class='f7'><br />(Carl Sagan)</span>
     </div>
   </div>
 
   <div class="spacer-600"> </div>
-  <div class="spacer-600"> </div>
+
+  <div class='flat_split'>
+    <div class='flatL'>
+      <video class="video2" loop>
+        <source src="../../../JuicioCriticoProduction/Episodios/Piramides2/Assets/tierra2.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class='flatR'>
+      <img src='assets/flat.png' class='flatEarth' />
+    </div>
+    <div class='evidencia eround'>
+    </div>
+    <div class='evidencia eflat'>
+    </div>
+  </div>
+
+  <div class='evidencias_telar'>
+    <div class='evidencia etelar1'>
+    </div>
+    <div class='evidencia etelar2'>
+    </div>
+  </div>
+
+
+  <div class='sesgos full'>
+    <div class='sesgo'>
+    </div>
+  </div>
   <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>
   <div class="spacer-600"> </div>

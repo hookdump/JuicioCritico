@@ -96,6 +96,7 @@ h5 { font-size: 30px; }
   text-align: left;
   padding-left: 100px;
   margin-top: 23px;
+  color: #00ff00;
 }
 .overlayObjetivo .right {
   float: right;
@@ -108,9 +109,9 @@ h5 { font-size: 30px; }
   left: 50%;
   margin-left: -290px;
   margin-top: 6px;
-  color: #00FF00;
-  text-shadow: 0 0 20px black;
-  -webkit-text-stroke-width: 2px;
+  color: #ffffff;
+  text-shadow: 0 0 20px black, 0 0 5px black;
+  -webkit-text-stroke-width: 3px;
   -webkit-text-stroke-color: black;
 }
 
@@ -189,13 +190,28 @@ h5 { font-size: 30px; }
   transform: scale(1);
   transition: transform 1.5s ease-in-out;
 }
-.ing1 { opacity: 0; background-color: rgba(0,255,0,1); color: #00FF00; }
+.ing1 { opacity: 0; background-color: rgba(0,255,0,1); color: #00FF00;
+box-shadow: 0 0 20px rgba(0,255,0,0.6); }
 .ing2 { opacity: 0; background-color: #346CF8; color: #3388FF; z-index: 999; }
-.ing3 { opacity: 0; background-color: rgba(255,0,0,1); color: #FF0000; }
+.ing3 { opacity: 0; background-color: rgba(255,0,0,1); color: #FF0000;
+box-shadow: 0 0 20px rgba(255,0,0,0.6); }
 .ing_white { opacity: 0; background-color: rgba(255,255,255,1); color: #FFFFFF; }
 
-.ing.big { transform: scale(15); }
+.ing.big { transform: scale(4.6); }
 
+.small_inside {
+  font-size: 10px;
+  color: black;
+  width: 160px;
+  margin-left: -80px !important;
+  text-align: center;
+  position: absolute;
+  top: 68px;
+  opacity: 0;
+}
+.segundaParteSuma {
+  opacity: 0;
+}
 
 .ing .label {
   font-size: 50px;
@@ -204,9 +220,10 @@ h5 { font-size: 30px; }
   margin-left: -150px !important;
   text-align: center;
   position: absolute;
-  margin-left: -100px;
   top: 210px;
 }
+.ing1 .label { text-shadow: 0 0 10px rgba(0,255,0,0.7); }
+.ing3 .label { text-shadow: 0 0 10px rgba(255,0,0,0.7); }
 
 .torta_item {
   background-size: cover;
@@ -220,20 +237,132 @@ h5 { font-size: 30px; }
 .torta3 { background-image: url('assets/torta3.png'); }
 .torta4 { background-image: url('assets/torta4.png'); }
 
+.splitter {
+  position: relative;
+  width: 100%;
+  height: 1070px;
+}
+.splitter h2 {
+  font-size: 70px;
+}
+.splitter .question, .splitter .titulo {
+  opacity: 0;
+}
+.splitter .splitL {
+  float: left;
+  width: 49%;
+}
+.splitter .splitR {
+  float: right;
+  width: 49%;
+}
+
+
+.splitter .splitL h2.titulo span { color: #00FF00; }
+.splitter .splitR h2.titulo span { color: red; }
+.splitter .splitL h2.question span { color: red; }
+.splitter .splitR h2.question span { color: #00FF00; }
+
 .posinega {
   position: absolute;
-  top: 3500px;
+  top: 3580px;
   width: 1890px;
+  height: 915px;
 }
 .posinega .adentro {
   width: 49%;
-  font-size: 55px;
+  font-size: 45px;
 }
-.posinega ul { list-style: none; }
+.posinega ul { list-style: none; margin-top: 150px; }
 .posinega li {
   opacity: 0;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
   padding: 0 20px;
 }
 .posinega .positivo { float: left; color: #00ff00; }
 .posinega .negativo { float: right; color: #ff0000; }
+
+.posinega .frase1 {
+  font-size: 50px;
+  height: 900px;
+  position: absolute;
+  left: 200px;
+  right: 200px;
+  margin-top: 150px;
+  line-height: 80px;
+}
+.posinega .frase1 span {
+  opacity: 0;
+}
+.flat_split {
+  height: 1078px;
+}
+.flat_split .flatL {
+  float: left;
+  width: 49%;
+}
+.flat_split .flatR {
+  float: right;
+  width: 49%;
+}
+.flatEarth {
+  opacity: 0;
+  margin-top: 380px;
+  margin-left: -50px;
+  width: 500px;
+}
+.video2 {
+  margin-left: -50px;
+}
+
+.full {
+  width: 1920px;
+  height: 1080px;
+}
+.sesgos {
+  position: absolute;
+  top: 6000;
+}
+.evidencia {
+  position: fixed;
+  opacity: 0;
+  width: 248px;
+  height: 334px;
+  background-size: cover;
+
+  -webkit-transition: 1s ease-in-out;
+  -moz-transition: 1s ease-in-out;
+  -o-transition: 1s ease-in-out;
+  transition: 1s ease-in-out;
+}
+.evidencia.eround {
+  bottom: 360px;
+  left: 377px;
+  background-image: url('assets/evidencia_flat1.png');
+}
+.evidencia.eflat {
+  bottom: 360px;
+  right: 377px;
+  background-image: url('assets/evidencia_flat2.png');
+}
+.evidencia.etelar1 {
+  background-size: contain;
+  background-repeat: no-repeat;
+  bottom: 360px;
+  left: 377px;
+  background-image: url('assets/evidencia_telar1.png');
+}
+.evidencia.etelar2 {
+  background-size: contain;
+  background-repeat: no-repeat;
+  bottom: 360px;
+  right: 377px;
+  background-image: url('assets/evidencia_telar2.png');
+  background-position-x: right;
+}
+.evidencias_telar .evidencia {
+}
+.evidencia.evidenciaGrande {
+  opacity: 0.1 !important;
+  transform: rotate(10deg) scale(2);
+}
